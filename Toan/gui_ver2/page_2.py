@@ -95,6 +95,7 @@ class RELAY_CONTROL:
             
         if self.is_on:
             self.button_on.config(image=self.off)
+            self.k3.config(image=self.off)
             self.is_on = False 
         else:
             self.button_on.config(image=self.on)
