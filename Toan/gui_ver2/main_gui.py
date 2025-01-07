@@ -2,11 +2,13 @@ from tkinter import *
 from PIL import *
 from page_1 import *
 from page_2 import *
+from page_3 import *
 from PIL import ImageTk, Image
 from tkinter import font as tkFont
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
   
 class MAINLAYOUT:
@@ -23,7 +25,7 @@ class MAINLAYOUT:
         layout2 = Frame( self.layout, bg='#DCDCDC',width=636,height=4)
         layout2.place(x=2,y=56)
         self.tab_button(layout1,layout2);
-        self.label_light1(layout2);
+        # self.label_light1(layout2);
     
         self.display1=PAGE1();
         self.display1.create_layout( self.layout);
@@ -31,12 +33,15 @@ class MAINLAYOUT:
         # self.display2=PAGE2();
         # self.display2.create_layout( self.layout);
         # self.display2.hide();
-
+        
+        # self.display3=PAGE3();
+        # self.display3.Progressbar(self.layout);
 
 
     # tạo thêm sự kiện cho button
         self.button1.bind('<Button-1>',self.callTabevent1 );
         self.button2.bind('<Button-1>',self.callTabevent2 );
+        self.button3.bind('<Button-1>',self.callTabevent3 );
     
     def callTabevent1(self,event):
         self.display1=PAGE1();
@@ -45,6 +50,10 @@ class MAINLAYOUT:
     def callTabevent2(self,event):
         self.display2=PAGE2();
         self.display2.create_layout(self.layout);
+        pass
+    def callTabevent3(self,event):
+        self.display3=PAGE3();
+        self.display3.create_layout(self.layout);
         pass
     
     # layout1 chứa tab_button / layout2 chứa label_light cho button
@@ -65,9 +74,9 @@ class MAINLAYOUT:
         self.button5 = Button(layout1,bg='#303030', text='Stop', font=helv36,fg='#00FFFF',command=lambda: self.label_light5(layout2))
         self.button5.place(x=424,y=0,width=106, height=56)
         
-        photo = Image.open('home.png')
+        photo = Image.open('home1.png')
         self.pic = ImageTk.PhotoImage(photo)
-        self.button6 = Button(layout1,bg='#303030', image=self.pic,command=lambda: self.label_light6(layout2))
+        self.button6 = Button(layout1,bg='#303030',image=self.pic,command=lambda: self.label_light6(layout2))
         self.button6.place(x=530,y=0,width=106, height=56)
 
     def label_light1(self,layout2):
