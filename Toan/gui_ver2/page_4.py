@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-class PAGE3:
+class PAGE4:
     def __init__(self):
         pass
     def Progressbar(self,l4):

@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import *
 from page_1 import *
 from page_2 import *
-from page_3 import *
+from page_33 import *
 from PIL import ImageTk, Image
 from tkinter import font as tkFont
 import pandas as pd
@@ -59,25 +59,25 @@ class MAINLAYOUT:
     # layout1 chứa tab_button / layout2 chứa label_light cho button
     def tab_button(self,layout1,layout2):
         helv36 = tkFont.Font(family='Helvetica', size=13, weight=tkFont.BOLD )
-        self.button1 = Button(layout1,bg='#303030',font=helv36, text='Settings', fg='#00FFFF',command=lambda: self.label_light1(layout2))
+        self.button1 = Button(layout1,bg='#303030',font=helv36, text='Display', fg='#00FFFF',command=lambda: self.label_light1(layout2))
         self.button1.place(x=0,y=0,width=106, height=56)
         
-        self.button2 = Button(layout1,bg='#303030', font=helv36, text='Parameter',fg='#00FFFF',command=lambda: self.label_light2(layout2))
+        self.button2 = Button(layout1,bg='#303030', font=helv36, text='Control',fg='#00FFFF',command=lambda: self.label_light2(layout2))
         self.button2.place(x=106,y=0,width=106, height=56)
         
-        self.button3 = Button(layout1,bg='#303030',font=helv36,text='Run',fg='#00FFFF',command=lambda: self.label_light3(layout2))
+        self.button3 = Button(layout1,bg='#303030',font=helv36,text='Demo',fg='#00FFFF',command=lambda: self.label_light3(layout2))
         self.button3.place(x=212,y=0,width=106, height=56)
         
-        self.button4 = Button(layout1,bg='#303030',text='Pause', font=helv36,fg='#00FFFF',command=lambda: self.label_light4(layout2))
+        self.button4 = Button(layout1,bg='#303030',text='Setting', font=helv36,fg='#00FFFF',command=lambda: self.label_light4(layout2))
         self.button4.place(x=318,y=0,width=106, height=56)
         
-        self.button5 = Button(layout1,bg='#303030', text='Stop', font=helv36,fg='#00FFFF',command=lambda: self.label_light5(layout2))
-        self.button5.place(x=424,y=0,width=106, height=56)
+        self.button5 = Button(layout1,bg='#303030', font=helv36,fg='#00FFFF',command=lambda: self.label_light5(layout2))
+        self.button5.place(x=424,y=0,width=212, height=56)
         
-        photo = Image.open('home1.png')
-        self.pic = ImageTk.PhotoImage(photo)
-        self.button6 = Button(layout1,bg='#303030',image=self.pic,command=lambda: self.label_light6(layout2))
-        self.button6.place(x=530,y=0,width=106, height=56)
+        # photo = Image.open('home1.png')
+        # self.pic = ImageTk.PhotoImage(photo)
+        # self.button6 = Button(layout1,bg='#303030',image=self.pic,command=lambda: self.label_light6(layout2))
+        # self.button6.place(x=530,y=0,width=106, height=56)
 
     def label_light1(self,layout2):
         color1 = '#00FFFF'
@@ -118,21 +118,21 @@ class MAINLAYOUT:
     def label_light5(self,layout2):
         color1 = '#00FFFF'
         color2 = '#303030'     
-        self.label5 = Label(layout2, bg=color1).place(x=424,y=0,width=106,height=4)      
+        self.label5 = Label(layout2, bg=color2).place(x=424,y=0,width=106,height=4)      
         self.label1 = Label(layout2, bg=color2).place(x=0,y=0,width=106,height=4)
         self.label2 = Label(layout2, bg=color2).place(x=106,y=0,width=106,height=4)  
         self.label3 = Label(layout2, bg=color2).place(x=212,y=0,width=106,height=4)
         self.label4 = Label(layout2, bg=color2).place(x=318,y=0,width=106,height=4)
         self.label6 = Label(layout2, bg=color2).place(x=530,y=0,width=106,height=4)
-    def label_light6(self,layout2):
-        color1 = '#00FFFF'
-        color2 = '#303030'      
-        self.label6 = Label(layout2, bg=color1).place(x=530,y=0,width=106,height=4)      
-        self.label1 = Label(layout2, bg=color2).place(x=0,y=0,width=106,height=4)
-        self.label2 = Label(layout2, bg=color2).place(x=106,y=0,width=106,height=4) 
-        self.label3 = Label(layout2, bg=color2).place(x=212,y=0,width=106,height=4)
-        self.label4 = Label(layout2, bg=color2).place(x=318,y=0,width=106,height=4)
-        self.label5 = Label(layout2, bg=color2).place(x=424,y=0,width=106,height=4)
+    # def label_light6(self,layout2):
+    #     color1 = '#00FFFF'
+    #     color2 = '#303030'      
+    #     self.label6 = Label(layout2, bg=color1).place(x=530,y=0,width=106,height=4)      
+    #     self.label1 = Label(layout2, bg=color2).place(x=0,y=0,width=106,height=4)
+    #     self.label2 = Label(layout2, bg=color2).place(x=106,y=0,width=106,height=4) 
+    #     self.label3 = Label(layout2, bg=color2).place(x=212,y=0,width=106,height=4)
+    #     self.label4 = Label(layout2, bg=color2).place(x=318,y=0,width=106,height=4)
+    #     self.label5 = Label(layout2, bg=color2).place(x=424,y=0,width=106,height=4)
 
 mainlayout= MAINLAYOUT();
 mainlayout.create_layout();
