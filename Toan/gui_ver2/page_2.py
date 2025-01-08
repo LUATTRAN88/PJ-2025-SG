@@ -55,18 +55,18 @@ class RELAY_CONTROL:
         self.k2=Label(self.k1,bg='blue', fg='white', font=('Arial',13,'bold'))
         self.k2.place(x=0,y=0,width=103,height=21)
             
-        photo3 = Image.open('module.jpg')
-        m3 = photo3.resize((77,26))
-        self.pic3 = ImageTk.PhotoImage(m3)
-        self.k3=Label(self.k1,bg='#E0EEEE',text='Module 1', fg='#007FFF', font=('Arial',9),image=self.pic3)
+        # photo3 = Image.open('module.jpg')
+        # m3 = photo3.resize((77,26))
+        # self.pic3 = ImageTk.PhotoImage(m3)
+        self.k3=Label(self.k1,bg='#E0EEEE',text='Module 1', fg='#007FFF', font=('Arial',9))
         self.k3.place(x=13,y=21,width=77,height=26)
             
         self.k4=Label(self.k1,bg='#0000CD',text='Auto', fg='white', font=('Arial',12,'bold'))
         self.k4.place(x=13,y=47,width=77,height=19)
             
-        photo = Image.open('clock.jpg')
-        self.pic = ImageTk.PhotoImage(photo)
-        self.clock=Label(self.k1,bg='#E0EEEE',image=self.pic)
+        photoc = Image.open('clock.png')
+        self.picc = ImageTk.PhotoImage(photoc)
+        self.clock=Label(self.k1,bg='#E0EEEE',image=self.picc)
         self.clock.place(x=13,y=65,width=77,height=34)
             
         self.k5=Label(self.k1,bg='#C1CDCD',text='Setting', fg='blue', font=('Arial',9))
@@ -95,10 +95,19 @@ class RELAY_CONTROL:
             
         if self.is_on:
             self.button_on.config(image=self.off)
-            self.k3.config(image=self.off)
+            photo = Image.open('module0.png');
+            resize = photo.resize((77,26));
+            self.pic = ImageTk.PhotoImage(resize);
+            self.k3.config(image=self.pic)
+            self.k3.place(x=13,y=21,width=77,height=26)
             self.is_on = False 
         else:
             self.button_on.config(image=self.on)
+            photo = Image.open('module1.png');
+            resize = photo.resize((77,26));
+            self.pic = ImageTk.PhotoImage(resize);
+            self.k3.config(image=self.pic)
+            self.k3.place(x=13,y=21,width=77,height=26)
             self.is_on = True
 
             
