@@ -28,6 +28,7 @@ class MAINLAYOUT:
     
         self.display1=PAGE1();
         self.display1.create_layout( self.layout);
+
         # self.display1.show();
         # self.display2=PAGE2();
         # self.display2.create_layout( self.layout);
@@ -136,6 +137,7 @@ class MAINLAYOUT:
 mainlayout= MAINLAYOUT();
 mainlayout.create_layout();
 
+
 # def callevent(event):
 #     print("hello")
 # display1=PAGE1();
@@ -147,4 +149,5 @@ mainlayout.create_layout();
 
 
 mainloop()
+
 
