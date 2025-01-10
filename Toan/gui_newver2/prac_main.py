@@ -45,7 +45,7 @@ class MAINGUI:
         self.display4.create_layout(self.layout)
         
     def tab_button(self):
-        helv36 = tkFont.Font(family='Helvetica', size=13, weight=tkFont.BOLD )
+        helv36 = tkFont.Font(family='Helvetica', size=17, weight=tkFont.BOLD )
         self.button1 = Button(self.layout1,bg='#303030',font=helv36,bd=2,text='Display',fg='#7FFF00',command=lambda:self.label_light1())
         self.button1.place(x=0,y=0,width=159, height=56)
 

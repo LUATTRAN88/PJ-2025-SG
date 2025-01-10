@@ -5,7 +5,7 @@ from tkinter import ttk
 
 class PAGE3:
     def __init__(self):
-        pass
+        self.is_on = True
     def create_layout(self,l3):
         self.layout = Frame(l3, bg='#C1CDCD')
         self.layout.place(x=2,y=65,width=636,height=415)
@@ -17,8 +17,9 @@ class PAGE3:
         self.layout2.place(x=478,y=65,width=160,height=413)
 
         self.create_label()
-        self.button_stop()
+        # self.button_stop()
         self.Progressbar()
+        self.button_power()
 
     def create_label(self):
         hel1 = tkFont.Font(family='Helvetica', size=11, weight=tkFont.BOLD )
@@ -31,10 +32,28 @@ class PAGE3:
         self.label7 = Label(self.layout2,bg='#303030',font=hel1).place(x=0,y=228,width=160,height=37) 
         self.label8 = Label(self.layout2,bg='#303030',font=hel1,text='Emergency',fg='white').place(x=0,y=266,width=161,height=37) 
 
-    def button_stop(self):
-        photos = Image.open('stop.png')
-        self.pics = ImageTk.PhotoImage(photos)
-        self.stop = Button(self.layout2,bg='#C1CDCD',bd=4,image=self.pics).place(x=0,y=305,width=160,height=109)
+    # def button_stop(self):
+    #     photos = Image.open('stop.png')
+    #     self.pics = ImageTk.PhotoImage(photos)
+    #     self.stop = Button(self.layout2,bg='#C1CDCD',bd=4,image=self.pics).place(x=0,y=305,width=160,height=109)
+    
+    def button_power(self):
+        a1 = Image.open('play.png')
+        self.on = ImageTk.PhotoImage(a1)
+        a2 = Image.open('pause.png')
+        self.off = ImageTk.PhotoImage(a2)
+
+        self.button_on = Button(self.layout2,image=self.on,bg='#66CDAA', bd=3,command= self.button_power)
+        self.button_on.place(x=0,y=305,width=161,height=109)
+
+        if self.is_on:
+            self.button_on.config(image=self.on)
+            # self.stop_chart()
+            self.is_on = False 
+        else:
+            self.button_on.config(image=self.off)
+            # self.start_chart()
+            self.is_on = True
 
     def Progressbar(self):
         s = ttk.Style()
