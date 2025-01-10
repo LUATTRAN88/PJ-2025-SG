@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 from prac_1 import *
 from prac_2 import *
 from prac_3 import *
+from prac_4 import *
 class MAINGUI:
     def __init__(self):
         pass
@@ -28,6 +29,7 @@ class MAINGUI:
         self.button1.bind('<Button-1>', self.event_page1)
         self.button2.bind('<Button-1>', self.event_page2)
         self.button3.bind('<Button-1>', self.event_page3)
+        self.button4.bind('<Button-1>', self.event_page4)
     # tạo sự kiện mới cho button
     def event_page1(self,event):
         self.display1 = PAGE1()
@@ -38,6 +40,9 @@ class MAINGUI:
     def event_page3(self,event):
         self.display3 = PAGE3()
         self.display3.create_layout(self.layout)
+    def event_page4(self,event):
+        self.display4 = PAGE4()
+        self.display4.create_layout(self.layout)
         
     def tab_button(self):
         helv36 = tkFont.Font(family='Helvetica', size=13, weight=tkFont.BOLD )
