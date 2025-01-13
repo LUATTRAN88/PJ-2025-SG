@@ -2,34 +2,12 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from sqlalchemy import create_engine
 from json import dumps
-import mysql.connector
+# import mysql.connector
 import random
 # from flask.ext.jsonpify import jsonify
 
 app = Flask(__name__)
 api = Api(app)
-
-db = mysql.connector.connect(
-    host='127.0.0.1',
-    username='root',
-    password='giahuytran0708@',
-    database='room_system'
-)
-
-cursor = db.cursor()
-
-
-class Users(Resource):
-    def get(self):
-        cursor.execute("select * from room_system.user") # Dòng này thực hiện truy vấn và trả về json
-        res = {'users': [i for i in cursor.fetchall()]} # Tìm và thêm cột đầu tiên là Employee ID
-        return jsonify(res)
-
-# class Tracks(Resource):
-#     def get(self):
-#         query = cursor.execute("select trackid, name, composer, unitprice from tracks;")
-#         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
-#         return jsonify(result)
 
 class show_info(Resource):
     def get(self, info):
@@ -66,14 +44,8 @@ class show_info(Resource):
         }
                }
         return jsonify(res)
-        
-    def post(self, info):
-        data = request.get_json()
-        return 
 
-api.add_resource(Users, '/users') # Route_1
-# api.add_resource(Tracks, '/tracks') # Route_2
 api.add_resource(show_info, '/infos/<info>') # Route_3
 
 if __name__ == '__main__':
-     app.run(debug=True)
+     app.run(host='0.0.0.0', port=200)
