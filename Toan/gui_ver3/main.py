@@ -10,7 +10,7 @@ class MAINGUI:
     def create_layout(self):
         self.layout = Tk()
         self.layout.title('AC Load Bank')
-        self.layout.geometry('1024x600')
+        self.layout.geometry('1024x768')
         self.layout.config(bg='#C1CDCD')
 
         # layout1 chứa tab_button / layout2 chứa label_light
