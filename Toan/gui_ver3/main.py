@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font as tkFont
 from PIL import ImageTk, Image
 from page_1 import *
+from page_2 import *
 
 
 class MAINGUI:
@@ -23,10 +24,15 @@ class MAINGUI:
         self.tab_button()
 
         self.button1.bind('<Button-1>', self.event_page1)
+        self.button2.bind('<Button-1>', self.event_page2)
 
     def event_page1(self,event):
-        self.display1 = PAGE1()
-        self.display1.create_layout(self.layout)
+        display1 = PAGE1()
+        display1.create_layout(self.layout)
+        
+    def event_page2(self,event):
+        display2 = PAGE2()
+        display2.create_layout(self.layout)
 
     def tab_button(self):
         helv36 = tkFont.Font(family='Helvetica', size=17, weight=tkFont.BOLD )

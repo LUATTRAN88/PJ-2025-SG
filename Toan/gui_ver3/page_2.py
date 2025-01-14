@@ -2,9 +2,10 @@ from tkinter import *
 from tkinter import font as tkFont
 from PIL import ImageTk, Image
 
-class PAGE1:
+class PAGE2:
     def __init__(self):
         self.is_on = False
+        # self.lamp_on = False
     def create_layout(self,l1):
         self.layout3 = Frame(l1,bg='#C1CDCD')
         self.layout3.place(x=0,y=64,width=512,height=704)
@@ -12,101 +13,69 @@ class PAGE1:
         self.layout4 = Frame(l1,bg='#C1CDCD')
         self.layout4.place(x=512,y=64,width=512,height=704)
 
+        # layout5 chứa class SIGNAL
         self.layout5 = Frame(self.layout3,bg='#C1CDCD')
         self.layout5.place(x=0,y=540,width=512,height=160)
-        
-        self.label_powtime()
+
+        # layout6 chứa class SIGNAL_POWER
+        self.layout6 = Frame(self.layout3, bg='#C1CDCD')
+        self.layout6.place(x=0,y=83,width=512,height=289)
+
+        self.label_power_set()
         self.tab_button()
         self.label_power()
+
+        # self.display_signal = SIGNAL_POWER()
+        # self.display_signal.create_layout(self.layout6)
         
-        # self.display = SIGNAL()
-        # self.display.create_layout(self.layout5)
+
+        
 
         #   Mảng chứa các đối tượng SIGNAL
         self.signal_objects = []
-         # Khoảng cách giữa các đối tượng SIGNAL
-        # Chiều rộng mỗi khung là 28, cộng thêm khoảng cách 10 pixel giữa chúng
-        #   spacing = 38  (là khoảng cách giữa các đối tượng)
+        # Khoảng cách giữa các đối tượng SIGNAL / Chiều rộng mỗi khung là 28, cộng thêm khoảng cách 10 pixel giữa chúng/ spacing = 38  (là khoảng cách giữa các đối tượng) 
 
         #Tạo và sắp xếp 16 đối tượng SIGNAL
         for i in range(16):
-            
             signal = SIGNAL()
             signal.create_layout(self.layout5, x_offset=i * 32.2, text ='RL' + str(i+1) )
+            
             if i==12:
-                signal.set_relay_value("FAN");
+                signal.set_relay_value('Fan')
             elif i==13:
-                signal.set_relay_value("Alarm");
+                signal.set_relay_value('Alrm')
             elif i==14:
-                signal.set_relay_value("Spar"); 
+                signal.set_relay_value('Spar')
             elif i==15:
-                signal.set_relay_value("Spar"); 
+                signal.set_relay_value('Spar')
             else:
-                signal.set_relay_value("20.0");   
+                signal.set_relay_value('20.0')
+
             self.signal_objects.append(signal)
 
-        # signal_13 = SIGNAL()
-        # signal_13.create_layout(self.layout5, x_offset=13 * 32.2 , text= 'RL' + str(13+1))
-        # signal_13.set_relay_value('Fan')
-        # self.signal_objects.append(signal_13)
+            self.button_fan()
 
-        # signal_14 = SIGNAL()
-        # signal_14.create_layout(self.layout5, x_offset=14 * 32.2 , text= 'RL' + str(14+1))
-        # signal_14.set_relay_value('Alarm')
-        # self.signal_objects.append(signal_14)
+        # self.display_signal = SIGNAL_POWER()
+        # self.display_signal.create_layout(self.layout6)
 
-        # signal_15 = SIGNAL()
-        # signal_15.create_layout(self.layout5, x_offset=15 * 32.2 , text= 'RL' + str(15+1))
-        # signal_15.set_relay_value('Spare')
-        # self.signal_objects.append(signal_15)
+        self.relay_power_objects = []
 
-        # signal_16 = SIGNAL()
-        # signal_16.create_layout(self.layout5, x_offset=16 * 32.2 , text= 'RL' + str(16+1))
-        # signal_16.set_relay_value('Spare')
-        # self.signal_objects.append(signal_16)
+        for t in range(12):
+            row = t // 6  # Xác định hàng
+            col = t % 6   # Xác định cột
+            space_x = col * 85.333  # Khoảng cách theo cột
+            space_y = row * 150     # Khoảng cách theo hàng (tăng y để không chồng nhau)
 
+            signal_repo = SIGNAL_POWER()
+            signal_repo.create_layout(self.layout6, x=space_x,y=space_y, text ='RL' + str(t+1) )
+            self.relay_power_objects.append(signal_repo)
+        
 
-
-            
-        self.button_fan()
-
-    def label_powtime(self):
-        fontp = tkFont.Font(family='Helvetica', size=48, weight=tkFont.BOLD )
-        fontval = tkFont.Font(family='Helvetica', size=42, weight=tkFont.BOLD )
-        self.lb_powset = Label(self.layout3,bg='#C1CDCD',font=fontp,text='POWER\n SET',fg='#2E8B57').place(x=0,y=30,width=255,height=130)
-        self.lb_powset_val = Label(self.layout3,bg='#C1CDCD',font=fontval,text='57 KW',fg='#8B2252').place(x=255,y=47,width=205,height=100)
-
-        self.lb_time = Label(self.layout3,bg='#C1CDCD',font=fontp,text='TIMER\n SET',fg='#2E8B57').place(x=0,y=210,width=225,height=130)
-        self.lb_time_val = Label(self.layout3,bg='#C1CDCD',font=fontval,text='60 mins',fg='#8B2252').place(x=225,y=230,width=235,height=100)
-
-        fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
-        self.lb_running = Label(self.layout4,bg='#C1CDCD',font=fontrun,text='Running',fg='black').place(x=412,y=0,width=100,height=40)
-
-        self.photola = Image.open('lamprun.png')
-        self.picla = ImageTk.PhotoImage(self.photola)
-        self.lb_lamp_run = Label(self.layout4,bg='#C1CDCD',image=self.picla).place(x=378,y=2,width=40,height=40)
-
-        fontpo = tkFont.Font(family='Helvetica', size=42, weight=tkFont.BOLD )
-        self.lb_power = Label(self.layout4,bg='#C1CDCD',font=fontpo,text='POWER',fg='red').place(x=24,y=59,width=220,height=75)
-        self.lb_power_val = Label(self.layout4,bg='#C1CDCD',font=fontpo,text='58.1 KW',fg='red').place(x=246,y=59,width=265,height=75)
+    def label_power_set(self):
+        fontps = tkFont.Font(family='Helvetica', size=37, weight=tkFont.BOLD )
+        self.lb_power_set = Label(self.layout3,bg='#C1CDCD',font=fontps,text='POWER SET (KW)',fg='#00CD00').place(x=10,y=18,width=500,height=62)
 
     def tab_button(self):
-        self.photo1 = Image.open('up1.png').resize((50,46))
-        self.pic1 = ImageTk.PhotoImage(self.photo1)
-        self.btn_powset_up = Button(self.layout3,bd=0, bg='#C1CDCD',image=self.pic1).place(x=462,y=43,width=50,height=46)
-
-        self.photo2 = Image.open('down1.png').resize((50,46))
-        self.pic2 = ImageTk.PhotoImage(self.photo2)
-        self.btn_powset_down = Button(self.layout3,bd=0, bg='#C1CDCD',image=self.pic2).place(x=462,y=98,width=50,height=46)
-
-        self.photo3 = Image.open('up1.png').resize((50,46))
-        self.pic3 = ImageTk.PhotoImage(self.photo3)
-        self.btn_time_up = Button(self.layout3,bd=0,bg='#C1CDCD',image=self.pic3).place(x=462,y=232,width=50,height=46)
-
-        self.photo4 = Image.open('down1.png').resize((50,46))
-        self.pic4 = ImageTk.PhotoImage(self.photo4)
-        self.btn_time_down = Button(self.layout3,bd=0,bg='#C1CDCD',image=self.pic4).place(x=462,y=287,width=50,height=46)
-
         fontb = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
         self.btn_apply = Button(self.layout3,bd=3,bg='#20B2AA',font=fontb,text='LOAD APPLY',fg='#8B2252').place(x=0,y=375,width=170,height=65)
         self.btn_stop = Button(self.layout3,bd=3,bg='#20B2AA',font=fontb,text='LOAD STOP',fg='#8B2252').place(x=171,y=375,width=170,height=65)
@@ -114,6 +83,17 @@ class PAGE1:
         self.btn_logging = Button(self.layout3,bd=3,bg='#20B2AA',font=fontb,text='LOAD LOGGING',fg='#8B2252').place(x=0,y=470,width=170,height=65)
 
     def label_power(self):
+        fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
+        self.lb_running = Label(self.layout4,bg='#C1CDCD',font=fontrun,text='Running',fg='black').place(x=412,y=0,width=100,height=40)
+
+        self.photola = Image.open('lamp.png')
+        self.picla = ImageTk.PhotoImage(self.photola)
+        self.lb_lamp_run = Label(self.layout4,bg='#C1CDCD',image=self.picla).place(x=378,y=2,width=40,height=40)
+
+        fontpo = tkFont.Font(family='Helvetica', size=42, weight=tkFont.BOLD )
+        self.lb_power = Label(self.layout4,bg='#C1CDCD',font=fontpo,text='POWER',fg='red').place(x=24,y=59,width=220,height=75)
+        self.lb_power_val = Label(self.layout4,bg='#C1CDCD',font=fontpo,text='58.1 KW',fg='red').place(x=246,y=59,width=265,height=75)
+
         fontt = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
         self.lb_temp = Label(self.layout4,bg='#C1CDCD',font=fontt,text='35.2 ºC',fg='black').place(x=410,y=31,width=100,height=40)
         
@@ -142,7 +122,7 @@ class PAGE1:
         self.lb_line13n = Label(self.layout4,bg='black').place(x=20, y=320,width=479,height=1)
         self.lb_line14n = Label(self.layout4,bg='black').place(x=20, y=360,width=479,height=1)
 
-        # hàng L1
+          # hàng L1
         fonl1 = tkFont.Font(family='Helvetica', size=11, weight=tkFont.BOLD )
         self.lb_L1 = Label(self.layout4,bg='#C1CDCD',font=fonl1,text='L1',fg='red').place(x=22,y=201,width=43,height=39)
         self.lb_L1_none = Label(self.layout4,bg='#C1CDCD',font=fonl1,text='L1 - L2',fg='red').place(x=353,y=201,width=72,height=39)
@@ -178,6 +158,7 @@ class PAGE1:
         self.lb_L3_volt_pf = Label(self.layout4,bg='#C1CDCD',font=fonl3t,text='1.0',fg='blue').place(x=282,y=281,width=68,height=39)
         self.lb_L3_volt_ll = Label(self.layout4,bg='#C1CDCD',font=fonl3t,text='403.1',fg='blue').place(x=427,y=281,width=72,height=39)
 
+        
         # hàng FREQ
         fonl4 = tkFont.Font(family='Helvetica', size=10, weight=tkFont.BOLD )
         self.lb_freq = Label(self.layout4,bg='#C1CDCD',font=fonl4,text='FREQ.',fg='black').place(x=21,y=321,width=44,height=39)
@@ -208,6 +189,7 @@ class PAGE1:
             self.btn_on.config(image=self.on)
             self.is_on = True
 
+
 class SIGNAL:
     def __init__(self):
         pass
@@ -228,12 +210,33 @@ class SIGNAL:
 
     def set_relay_value(self,text):
         self.relay_text_value.set(text)
+        pass
 
+
+class SIGNAL_POWER:
+    def __init__(self):
+        self.lamp_on = False
+    def create_layout(self,layout6,text,x,y):
+        self.layout = Frame(layout6,bg='#C1CDCD')
+        self.layout.place(x=x,y=y,width=85,height=144)
+
+        fonre = tkFont.Font(family='Helvetica', size=16)
+        self.lb_relay1 = Label(self.layout,bg='#C1CDCD',font=fonre,text=text).place(x=13,y=9,width=55,height=34)
         
+        self.lamp_signal_relay()
 
-   
+    def lamp_signal_relay(self):
+        a1 = Image.open('lamp_signal_on.png').resize((70,70))
+        self.on = ImageTk.PhotoImage(a1)
+        a2 = Image.open('lamp_signal_off.png').resize((70,70))
+        self.off = ImageTk.PhotoImage(a2)
 
+        self.btn_on = Button(self.layout,image=self.on,bg='#C1CDCD', bd=0,command=lambda:self.lamp_signal_relay())
+        self.btn_on.place(x=1,y=40,width=83,height=83)
 
-
-
-       
+        if self.lamp_on:
+            self.btn_on.config(image=self.off)
+            self.lamp_on = False 
+        else:
+            self.btn_on.config(image=self.on)
+            self.lamp_on = True
