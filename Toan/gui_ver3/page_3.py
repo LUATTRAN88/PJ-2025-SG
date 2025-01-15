@@ -53,13 +53,13 @@ class PAGE3:
         
         font = tkFont.Font(family='Helvetica', size=12, weight=tkFont.BOLD )
         self.lb_power_limit = Label(self.layout3,bg='#C1CDCD',font=font,text='POWER LIMIT (KW):').place(x=30,y=65,width=170,height=35)
-        self.lb_power_data = Label(self.layout3,bg='#C1CDCD',font=font,text='120').place(x=190,y=65,width=60,height=35)
+        self.lb_power_data = Label(self.layout3,bg='#C1CDCD',font=font,text='120').place(x=190,y=65,width=40,height=35)
 
         self.lb_voltage = Label(self.layout3,bg='#C1CDCD',font=font,text='VOLTAGE L-N LIMIT (V):').place(x=30,y=105,width=200,height=35)
-        self.lb_voltage_data = Label(self.layout3,bg='#C1CDCD',font=font,text='250').place(x=221,y=105,width=60,height=35)
+        self.lb_voltage_data = Label(self.layout3,bg='#C1CDCD',font=font,text='250').place(x=221,y=105,width=40,height=35)
 
         self.lb_temperature = Label(self.layout3,bg='#C1CDCD',font=font,text='TEMPERATURE LIMIT (C):').place(x=30,y=145,width=210,height=35)
-        self.lb_temp_data = Label(self.layout3,bg='#C1CDCD',font=font,text='80').place(x=235,y=145,width=60,height=35)
+        self.lb_temp_data = Label(self.layout3,bg='#C1CDCD',font=font,text='80').place(x=235,y=145,width=40,height=35)
 
 
 
