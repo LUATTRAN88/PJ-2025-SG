@@ -74,10 +74,12 @@ class PAGE1:
         fontp = tkFont.Font(family='Helvetica', size=48, weight=tkFont.BOLD )
         fontval = tkFont.Font(family='Helvetica', size=42, weight=tkFont.BOLD )
         self.lb_powset = Label(self.layout3,bg='white',font=fontp,text='POWER\n SET',fg='#2E8B57').place(x=0,y=30,width=255,height=130)
-        self.lb_powset_val = Label(self.layout3,bg='white',font=fontval,text='57 KW',fg='#8B2252').place(x=255,y=47,width=205,height=100)
+        self.lb_powset_kw = Label(self.layout3,bg='white',font=fontval,text='KW',fg='#8B2252').place(x=350,y=47,width=100,height=100)
+        self.lb_powset_val = Label(self.layout3,bg='white',font=fontval,text='57',fg='#8B2252').place(x=255,y=47,width=95,height=100)
 
         self.lb_time = Label(self.layout3,bg='white',font=fontp,text='TIMER\n SET',fg='#2E8B57').place(x=0,y=210,width=225,height=130)
-        self.lb_time_val = Label(self.layout3,bg='white',font=fontval,text='60 mins',fg='#8B2252').place(x=225,y=230,width=235,height=100)
+        self.lb_time_mins = Label(self.layout3,bg='white',font=fontval,text='mins',fg='#8B2252').place(x=320,y=230,width=130,height=100)
+        self.lb_time_val = Label(self.layout3,bg='white',font=fontval,text='60',fg='#8B2252').place(x=225,y=230,width=95,height=100)
 
         fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
         self.lb_running = Label(self.layout4,bg='white',font=fontrun,text='Running',fg='black').place(x=412,y=0,width=100,height=40)
