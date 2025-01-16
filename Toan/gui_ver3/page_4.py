@@ -1,12 +1,13 @@
 from tkinter import *
 from tkinter import font as tkFont
 from PIL import ImageTk, Image
+from page_5 import *
 
 class PAGE4:
     def __init__(self):
         self.is_on = False
     def create_layout(self,l4):
-        self.layout = Frame(l4,bg='#C1CDCD')
+        self.layout = Frame(l4,bg='white')
         self.layout.place(x=0,y=64,width=1024,height=704)
 
         self.label_power()
@@ -28,24 +29,33 @@ class PAGE4:
                 signal.set_relay_value('20.0')
 
             self.signal_objects.append(signal)
-        self.display_cal = CALCULATOR()
+        # self.display_cal = CALCULATOR()
+        # self.display_cal.create_layout(self.layout)
+
+
+        self.display_cal = KEYBOARD()
         self.display_cal.create_layout(self.layout)
+        self.display_cal.btn_enter = Button(self.display_cal.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.event_page5()).place(x=249, y=207,width=82, height=136.5)
+
+    def event_page5(self):
+        display5 = PAGE5()
+        display5.create_layout(self.layout)
 
 
     def label_power(self):
         fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
-        self.lb_running = Label(self.layout,bg='#C1CDCD',font=fontrun,text='Running',fg='black').place(x=924,y=0,width=100,height=40)
+        self.lb_running = Label(self.layout,bg='white',font=fontrun,text='Running',fg='black').place(x=924,y=0,width=100,height=40)
 
         self.photola = Image.open('lamp4.png')
         self.picla = ImageTk.PhotoImage(self.photola)
-        self.lb_lamp_run = Label(self.layout,bg='#C1CDCD',image=self.picla).place(x=890,y=2,width=40,height=40)
+        self.lb_lamp_run = Label(self.layout,bg='white',image=self.picla).place(x=890,y=2,width=40,height=40)
 
         fontt = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
-        self.lb_temp = Label(self.layout,bg='#C1CDCD',font=fontt,text='35.2 ºC',fg='black').place(x=922,y=31,width=100,height=40)
+        self.lb_temp = Label(self.layout,bg='white',font=fontt,text='35.2 ºC',fg='black').place(x=922,y=31,width=100,height=40)
         
         # label logo
         fonlogo = tkFont.Font(family='Helvetica', size=50, weight=tkFont.BOLD )
-        self.label_logo = Label(self.layout, bg='#C1CDCD',text='LOGO',font=fonlogo,fg='black').place(x=732, y=458,width=270,height=170)
+        self.label_logo = Label(self.layout, bg='white',text='LOGO',font=fonlogo,fg='black').place(x=732, y=458,width=270,height=170)
    
     def button_fan(self):
         a1 = Image.open('fan_on.png').resize((170,170))
@@ -53,7 +63,7 @@ class PAGE4:
         a2 = Image.open('fan_off.png').resize((170,170))
         self.off = ImageTk.PhotoImage(a2)
 
-        self.btn_on = Button(self.layout,image=self.on,bg='#C1CDCD', bd=0,command=lambda:self.button_fan())
+        self.btn_on = Button(self.layout,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
         self.btn_on.place(x=540,y=460,width=170,height=170)
 
         if self.is_on:
@@ -68,26 +78,26 @@ class SIGNAL:
     def __init__(self):
         pass
     def create_layout(self,layout,text, x_offset=0):
-        self.layout9 =  Frame(layout,bg='#C1CDCD')
+        self.layout9 =  Frame(layout,bg='white')
         self.layout9.place(x=x_offset,y=553, width=28,height=114)
 
         self.photol = Image.open('lamp4.png')
         self.picl = ImageTk.PhotoImage(self.photol)
-        self.lb_lamp = Label(self.layout9, bg='#C1CDCD',image=self.picl).place(x=1.5,y=38.4,width=24,height=38)
+        self.lb_lamp = Label(self.layout9, bg='white',image=self.picl).place(x=1.5,y=38.4,width=24,height=38)
         
         fontr = tkFont.Font(family='Helvetica', size=8)
-        self.lb_relay = Label(self.layout9, bg='#C1CDCD',font=fontr,fg='black',text=text).place(x=0,y=7,width=28,height=33)
+        self.lb_relay = Label(self.layout9, bg='white',font=fontr,fg='black',text=text).place(x=0,y=7,width=28,height=33)
 
         fontreva = tkFont.Font(family='Helvetica', size=9)
         self.relay_text_value = StringVar()
-        self.lb_relay_val = Label(self.layout9, bg='#C1CDCD',font=fontreva,text='20.2',fg='black',textvariable=self.relay_text_value).place(x=0,y=71.4,width=28,height=33)
+        self.lb_relay_val = Label(self.layout9, bg='white',font=fontreva,text='20.2',fg='black',textvariable=self.relay_text_value).place(x=0,y=71.4,width=28,height=33)
 
     def set_relay_value(self,text):
         self.relay_text_value.set(text)
         pass
 
 
-class CALCULATOR:  
+class KEYBOARD:  
     def __init__(self):
         pass
     def create_layout(self,layout):
@@ -99,7 +109,7 @@ class CALCULATOR:
 
         self.equation = StringVar()
         self.entry_value=''
-        Entry(self.layout10,bg='#fff',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
+        Entry(self.layout10,bg='#F0FFFF',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
 
         self.b1=Button(self.layout11,font=('Arial Bold',20),text='Tab',relief='flat',bg='#7AC5CD',command=lambda:self.show('Tab')).place(x=0, y=0,width=82, height=68)
         self.b2=Button(self.layout11,font=('Arial Bold',25),text='/',relief='flat',bg='#7AC5CD',command=lambda:self.show('/')).place(x=82.5, y=0,width=82, height=68)
@@ -119,7 +129,7 @@ class CALCULATOR:
         Button(self.layout11,font=('Arial Bold',25),text='1',relief='flat',bg='#7AC5CD',command=lambda:self.show('1')).place(x=0, y=207,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='2',relief='flat',bg='#7AC5CD',command=lambda:self.show('2')).place(x=82.5, y=207,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='3',relief='flat',bg='#7AC5CD',command=lambda:self.show('3')).place(x=166, y=207,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.show('')).place(x=249, y=207,width=82, height=136.5)
+        self.btn_enter=Button(self.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.show('')).place(x=249, y=207,width=82, height=136.5)
 
         Button(self.layout11,font=('Arial Bold',25),text='0',relief='flat',bg='#7AC5CD',command=lambda:self.show('0')).place(x=0, y=276,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='00',relief='flat',bg='#7AC5CD',command=lambda:self.show('00')).place(x=82.5, y=276,width=82, height=68)
