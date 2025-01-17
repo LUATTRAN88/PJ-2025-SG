@@ -6,6 +6,7 @@ from page_5 import *
 class PAGE4:
     def __init__(self):
         self.is_on = False
+        self.equation = 1515
     def create_layout(self,l4):
         self.layout = Frame(l4,bg='white')
         self.layout.place(x=0,y=64,width=1024,height=704)
@@ -31,16 +32,16 @@ class PAGE4:
             self.signal_objects.append(signal)
         # self.display_cal = CALCULATOR()
         # self.display_cal.create_layout(self.layout)
-
-
+        
+        
         self.display_cal = KEYBOARD()
         self.display_cal.create_layout(self.layout)
         self.display_cal.btn_enter = Button(self.display_cal.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.event_page5()).place(x=249, y=207,width=82, height=136.5)
-
+        self.password()
     def event_page5(self):
         display5 = PAGE5()
         display5.create_layout(self.layout)
-
+        
 
     def label_power(self):
         fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
@@ -136,7 +137,16 @@ class KEYBOARD:
         Button(self.layout11,font=('Arial Bold',25),text='.',relief='flat',bg='#7AC5CD',command=lambda:self.show('.')).place(x=166, y=276,width=82, height=68)
 
 
-
+    def password(self):
+        
+        if self.entry_value == 1515:
+             self.display_cal.btn_enter = Button(self.display_cal.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.event_page5()).place(x=249, y=207,width=82, height=136.5)
+            
+        else:    
+            self.entry_value=''
+        Entry(self.layout10,bg='#F0FFFF',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
+            
+    
 
     def show(self,value):
         self.entry_value+=str(value)
