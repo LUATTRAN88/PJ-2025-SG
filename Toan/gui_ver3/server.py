@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
+# from sqlalchemy import create_engine
 from json import dumps
 # import mysql.connector
 import random
@@ -14,43 +14,67 @@ class show_info(Resource):
               get_info1 = int(request.args.get('reqsv'))
               print('1233')
               res = None
-              if get_info1 == 200:
+              if get_info1 == 20000:
                      res = {'respsv': get_info1, 'error': 0, 'data': ''}
-              elif get_info1 == 201:
+              elif get_info1 == 20001:
                      res = {'respsv': get_info1, 'error': 0, 'data': ''}
-              elif get_info1 == 202:
+              elif get_info1 == 20002:
                      res = {'respsv': get_info1, 'error': 0, 'data': self.dataAdruino()}
               else:
                      res = {'respsv': get_info1, 'error': 0, 'data': self.dataAdruino()}
               return jsonify(res)
        def dataAdruino(self):
               res = {
-                     'v1n': random.uniform(1.0, 50.0), 
-                     'v2n': random.uniform(1.0, 50.0),
-                     'v3n': random.uniform(1.0, 50.0),
-                     'i1': random.uniform(1.0, 50.0),
-                     'i2': random.uniform(1.0, 50.0),
-                     'i3': random.uniform(1.0, 50.0),
-                     'kw1': random.uniform(1.0, 50.0),
-                     'kw2': random.uniform(1.0, 50.0),
-                     'kw3': random.uniform(1.0, 50.0), 
-                     'pf1': random.uniform(1.0, 50.0), 
-                     'pf2': random.uniform(1.0, 50.0), 
-                     'pf3': random.uniform(1.0, 50.0), 
-                     'rl1': random.randint(0, 1),
-                     'rl2': random.randint(0, 1),
-                     'rl3': random.randint(0, 1),
-                     'rl4': random.randint(0, 1),
-                     'rl5': random.randint(0, 1),
-                     'rl6': random.randint(0, 1),
-                     'rl7': random.randint(0, 1),
-                     'rl8': random.randint(0, 1),
-                     'rl9': random.randint(0, 1),
-                     'rl10': random.randint(0, 1),
-                     'rl11': random.randint(0, 1),
-                     'rl12': random.randint(0, 1),
-                     'freq': random.uniform(1.0, 50.0),
-                     'tkw':random.uniform(1.0, 50.0)
+                     'vln1': round(random.uniform(1.0, 50.0),2), 
+                     'vln2': round(random.uniform(1.0, 50.0),2),
+                     'vln3': round(random.uniform(1.0, 50.0),2),
+                     'cur1': round(random.uniform(1.0, 50.0),2),
+                     'cur2': round(random.uniform(1.0, 50.0),2),
+                     'cur3': round(random.uniform(1.0, 50.0),2),
+                     'kw1': round(random.uniform(1.0, 50.0),2),
+                     'kw2': round(random.uniform(1.0, 50.0),2),
+                     'kw3': round(random.uniform(1.0, 50.0),2), 
+                     'pf1': round(random.uniform(1.0, 50.0),2), 
+                     'pf2': round(random.uniform(1.0, 50.0),2), 
+                     'pf3': round(random.uniform(1.0, 50.0),2), 
+                     'rl': [
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                     ],
+                     'rl_power':[
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            {'val':round(random.uniform(1.0, 50.0),1), 'on':random.randint(0,1)},
+                            ],
+                     'freq': round(random.uniform(1.0, 50.0),2),
+                     'tkw': round(random.uniform(1.0, 50.0),2),
+                     'v12': round(random.uniform(1.0, 50.0),2),
+                     'v23': round(random.uniform(1.0, 50.0),2),
+                     'v31': round(random.uniform(1.0, 50.0),2),
+                     'tempc': round(random.uniform(1.0, 50.0),2),
                      }
               return res;
               

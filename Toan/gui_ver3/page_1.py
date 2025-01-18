@@ -14,6 +14,10 @@ class PAGE1:
         self.power_value = 0
         self.time_value = 0
     def create_layout(self,l1):
+        
+        # self.layout_page = Frame(l1, bg='white')
+        # self.layout_page.place(x=0,y=64,width=1024,height=704)
+        
         self.layout3 = Frame(l1,bg='white')
         self.layout3.place(x=0,y=64,width=512,height=704)
 
@@ -73,12 +77,20 @@ class PAGE1:
         # signal_16.set_relay_value('Spare')
         # self.signal_objects.append(signal_16)
 
+        
 
 
             
         self.button_fan()
+ 
         secondary_thread = threading.Thread(target = self.loadingdata)
         secondary_thread.start()
+        
+    def show(self):
+        if not self.layout_page.winfo_ismapped():  # Check if the frame is not already visible
+            self.layout_page.pack(fill="both", expand=False)
+    def hide(self):
+        self.layout_page.destroy()
 
     def label_powtime(self):
         fontp = tkFont.Font(family='Helvetica', size=48, weight=tkFont.BOLD )
@@ -263,6 +275,7 @@ class PAGE1:
             try:
                 response = clientCall.requestGET('20002');
                 if response.status == 200:
+                    print('connected')
                     #parse data
                     data = json.loads(response.read().decode())
                     # print(data)
@@ -329,7 +342,7 @@ class SIGNAL:
         self.relay_text_value.set(text)
         
     def setonoff(self,val):
-        print(val)
+        # print(val)
         if val == 1:
             img2 = ImageTk.PhotoImage(Image.open(get_path_img()+'lamp.png'))
             self.lb_lamp.configure(image=img2)
