@@ -11,7 +11,7 @@ def requestGET(reqsv):
     #print("Status: {} and reason: {}".format(response.status, response.reason))
     
     # Print response body (if any)
-    #print("Response data:", response.read().decode())
+    #print("Response data:", )
 
     
     connection.close()

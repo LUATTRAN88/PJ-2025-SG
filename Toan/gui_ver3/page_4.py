@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import font as tkFont
 from PIL import ImageTk, Image
 from page_5 import *
-
+from extend import *
 class PAGE4:
     def __init__(self):
         self.is_on = False
@@ -47,7 +47,7 @@ class PAGE4:
         fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
         self.lb_running = Label(self.layout,bg='white',font=fontrun,text='Running',fg='black').place(x=924,y=0,width=100,height=40)
 
-        self.photola = Image.open('lamp4.png')
+        self.photola = Image.open(get_path_img()+'lamp4.png')
         self.picla = ImageTk.PhotoImage(self.photola)
         self.lb_lamp_run = Label(self.layout,bg='white',image=self.picla).place(x=890,y=2,width=40,height=40)
 
@@ -59,9 +59,9 @@ class PAGE4:
         self.label_logo = Label(self.layout, bg='white',text='LOGO',font=fonlogo,fg='black').place(x=732, y=458,width=270,height=170)
    
     def button_fan(self):
-        a1 = Image.open('fan_on.png').resize((170,170))
+        a1 = Image.open(get_path_img()+'fan_on.png').resize((170,170))
         self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open('fan_off.png').resize((170,170))
+        a2 = Image.open(get_path_img()+'fan_off.png').resize((170,170))
         self.off = ImageTk.PhotoImage(a2)
 
         self.btn_on = Button(self.layout,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
@@ -82,7 +82,7 @@ class SIGNAL:
         self.layout9 =  Frame(layout,bg='white')
         self.layout9.place(x=x_offset,y=553, width=28,height=114)
 
-        self.photol = Image.open('lamp4.png')
+        self.photol = Image.open(get_path_img()+'lamp4.png')
         self.picl = ImageTk.PhotoImage(self.photol)
         self.lb_lamp = Label(self.layout9, bg='white',image=self.picl).place(x=1.5,y=38.4,width=24,height=38)
         

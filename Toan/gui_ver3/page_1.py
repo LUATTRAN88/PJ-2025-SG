@@ -5,6 +5,8 @@ import threading
 from time import sleep
 import client as clientCall
 import json
+from extend import *
+
 class PAGE1:
     def __init__(self):
         self.origin_data = None
@@ -92,7 +94,7 @@ class PAGE1:
         fontrun = tkFont.Font(family='Helvetica', size=15, weight=tkFont.BOLD )
         self.lb_running = Label(self.layout4,bg='white',font=fontrun,text='Running',fg='black').place(x=412,y=0,width=100,height=40)
 
-        self.photola = Image.open('lamprun.png')
+        self.photola = Image.open(get_path_img()+'lamprun.png')
         self.picla = ImageTk.PhotoImage(self.photola)
         self.lb_lamp_run = Label(self.layout4,bg='white',image=self.picla).place(x=378,y=2,width=40,height=40)
 
@@ -102,19 +104,19 @@ class PAGE1:
         self.lb_power_val = Label(self.layout4,bg='white',font=fontpo,textvariable=self.tkw,fg='red').place(x=246,y=59,width=265,height=75)
 
     def tab_button(self):
-        self.photo1 = Image.open('up1.png').resize((50,46))
+        self.photo1 = Image.open(get_path_img()+'up1.png').resize((50,46))
         self.pic1 = ImageTk.PhotoImage(self.photo1)
         self.btn_powset_up = Button(self.layout3,bd=0, bg='white',image=self.pic1,command=lambda:self.increase_powset()).place(x=462,y=43,width=50,height=46)
 
-        self.photo2 = Image.open('down1.png').resize((50,46))
+        self.photo2 = Image.open(get_path_img()+'down1.png').resize((50,46))
         self.pic2 = ImageTk.PhotoImage(self.photo2)
         self.btn_powset_down = Button(self.layout3,bd=0, bg='white',image=self.pic2,command=lambda:self.reduce_powset()).place(x=462,y=98,width=50,height=46)
 
-        self.photo3 = Image.open('up1.png').resize((50,46))
+        self.photo3 = Image.open(get_path_img()+'up1.png').resize((50,46))
         self.pic3 = ImageTk.PhotoImage(self.photo3)
         self.btn_time_up = Button(self.layout3,bd=0,bg='white',image=self.pic3,command=lambda:self.increase_time()).place(x=462,y=232,width=50,height=46)
 
-        self.photo4 = Image.open('down1.png').resize((50,46))
+        self.photo4 = Image.open(get_path_img()+'down1.png').resize((50,46))
         self.pic4 = ImageTk.PhotoImage(self.photo4)
         self.btn_time_down = Button(self.layout3,bd=0,bg='white',image=self.pic4,command=lambda:self.reduce_time()).place(x=462,y=287,width=50,height=46)
 
@@ -241,9 +243,9 @@ class PAGE1:
    
     
     def button_fan(self):
-        a1 = Image.open('fan_on.png').resize((170,170))
+        a1 = Image.open(get_path_img()+'fan_on.png').resize((170,170))
         self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open('fan_off.png').resize((170,170))
+        a2 = Image.open(get_path_img()+'fan_off.png').resize((170,170))
         self.off = ImageTk.PhotoImage(a2)
 
         self.btn_on = Button(self.layout4,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
@@ -311,7 +313,7 @@ class SIGNAL:
         self.layout =  Frame(layout5,bg='white')
         self.layout.place(x=x_offset,y=13, width=28,height=114)
 
-        self.photol = Image.open('lamp.png')
+        self.photol = Image.open(get_path_img()+'lamp.png')
         self.picl = ImageTk.PhotoImage(self.photol)
         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
         self.lb_lamp.place(x=1.5,y=38.4,width=24,height=38)
@@ -329,11 +331,11 @@ class SIGNAL:
     def setonoff(self,val):
         print(val)
         if val == 1:
-            img2 = ImageTk.PhotoImage(Image.open('lamp.png'))
+            img2 = ImageTk.PhotoImage(Image.open(get_path_img()+'lamp.png'))
             self.lb_lamp.configure(image=img2)
             self.lb_lamp.image=img2
         else:
-            img3 = ImageTk.PhotoImage(Image.open('lamp_off.png'))
+            img3 = ImageTk.PhotoImage(Image.open(get_path_img()+'lamp_off.png'))
             self.lb_lamp.configure(image=img3)
             self.lb_lamp.image=img3
             

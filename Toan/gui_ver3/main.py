@@ -5,6 +5,8 @@ from page_1 import *
 from page_2 import *
 from page_3 import *
 from page_4 import *
+
+
 class MAINGUI:
     def __init__(self):
         pass
@@ -105,7 +107,6 @@ class MAINGUI:
         self.button3.config(fg=color2)
 
 
-        
 display = MAINGUI()
 display.create_layout()
 
