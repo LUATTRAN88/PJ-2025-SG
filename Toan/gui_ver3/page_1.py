@@ -11,6 +11,7 @@ class PAGE1:
     def __init__(self):
         self.origin_data = None
         self.is_on = False
+        self.is_switch = False
         self.power_value = 0
         self.time_value = 0
     def create_layout(self,l1):
@@ -80,8 +81,9 @@ class PAGE1:
         
 
 
-            
+           
         self.button_fan()
+        self.switch_onoff() 
  
         secondary_thread = threading.Thread(target = self.loadingdata)
         secondary_thread.start()
@@ -250,18 +252,20 @@ class PAGE1:
         self.lb_freq_cur = Label(self.layout4,bg='white',font=fonl4t,textvariable=self.tempc,fg='black').place(x=282,y=321,width=216,height=39)
 
         # label logo
+        logo = Image.open(get_path_img()+'logo.jpg').resize((170,170))
+        self.piclo = ImageTk.PhotoImage(logo)
         fonlogo = tkFont.Font(family='Helvetica', size=50, weight=tkFont.BOLD )
-        self.label_logo = Label(self.layout4, bg='white',text='LOGO',font=fonlogo,fg='black').place(x=220, y=458,width=270,height=170)
+        self.label_logo = Label(self.layout4, bg='white',text='LOGO',font=fonlogo,fg='black',image=self.piclo).place(x=330, y=458,width=170,height=170)
    
     
     def button_fan(self):
-        a1 = Image.open(get_path_img()+'fan_on.png').resize((170,170))
+        a1 = Image.open(get_path_img()+'fan_on.png').resize((160,160))
         self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open(get_path_img()+'fan_off.png').resize((170,170))
+        a2 = Image.open(get_path_img()+'fan_off.png').resize((160,160))
         self.off = ImageTk.PhotoImage(a2)
 
         self.btn_on = Button(self.layout4,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
-        self.btn_on.place(x=30,y=460,width=170,height=170)
+        self.btn_on.place(x=20,y=460,width=160,height=160)
 
         if self.is_on:
             self.btn_on.config(image=self.off)
@@ -269,6 +273,23 @@ class PAGE1:
         else:
             self.btn_on.config(image=self.on)
             self.is_on = True
+            
+     
+    def switch_onoff(self):
+        s1 = Image.open(get_path_img()+'switch_on.png').resize((140,70))
+        self.son = ImageTk.PhotoImage(s1)
+        s2 = Image.open(get_path_img()+'switch_off.png').resize((140,70))
+        self.soff = ImageTk.PhotoImage(s2)
+
+        self.btn_switch = Button(self.layout4,image=self.son,bg='white', bd=0,command=lambda:self.switch_onoff())
+        self.btn_switch.place(x=192,y=493,width=138,height=90)
+
+        if self.is_switch:
+            self.btn_switch.config(image=self.soff)
+            self.is_switch = False 
+        else:
+            self.btn_switch.config(image=self.son)
+            self.is_switch = True
             
     def loadingdata(self):
         while True:
