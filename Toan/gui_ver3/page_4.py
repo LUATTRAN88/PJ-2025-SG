@@ -6,7 +6,7 @@ from extend import *
 class PAGE4:
     def __init__(self):
         self.is_on = False
-        self.equation = 1515
+        self.mk = '1515'
     def create_layout(self,l4):
         self.layout = Frame(l4,bg='white')
         self.layout.place(x=0,y=64,width=1024,height=704)
@@ -30,14 +30,18 @@ class PAGE4:
                 signal.set_relay_value('20.0')
 
             self.signal_objects.append(signal)
-        # self.display_cal = CALCULATOR()
-        # self.display_cal.create_layout(self.layout)
-        
         
         self.display_cal = KEYBOARD()
         self.display_cal.create_layout(self.layout)
-        self.display_cal.btn_enter = Button(self.display_cal.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.event_page5()).place(x=249, y=207,width=82, height=136.5)
-        self.password()
+        self.display_cal.btn_enter.config(command=lambda:self.password())
+        
+    def password(self):
+        self.password_val = self.display_cal.equation.get()
+        if self.password_val == self.mk:
+            self.event_page5()
+        else:
+            self.display_cal.equation.set('Error')
+           
     def event_page5(self):
         display5 = PAGE5()
         display5.create_layout(self.layout)
@@ -115,7 +119,7 @@ class KEYBOARD:
         self.b1=Button(self.layout11,font=('Arial Bold',20),text='Tab',relief='flat',bg='#7AC5CD',command=lambda:self.show('Tab')).place(x=0, y=0,width=82, height=68)
         self.b2=Button(self.layout11,font=('Arial Bold',25),text='/',relief='flat',bg='#7AC5CD',command=lambda:self.show('/')).place(x=82.5, y=0,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='*',relief='flat',bg='#7AC5CD',command=lambda:self.show('*')).place(x=166, y=0,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',20),text='BS',relief='flat',bg='#7AC5CD',command=lambda:self.show('BS')).place(x=248.5, y=0,width=82, height=68)
+        Button(self.layout11,font=('Arial Bold',20),text='C',relief='flat',bg='#7AC5CD',command=lambda:self.clear()).place(x=248.5, y=0,width=82, height=68)
 
         Button(self.layout11,font=('Arial Bold',25),text='7',relief='flat',bg='#7AC5CD',command=lambda:self.show('7')).place(x=0, y=69,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='8',relief='flat',bg='#7AC5CD',command=lambda:self.show('8')).place(x=82.5, y=69,width=82, height=68)
@@ -130,21 +134,21 @@ class KEYBOARD:
         Button(self.layout11,font=('Arial Bold',25),text='1',relief='flat',bg='#7AC5CD',command=lambda:self.show('1')).place(x=0, y=207,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='2',relief='flat',bg='#7AC5CD',command=lambda:self.show('2')).place(x=82.5, y=207,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='3',relief='flat',bg='#7AC5CD',command=lambda:self.show('3')).place(x=166, y=207,width=82, height=68)
-        self.btn_enter=Button(self.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.show('')).place(x=249, y=207,width=82, height=136.5)
-
+        self.btn_enter=Button(self.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.show(''))
+        self.btn_enter.place(x=249, y=207,width=82, height=136.5)
         Button(self.layout11,font=('Arial Bold',25),text='0',relief='flat',bg='#7AC5CD',command=lambda:self.show('0')).place(x=0, y=276,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='00',relief='flat',bg='#7AC5CD',command=lambda:self.show('00')).place(x=82.5, y=276,width=82, height=68)
         Button(self.layout11,font=('Arial Bold',25),text='.',relief='flat',bg='#7AC5CD',command=lambda:self.show('.')).place(x=166, y=276,width=82, height=68)
 
 
-    def password(self):
-        
-        if self.entry_value == 1515:
-             self.display_cal.btn_enter = Button(self.display_cal.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.event_page5()).place(x=249, y=207,width=82, height=136.5)
+    # def password(self):
+    #     self.mk = self.equation.get()
+    #     if self.mk == '1515':
+    #        self.btn_enter.config(command=lambda:self.ev)
             
-        else:    
-            self.entry_value=''
-        Entry(self.layout10,bg='#F0FFFF',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
+        # else:    
+        #     self.entry_value=''
+        # Entry(self.layout10,bg='#F0FFFF',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
             
     
 
