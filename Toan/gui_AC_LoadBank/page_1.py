@@ -28,20 +28,20 @@ class PAGE1:
         self.lay_power_set = Frame(self.layout1,bg='red')
         self.lay_power_set.place(x=0,y=0,width=512,height=180)
         
-        self.lay_timer_set = Frame(self.layout1,bg='purple')
+        self.lay_timer_set = Frame(self.layout1,bg='white')
         self.lay_timer_set.place(x=0,y=180,width=512,height=180)
         
         self.lay_button_load = Frame(self.layout1,bg='grey')
         self.lay_button_load.place(x=0,y=360,width=512,height=180)
         
-        self.lay_power = Frame(self.layout2,bg='orange')
+        self.lay_power = Frame(self.layout2,bg='white')
         self.lay_power.place(x=0,y=0,width=512,height=180)
         
-        self.lay_parameter = Frame(self.layout2,bg='grey')
+        self.lay_parameter = Frame(self.layout2,bg='white')
         self.lay_parameter.place(x=0,y=180,width=512,height=180)
         
-        self.lay_logo_switch = Frame(self.layout2,bg='red')
-        self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
+        # self.lay_logo_switch = Frame(self.layout2,bg='white')
+        # self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
         
         
 
@@ -51,6 +51,7 @@ class PAGE1:
         self.label_powtime()
         self.tab_button()
         self.label_power()
+        self.parameter()
         
         self.signal_object = []
         for i in range(16):
@@ -59,11 +60,11 @@ class PAGE1:
             self.display1.create_layout(self.lay_button_load,x=x_spacing,text='RL' + str(i+1))
             self.signal_object.append(self.display1)
             if i==12:
-                self.display1.text_relay_val.set('FAN')
+                self.display1.text_relay_val.set('Fan')
             elif i==13:
-                self.display1.text_relay_val.set('ALAR')
+                self.display1.text_relay_val.set('Alar')
             elif i==14 or i==15:
-                self.display1.text_relay_val.set('SPAR')
+                self.display1.text_relay_val.set('Spar')
             elif i==11:
                 self.display1.text_relay_val.set('1.2')
             elif i==10 or i==9:
@@ -84,12 +85,98 @@ class PAGE1:
         self.lb_lamp_run = Label(self.lay_power,bg='white',image=self.piclamp).place(x=460,y=2,width=40,height=40)
         
         # self.tempcc = StringVar()
-        self.lb_temp = Label(self.lay_power,bg='red',font=('arial bold',14),text='35.2.C',fg='black').place(x=420,y=36,width=80,height=22)            
+        self.lb_temp = Label(self.lay_power,bg='red',font=('arial',13),text='35.2').place(x=423,y=36,width=46,height=22)  
+        self.lb_temp_c = Label(self.lay_power,bg='green',font=('arial',13),text='ºC').place(x=468,y=36,width=23,height=22) 
         
-       
-        self.lb_power = Label(self.lay_power,bg='green',font=('arial bold',30),text='POWER',fg='red').place(x=24,y=70,width=220,height=75)
+        self.lb_hour = Label(self.lay_power,bg='green',font=('arial',15),text='22').place(x=135,y=0,width=29,height=40)  
+        self.lb_2c = Label(self.lay_power,bg='red',font=('arial',15),text=':').place(x=161,y=0,width=5,height=40)  
+        self.lb_mins = Label(self.lay_power,bg='blue',font=('arial',15),text='44').place(x=166,y=0,width=29,height=40)  
+        
+        self.lb_day = Label(self.lay_power,bg='red',font=('arial',15),text='20').place(x=220,y=0,width=26,height=40)     
+        self.lb_x1 = Label(self.lay_power,bg='green',font=('arial',15),text='/').place(x=247,y=0,width=10,height=40)  
+        self.lb_month = Label(self.lay_power,bg='red',font=('arial',15),text='01').place(x=257,y=0,width=26,height=40) 
+        self.lb_x2 = Label(self.lay_power,bg='green',font=('arial',15),text='/').place(x=282,y=0,width=10,height=40) 
+        self.lb_year = Label(self.lay_power,bg='red',font=('arial',15),text='2025').place(x=292,y=0,width=50,height=40) 
+        
+        self.lb_power = Label(self.lay_power,bg='green',font=('arial bold',30),text='POWER',fg='red').place(x=25,y=75,width=150,height=30)
         # self.tkw = StringVar()
-        self.lb_power_val = Label(self.lay_power,bg='green',font=('arial bold',49),text='58.1',fg='red').place(x=246,y=70,width=265,height=75)
+        self.lb_power_val = Label(self.lay_power,bg='green',font=('arial bold',49),text='58.1',fg='red').place(x=190,y=65,width=165,height=48)
+        self.lb_power_kw = Label(self.lay_power,bg='green',font=('arial bold',49),text='KW',fg='red').place(x=370,y=65,width=110,height=48)
+        
+    def parameter(self):
+        # hàng line
+        self.lb_line1n = Label(self.lay_parameter,bg='black').place(x=0, y=0,width=512,height=1)
+        self.lb_line2n = Label(self.lay_parameter,bg='black').place(x=0, y=36,width=512,height=1)
+        self.lb_line3n = Label(self.lay_parameter,bg='black').place(x=0, y=72,width=512,height=1)
+        self.lb_line4n = Label(self.lay_parameter,bg='black').place(x=0, y=108,width=512,height=1)
+        self.lb_line5n = Label(self.lay_parameter,bg='black').place(x=0, y=144,width=512,height=1)
+        self.lb_line6n = Label(self.lay_parameter,bg='black').place(x=0, y=179,width=512,height=1)  
+        
+        self.lb_line1d = Label(self.lay_parameter,bg='black').place(x=0, y=0,width=1,height=180)     
+        self.lb_line2d = Label(self.lay_parameter,bg='black').place(x=85, y=0,width=1,height=180)  
+        self.lb_line3d = Label(self.lay_parameter,bg='black').place(x=170, y=0,width=1,height=180)
+        self.lb_line4d = Label(self.lay_parameter,bg='black').place(x=255, y=0,width=1,height=180)
+        self.lb_line5d = Label(self.lay_parameter,bg='black').place(x=340, y=0,width=1,height=180)
+        self.lb_line6d = Label(self.lay_parameter,bg='black').place(x=425, y=0,width=1,height=180)
+        self.lb_line7d = Label(self.lay_parameter,bg='black').place(x=511, y=0,width=1,height=180)
+        
+        
+         # hàng đàu tiên, hàng đơn vị
+        self.lb_none1 = Label(self.lay_parameter,bg='white').place(x=1, y=1,width=83,height=34)
+        self.lb_pow = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='(KW)',fg='black').place(x=86, y=1,width=83,height=34)
+        self.lb_ln_v = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L-N (V)',fg='black').place(x=171, y=1,width=83,height=34)
+        self.lb_A = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='(A)',fg='black').place(x=256, y=1,width=83,height=34)
+        self.lb_none5 = Label(self.lay_parameter,bg='white').place(x=341, y=1,width=83,height=34)
+        self.lb_ll_V = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L-L (V)',fg='black').place(x=426, y=1,width=84,height=34)
+        
+        # hàng L1
+        self.lb_L1 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L1',fg='red').place(x=1,y=37,width=83,height=34)
+        self.lb_L1_none5 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L1 - L2',fg='red').place(x=341,y=37,width=83,height=34)
+
+        self.kw1 = StringVar()
+        self.lb_L1_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw1,fg='red').place(x=86,y=37,width=83,height=34)
+        self.vln1 = StringVar()
+        self.lb_L1_Ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln1,fg='red').place(x=171,y=37,width=83,height=34)
+        self.a1 = StringVar()
+        self.lb_L1_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a1,fg='red').place(x=256,y=37,width=83,height=34)
+        self.v12 = StringVar()
+        self.lb_L1_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v12,fg='red').place(x=426,y=37,width=84,height=34)
+        
+         # hàng L2
+        self.lb_L2 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L2',fg='orange').place(x=1,y=73,width=83,height=34)
+        self.lb_L2_none5 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L2 - L3',fg='orange').place(x=341,y=73,width=83,height=34)
+
+        self.kw2 = StringVar()
+        self.lb_L2_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw2,fg='orange').place(x=86,y=73,width=83,height=34)
+        self.vln2 = StringVar()
+        self.lb_L2_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln2,fg='orange').place(x=171,y=73,width=83,height=34)
+        self.a2 = StringVar()
+        self.lb_L2_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a2,fg='orange').place(x=256,y=73,width=83,height=34)
+        self.v23 = StringVar()
+        self.lb_L2_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v23,fg='orange').place(x=426,y=73,width=84,height=34)
+
+        # hàng L3  
+        self.lb_L3 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L3',fg='blue').place(x=1,y=109,width=83,height=34)
+        self.lb_L3_none5 = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L3 - L1',fg='blue').place(x=341,y=109,width=83,height=34)
+
+        self.kw3 = StringVar()
+        self.lb_L3_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw3,fg='blue').place(x=86,y=109,width=83,height=34)
+        self.vln3 = StringVar()
+        self.lb_L3_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln3,fg='blue').place(x=171,y=109,width=83,height=34)
+        self.a3 = StringVar()
+        self.lb_L3_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a3,fg='blue').place(x=256,y=109,width=83,height=34)
+        self.v31 = StringVar()
+        self.lb_L3_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v31,fg='blue').place(x=426,y=109,width=84,height=34)
+        
+        # hàng FRE.
+        self.lb_freq = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='FRE.',fg='black').place(x=1,y=145,width=83,height=33)
+        self.freqq = StringVar()
+        self.lb_fre_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.freqq,fg='black').place(x=86,y=145,width=83,height=33)
+        self.lb_fre_ln_v = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.LN',fg='black').place(x=171,y=145,width=83,height=33)
+        self.lb_fre_A = Label(self.lay_parameter,bg='white',font=('arial',15),text='232.4',fg='black').place(x=256,y=145,width=83,height=33)
+        self.lb_fre_none5 = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.PF',fg='black').place(x=341,y=145,width=83,height=33)
+        self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),text='0.99',fg='black').place(x=426,y=145,width=84,height=34)
+        
         
     def label_powtime(self):
         self.lb_powset = Label(self.lay_power_set,bg='yellow',font=('arial bold',30),text='POWER\n SET',fg='#2E8B57').place(x=15,y=48,width=150,height=75)
@@ -106,16 +193,7 @@ class PAGE1:
         self.lb_timer_mins = Label(self.lay_timer_set,bg='red',font=('arial bold',45),text='mins',fg='#8B2252').place(x=265,y=69,width=135,height=45)
         self.lb_timer_val = Label(self.lay_timer_set,bg='green',font=('arial bold',45),text='0',fg='#8B2252').place(x=150,y=69,width=100,height=45)
 
-        
-        
-
-        
-
-        
-        # self.lb_power = Label(self.layout2,bg='white',font=('arial bold',48),text='POWER',fg='red').place(x=24,y=59,width=220,height=75)
-        # self.tkw = StringVar()
-        # self.lb_power_val = Label(self.layout2,bg='white',font=('arial bold',48),textvariable=self.tkw,fg='red').place(x=246,y=59,width=265,height=75)
-
+      
     def tab_button(self):
         self.up = Image.open(get_path_img()+'up.png').resize((36,34))
         self.down = Image.open(get_path_img()+'down.png').resize((36,34))
@@ -162,7 +240,7 @@ class SIGNAL:
         self.layout =  Frame(lay_button_load,bg='white')
         self.layout.place(x=x+2,y=124, width=28,height=46)
 
-        self.photol = Image.open(get_path_img()+'lamp.png').resize((30,28))
+        self.photol = Image.open(get_path_img()+'lamp.png').resize((28,28))
         self.picl = ImageTk.PhotoImage(self.photol)
         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
         self.lb_lamp.place(x=0,y=12.5,width=28,height=23)
