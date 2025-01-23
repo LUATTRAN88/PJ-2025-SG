@@ -1,6 +1,7 @@
 from tkinter import *
 from page_1 import *
 from page_2 import *
+from page_3 import *
 
 class MAINGUI:
     def __init__(self):
@@ -22,12 +23,16 @@ class MAINGUI:
         
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
+        self.btn_setting.bind('<Button-1>', self.event_page3)
         
     def event_page1(self,event):
         self.display1 = PAGE1()
         self.display1.create_layout(self.layout)
     def event_page2(self,event):
         display2 = PAGE2()
+        display2.create_layout(self.layout)
+    def event_page3(self,event):
+        display2 = PAGE3()
         display2.create_layout(self.layout)
 
     def button_main(self):
