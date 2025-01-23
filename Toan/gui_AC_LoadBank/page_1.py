@@ -74,25 +74,27 @@ class PAGE1:
       
       
     def label_power(self):
-        self.lb_running = Label(self.lay_power,bg='white',font=('arial bold',15),text='Running',fg='black').place(x=370,y=0,width=100,height=40)
+        self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
+        self.picrun = ImageTk.PhotoImage(self.run_on)
+        self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=2,width=101,height=40)
        
-        self.lamp = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        self.piclamp = ImageTk.PhotoImage(self.lamp)
-        self.lb_lamp_run = Label(self.lay_power,bg='white',image=self.piclamp).place(x=460,y=0,width=40,height=40)
+        # self.lamp = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
+        # self.piclamp = ImageTk.PhotoImage(self.lamp)
+        # self.lb_lamp_run = Label(self.lay_power,bg='white',image=self.piclamp).place(x=460,y=0,width=40,height=40)
         
         self.tempcc = StringVar()
         self.lb_temp = Label(self.lay_power,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=423,y=36,width=46,height=22)  
         self.lb_temp_c = Label(self.lay_power,bg='white',font=('arial',13),text='ºC').place(x=468,y=36,width=23,height=22) 
         
-        self.lb_hour = Label(self.lay_power,bg='white',font=('arial',15),text='22').place(x=135,y=0,width=29,height=40)  
-        self.lb_2c = Label(self.lay_power,bg='white',font=('arial',15),text=':').place(x=161,y=0,width=5,height=40)  
-        self.lb_mins = Label(self.lay_power,bg='white',font=('arial',15),text='44').place(x=166,y=0,width=29,height=40)  
+        self.lb_hour = Label(self.lay_power,bg='white',font=('arial',15),text='22').place(x=195,y=0,width=29,height=40)  
+        self.lb_2c = Label(self.lay_power,bg='white',font=('arial',15),text=':').place(x=221,y=0,width=5,height=40)  
+        self.lb_mins = Label(self.lay_power,bg='white',font=('arial',15),text='44').place(x=226,y=0,width=29,height=40)  
         
-        self.lb_day = Label(self.lay_power,bg='white',font=('arial',15),text='20').place(x=220,y=0,width=26,height=40)     
-        self.lb_x1 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=247,y=0,width=10,height=40)  
-        self.lb_month = Label(self.lay_power,bg='white',font=('arial',15),text='01').place(x=257,y=0,width=26,height=40) 
-        self.lb_x2 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=282,y=0,width=10,height=40) 
-        self.lb_year = Label(self.lay_power,bg='white',font=('arial',15),text='2025').place(x=292,y=0,width=50,height=40) 
+        self.lb_day = Label(self.lay_power,bg='white',font=('arial',15),text='20').place(x=267,y=0,width=26,height=40)     
+        self.lb_x1 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=294,y=0,width=7,height=40)  
+        self.lb_month = Label(self.lay_power,bg='white',font=('arial',15),text='01').place(x=302,y=0,width=23,height=40) 
+        self.lb_x2 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=325,y=0,width=7,height=40) 
+        self.lb_year = Label(self.lay_power,bg='white',font=('arial',15),text='2025').place(x=332,y=0,width=50,height=40) 
         
         self.lb_power = Label(self.lay_power,bg='white',font=('arial bold',30),text='POWER',fg='red').place(x=25,y=75,width=150,height=30)
         self.tkw = StringVar()
