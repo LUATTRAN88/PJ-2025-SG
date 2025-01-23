@@ -27,7 +27,7 @@ class MAINGUI:
         
     def event_page1(self,event):
         self.display1 = PAGE1()
-        self.display1.create_layout(self.layout)
+        self.display1.create_layout(self.layout) # chay chuong trinh tui chup hinh hoi
     def event_page2(self,event):
         display2 = PAGE2()
         display2.create_layout(self.layout)

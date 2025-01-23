@@ -54,24 +54,24 @@ class PAGE2:
         for i in range(16):
             x_spacing= i * 32
             self.display1 = SIGNAL()
-            self.display1.create_layout(self.lay_button_load,x=x_spacing,text='RL' + str(i+1))
+            self.display1.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
             self.signal_object.append(self.display1)
             if i==12:
-                self.display1.text_relay_val.set('Fan')
+                self.display1.text_relay.set('Fan')
             elif i==13:
-                self.display1.text_relay_val.set('Alar')
+                self.display1.text_relay.set('Alar')
             elif i==14 or i==15:
-                self.display1.text_relay_val.set('Spar')
+                self.display1.text_relay.set('Spar')
             elif i==11:
-                self.display1.text_relay_val.set('1.2')
+                self.display1.text_relay.set('1.2')
             elif i==10 or i==9:
-                self.display1.text_relay_val.set('2.2')
+                self.display1.text_relay.set('2.2')
             elif i==8 or i==7 or i==6:
-                self.display1.text_relay_val.set('5.2')
+                self.display1.text_relay.set('5.2')
             elif i==5 or i==4 or i==3:
-                self.display1.text_relay_val.set('10.2')   
+                self.display1.text_relay.set('10.2')   
             else:
-                self.display1.text_relay_val.set('20.2')
+                self.display1.text_relay.set('20.2')
                 
         self.relay_object = []
         for i in range(12):
@@ -246,23 +246,10 @@ class PAGE2:
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=375,y=145,width=45,height=20)
 
 
-        # self.lb_timer = Label(self.lay_timer_set,bg='white',font=('arial bold',30),text='TIMER\n SET',fg='orange').place(x=15,y=48,width=120,height=76)
-        # self.lb_timer_mins = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='mins',fg='orange').place(x=265,y=69,width=135,height=45)
-        # self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=150,y=69,width=100,height=45)
-
+      
       
     def tab_button(self):
-        # self.up = Image.open(get_path_img()+'up.png').resize((36,34))
-        # self.down = Image.open(get_path_img()+'down.png').resize((36,34))
-        # self.picup = ImageTk.PhotoImage(self.up)
-        # self.picdown = ImageTk.PhotoImage(self.down)
-        
-        # self.btn_powset_up = Button(self.lay_power_set,bd=3, bg='#191970',image=self.picup,command=lambda:self.increase_power_set()).place(x=412,y=18,width=84,height=55)
-        # self.btn_powset_down = Button(self.lay_power_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_power_set()).place(x=412,y=108,width=84,height=55)
-
-        # self.btn_time_up = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picup,command=lambda:self.increase_timer_set()).place(x=412,y=18,width=84,height=55)
-        # self.btn_time_down = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_timer_set()).place(x=412,y=108,width=84,height=55)
-
+       
         
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
@@ -273,41 +260,25 @@ class PAGE2:
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
         self.btn_logging.place(x=21,y=66,width=150,height=48)
         
-    # def increase_power_set(self):
-    #     if self.power_value < 150:
-    #         self.power_value += 1
-    #         self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
-    # def reduce_power_set(self):
-    #     if self.power_value > 0:
-    #         self.power_value -= 1
-    #         self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)        
-    # def increase_timer_set(self):
-    #     if self.time_value < 60:
-    #         self.time_value +=1
-    #         self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)        
-    # def reduce_timer_set(self):
-    #     if self.time_value > 0:
-    #         self.time_value -=1
-    #         self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
-        
+   
 # 16 relay
-class SIGNAL:
-    def __init__(self):
-        pass
-    def create_layout(self,lay_button_load,x,text):
-        self.layout =  Frame(lay_button_load,bg='white')
-        self.layout.place(x=x+2,y=124, width=28,height=46)
+# class SIGNAL:
+#     def __init__(self):
+#         pass
+#     def create_layout(self,lay_button_load,x,y,text):
+#         self.layout =  Frame(lay_button_load,bg='white')
+#         self.layout.place(x=x+2,y=124, width=28,height=46)
 
-        self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        self.picl = ImageTk.PhotoImage(self.photol)
-        self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
-        self.lb_lamp.place(x=0,y=12,width=28,height=23)
+#         self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
+#         self.picl = ImageTk.PhotoImage(self.photol)
+#         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
+#         self.lb_lamp.place(x=0,y=12,width=28,height=23)
         
         
-        self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
+#         self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
 
-        self.text_relay_val = StringVar()
-        self.lb_relay_val = Label(self.layout, bg='white',font=('arial bold',8),fg='black',textvariable=self.text_relay_val).place(x=0,y=36,width=28,height=11)
+#         self.text_relay_val = StringVar()
+#         self.lb_relay_val = Label(self.layout, bg='white',font=('arial bold',8),fg='black',textvariable=self.text_relay_val).place(x=0,y=36,width=28,height=11)
 
 # 12 relay
 class RELAY_POWER:

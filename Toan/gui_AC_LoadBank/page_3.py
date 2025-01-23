@@ -43,17 +43,39 @@ class PAGE3:
         self.button_test()
         self.logo()
         
-        # self.lay_button_load = Frame(self.layout1,bg='pink')
-        # self.lay_button_load.place(x=0,y=360,width=512,height=180)
+       
+        # self.display_relay = SIGNAL()
+        # self.display_relay.create_layout(self.lay_button_relay)
         
-        # self.lay_power = Frame(self.layout2,bg='white')
-        # self.lay_power.place(x=0,y=0,width=512,height=180)
+        self.signal_list = []
+        for i in range(16):
+            x_space = i * 32
+            
+            display_relay = SIGNAL()
+            display_relay.create_layout(self.lay_button_relay,x=x_space,y=106,text ='RL'+str(i+1))
+            self.signal_list.append(display_relay)
+            
+            if i==12:
+                display_relay.text_relay.set('Fan')
+            elif i==13:
+                display_relay.text_relay.set('Alar')
+            elif i==14:
+                display_relay.text_relay.set('Spar')
+            elif i==15:
+                display_relay.text_relay.set('Spar')
+            elif i==3 or i==4 or i==5:
+                display_relay.text_relay.set('10.2')
+            elif i==6 or i==7 or i==8:
+                display_relay.text_relay.set('5.2')
+            elif i==9 or i==10:
+                display_relay.text_relay.set('2.2')
+            elif i==11:
+                display_relay.text_relay.set('1.2')
+            else:
+                display_relay.text_relay.set('20.2')
+                
+                
         
-        # self.lay_parameter = Frame(self.layout2,bg='white')
-        # self.lay_parameter.place(x=0,y=180,width=512,height=180)
-        
-        # self.lay_logo_switch = Frame(self.layout2,bg='red')
-        # self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
         
         
         
@@ -150,3 +172,24 @@ class PAGE3:
         self.lb_fan_control = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='FAN CONTROL').place(x=29,y=132,width=110,height=15)
         self.lb_test_mode = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='TEST MODE').place(x=185,y=132,width=110,height=15)
         self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=308,y=132,width=198,height=15)
+        
+        
+        
+        
+# class SIGNAL:
+#     def __init__(self):
+#         pass
+#     def create_layout(self,lay_button_relay,x,text):
+#         self.layout =  Frame(lay_button_relay,bg='white')
+#         self.layout.place(x=x+1,y=100, width=28,height=46)
+
+#         self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
+#         self.picl = ImageTk.PhotoImage(self.photol)
+#         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
+#         self.lb_lamp.place(x=0,y=12,width=28,height=23)
+        
+        
+#         self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
+
+#         self.text_relay = StringVar()
+#         self.lb_relay_val = Label(self.layout, bg='white',font=('arial bold',8),fg='black',textvariable=self.text_relay).place(x=0,y=36,width=28,height=11)
