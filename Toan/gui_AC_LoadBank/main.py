@@ -26,8 +26,8 @@ class MAINGUI:
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
-        # self.btn_service.bind('<Button-1>', self.event_page4)
-        self.btn_service.bind('<Button-1>', self.event_page5)
+        self.btn_service.bind('<Button-1>', self.event_page4)
+        # self.btn_service.bind('<Button-1>', self.event_page5)
         
     def event_page1(self,event):
         self.display1 = PAGE1()
@@ -38,9 +38,9 @@ class MAINGUI:
     def event_page3(self,event):
         display3 = PAGE3()
         display3.create_layout(self.layout)
-    # def event_page4(self,event):
-    #     display4 = PAGE4()
-    #     display4.create_layout(self.layout)
+    def event_page4(self,event):
+        display4 = PAGE4()
+        display4.create_layout(self.layout)
     def event_page5(self,event):
         display5 = PAGE5()
         display5.create_layout(self.layout)

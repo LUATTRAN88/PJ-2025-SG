@@ -108,13 +108,13 @@ class PAGE3:
         
     def alarm_setting(self):
         self.lb_alarm_setting = Label(self.board,bg='white',font=('arial bold',20),text='ALARM SETTING:',anchor="w",fg='orange',padx=10).place(x=0,y=1,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Power limit (kW):',anchor="w",fg='orange',padx=10).place(x=0,y=55,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Voltage L-N limit (V):',anchor="w",fg='orange',padx=10).place(x=0,y=109,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Temperature limit (°C):',anchor="w",fg='orange',padx=10).place(x=0,y=163,width=383,height=52) 
+        self.lb_power = Label(self.board,bg='white',font=('arial',16),text='Power limit (kW):',anchor="w",fg='orange',padx=10).place(x=0,y=55,width=383,height=52)
+        self.lb_voltage = Label(self.board,bg='white',font=('arial',16),text='Voltage L-N limit (V):',anchor="w",fg='orange',padx=10).place(x=0,y=109,width=383,height=52)
+        self.lb_temp = Label(self.board,bg='white',font=('arial',16),text='Temperature limit (°C):',anchor="w",fg='orange',padx=10).place(x=0,y=163,width=383,height=52) 
         
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=55,width=126,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='240',fg='orange').place(x=385,y=109,width=126,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=163,width=126,height=52)
+        self.power_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=55,width=126,height=52)
+        self.voltage_value = Label(self.board,bg='white',font=('arial',16),text='240').place(x=385,y=109,width=126,height=52)
+        self.temp_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=163,width=126,height=52)
         
     def tab_button(self):
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white')
