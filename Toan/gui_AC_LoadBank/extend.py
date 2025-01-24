@@ -35,9 +35,9 @@ class SIGNAL:
 
 
 
-def timeset(ly):
-    l1=Label(ly,font=('arial', 15),bg='white')
-    l1.place(x=180,y=7,width=210,height=20)
-    time_string = strftime('%H:%M:%S %p %x') # time format 
-    l1.config(text=time_string)
-    l1.after(1000,timeset) # time delay of 1000 milliseconds 
+# def timeset(ly):
+#     l1=Label(ly,font=('arial', 15),bg='white')
+#     l1.place(x=180,y=7,width=210,height=20)
+#     time_string = strftime('%H:%M:%S %p %x') # time format 
+#     l1.config(text=time_string)
+#     l1.after(1000,timeset) # time delay of 1000 milliseconds 

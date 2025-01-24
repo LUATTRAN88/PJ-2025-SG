@@ -49,7 +49,7 @@ class PAGE1:
         self.button_test()
         self.logo()
         self.line()
-        timeset(self.lay_power);
+        self.timeset()
         
         self.signal_object = []
         for i in range(16):
@@ -75,12 +75,12 @@ class PAGE1:
                 self.display1.text_relay.set('20.2')
       
       
-    # def timeset(self):
-    #     l1=Label(self.lay_power,font=('arial', 15),bg='white')
-    #     l1.place(x=180,y=7,width=210,height=20)
-    #     time_string = strftime('%H:%M:%S %p %x') # time format 
-    #     l1.config(text=time_string)
-    #     l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+    def timeset(self):
+        l1=Label(self.lay_power,font=('arial', 15),bg='white')
+        l1.place(x=180,y=7,width=210,height=20)
+        time_string = strftime('%H:%M:%S %p %x') # time format 
+        l1.config(text=time_string)
+        l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
         
         
 

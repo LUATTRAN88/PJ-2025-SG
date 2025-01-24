@@ -2,6 +2,7 @@ from tkinter import *
 from page_1 import *
 from page_2 import *
 from page_3 import *
+from page_4 import *
 
 class MAINGUI:
     def __init__(self):
@@ -24,6 +25,7 @@ class MAINGUI:
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
+        self.btn_service.bind('<Button-1>', self.event_page4)
         
     def event_page1(self,event):
         self.display1 = PAGE1()
@@ -32,8 +34,11 @@ class MAINGUI:
         display2 = PAGE2()
         display2.create_layout(self.layout)
     def event_page3(self,event):
-        display2 = PAGE3()
-        display2.create_layout(self.layout)
+        display3 = PAGE3()
+        display3.create_layout(self.layout)
+    def event_page4(self,event):
+        display4 = PAGE4()
+        display4.create_layout(self.layout)
 
     def button_main(self):
         self.btn_auto_test = Button(self.layout_btn,bd=3,fg='#7D7D7D', bg='white',font=('Arial Bold',20),text='AUTO TEST',command=lambda:self.btn_light_auto())
