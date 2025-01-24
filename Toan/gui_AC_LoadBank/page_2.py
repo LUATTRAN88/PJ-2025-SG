@@ -82,18 +82,12 @@ class PAGE2:
             self.relay_signal = RELAY_POWER()
             self.relay_signal.create_layout(self.lay_timer_set, x=x_space,y=y_space,text = 'RL'+ str(i+1))
             self.relay_object.append(self.relay_signal)
-            
-            
-      
+             
       
     def label_power(self):
         self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
         self.picrun = ImageTk.PhotoImage(self.run_on)
         self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
-       
-        # self.lamp = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        # self.piclamp = ImageTk.PhotoImage(self.lamp)
-        # self.lb_lamp_run = Label(self.lay_power,bg='white',image=self.piclamp).place(x=460,y=0,width=40,height=40)
         
         self.tempcc = StringVar()
         self.lb_temp = Label(self.lay_power,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=423,y=33,width=46,height=22)  
@@ -136,8 +130,7 @@ class PAGE2:
         self.lb_line5d = Label(self.lay_parameter,bg='black').place(x=340, y=0,width=1,height=180)
         self.lb_line6d = Label(self.lay_parameter,bg='black').place(x=425, y=0,width=1,height=180)
         self.lb_line7d = Label(self.lay_parameter,bg='black').place(x=511, y=0,width=1,height=180)
-        
-        
+         
          # hàng đàu tiên, hàng đơn vị
         self.lb_none1 = Label(self.lay_parameter,bg='white').place(x=1, y=1,width=83,height=34)
         self.lb_pow = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='(KW)',fg='black').place(x=86, y=1,width=83,height=34)
@@ -244,13 +237,8 @@ class PAGE2:
         self.lb_available = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='AVAILABLE POWER').place(x=85,y=145,width=197,height=20)
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='99.8').place(x=305,y=145,width=65,height=20)
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=375,y=145,width=45,height=20)
-
-
-      
-      
-    def tab_button(self):
-       
-        
+ 
+    def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
         self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white')
@@ -260,26 +248,6 @@ class PAGE2:
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
         self.btn_logging.place(x=21,y=66,width=150,height=48)
         
-   
-# 16 relay
-# class SIGNAL:
-#     def __init__(self):
-#         pass
-#     def create_layout(self,lay_button_load,x,y,text):
-#         self.layout =  Frame(lay_button_load,bg='white')
-#         self.layout.place(x=x+2,y=124, width=28,height=46)
-
-#         self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-#         self.picl = ImageTk.PhotoImage(self.photol)
-#         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
-#         self.lb_lamp.place(x=0,y=12,width=28,height=23)
-        
-        
-#         self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
-
-#         self.text_relay_val = StringVar()
-#         self.lb_relay_val = Label(self.layout, bg='white',font=('arial bold',8),fg='black',textvariable=self.text_relay_val).place(x=0,y=36,width=28,height=11)
-
 # 12 relay
 class RELAY_POWER:
     def __init__(self):
@@ -288,7 +256,6 @@ class RELAY_POWER:
         self.layout = Frame(lay_timer_set,bg='white')
         self.layout.place(x=x+48,y=y+8,width=48,height=66)
 
-        
         self.lb_relay1 = Label(self.layout,bg='white',font=('arial',12),text=text).place(x=0,y=0,width=55,height=14)
         
         self.lamp_signal_relay()

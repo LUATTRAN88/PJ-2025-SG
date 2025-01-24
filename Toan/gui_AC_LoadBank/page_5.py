@@ -8,7 +8,7 @@ from PIL import ImageTk, Image
 # import json
 from extend import *
 
-class PAGE3:
+class PAGE5:
     def __init__(self):
         self.origin_data = None
         self.is_on = False
@@ -37,7 +37,7 @@ class PAGE3:
         
         self.label_run_temp()
         self.line()
-        self.alarm_setting()
+        self.r_emer_setting()
         self.tab_button()
         self.button_fan()
         self.button_test()
@@ -100,21 +100,28 @@ class PAGE3:
         self.line_6n = Label(self.board,bg='black').place(x=0,y=270,width=1024,height=1)
         self.line_7n = Label(self.board,bg='black').place(x=0,y=323,width=1024,height=1)
         
-        self.line_1d = Label(self.board,bg='black').place(x=384,y=54,width=1,height=270)
-        self.line_2d = Label(self.board,bg='black').place(x=512,y=0,width=1,height=324)
-        self.line_3d = Label(self.board,bg='black').place(x=896,y=0,width=1,height=324)
+        self.line_1d = Label(self.board,bg='black').place(x=85,y=54,width=1,height=216)
+        self.line_2d = Label(self.board,bg='black').place(x=170,y=54,width=1,height=216)
+        self.line_3d = Label(self.board,bg='black').place(x=255,y=54,width=1,height=216)
+        self.line_4d = Label(self.board,bg='black').place(x=340,y=54,width=1,height=270)
+        self.line_5d = Label(self.board,bg='black').place(x=425,y=54,width=1,height=270)
+        
+        self.line_6d = Label(self.board,bg='black').place(x=512,y=0,width=1,height=324)
+        self.line_7d = Label(self.board,bg='black').place(x=896,y=54,width=1,height=270)
         
         self.line_4d = Label(self.lay_button_relay,bg='black').place(x=512,y=0,width=1,height=162)
         
-    def alarm_setting(self):
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial bold',20),text='ALARM SETTING:',anchor="w",fg='orange',padx=10).place(x=0,y=1,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Power limit (kW):',anchor="w",fg='orange',padx=10).place(x=0,y=55,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Voltage L-N limit (V):',anchor="w",fg='orange',padx=10).place(x=0,y=109,width=383,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='Temperature limit (°C):',anchor="w",fg='orange',padx=10).place(x=0,y=163,width=383,height=52) 
+    def r_emer_setting(self):
+        self.lb_r_setting = Label(self.board,bg='white',font=('arial bold',20),text='R SETTING (Ω):',anchor="w",fg='orange',padx=10).place(x=0,y=1,width=383,height=52)
+        self.lb_emer_setting = Label(self.board,bg='white',font=('arial bold',20),text='EMER. SETTING (STOP):',anchor="w",fg='orange',padx=10).place(x=513,y=1,width=383,height=52)
         
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=55,width=126,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='240',fg='orange').place(x=385,y=109,width=126,height=52)
-        self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=163,width=126,height=52)
+        self.lb_r1 = Label(self.board,bg='white',font=('arial',16),text='R1:',anchor="w",fg='orange',padx=10).place(x=0,y=55,width=85,height=52)
+        self.lb_r4 = Label(self.board,bg='white',font=('arial',16),text='R4:',anchor="w",fg='orange',padx=10).place(x=0,y=109,width=85,height=52)
+        self.lb_r7 = Label(self.board,bg='white',font=('arial',16),text='R7:',anchor="w",fg='orange',padx=10).place(x=0,y=163,width=85,height=52) 
+        
+        # self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=55,width=126,height=52)
+        # self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='240',fg='orange').place(x=385,y=109,width=126,height=52)
+        # self.lb_alarm_setting = Label(self.board,bg='white',font=('arial',16),text='80',fg='orange').place(x=385,y=163,width=126,height=52)
         
     def tab_button(self):
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white')

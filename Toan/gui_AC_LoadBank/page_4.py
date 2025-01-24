@@ -22,13 +22,7 @@ class PAGE4:
 
         self.layout2 = Frame(lay4,bg='pink')                        
         self.layout2.place(x=0,y=438,width=1024,height=162)
-        
-        # self.lay_run_temp = Frame(self.layout1,bg='white')
-        # self.lay_run_temp.place(x=0,y=0,width=1024,height=54)
-        
-        # self.board = Frame(self.layout1,bg='white')
-        # self.board.place(x=0,y=54,width=1024,height=324)
-        
+          
         self.lay_button_relay = Frame(self.layout2,bg='white')
         self.lay_button_relay.place(x=0,y=0,width=513,height=162)
         
@@ -131,39 +125,39 @@ class KEYBOARD:
     def __init__(self):
         pass
     def create_layout(self,layout1):
-        self.layout10 = Frame(layout1,bg='brown')
-        self.layout10.place(x=348, y=20,width=331,height=414)
+        self.layout10 = Frame(layout1,bg='black')
+        self.layout10.place(x=376, y=54,width=272,height=324)
 
-        self.layout11 = Frame(self.layout10,bg='#53868B')
-        self.layout11.place(x=0,y=70,width=331,height=344)
+        self.layout11 = Frame(self.layout10,bg='black')
+        self.layout11.place(x=0,y=54,width=272,height=270)
 
         self.equation = StringVar()
         self.entry_value=''
-        Entry(self.layout10,bg='#F0FFFF',justify='center',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0,width=331,height=70)
+        Entry(self.layout10,bg='white',bd=0,justify='center',font=('Arial Bold',16),textvariable=self.equation).place(x=1,y=1,width=270,height=52)
 
-        self.b1=Button(self.layout11,font=('Arial Bold',20),text='Tab',relief='flat',bg='#7AC5CD',command=lambda:self.show('Tab')).place(x=0, y=0,width=82, height=68)
-        self.b2=Button(self.layout11,font=('Arial Bold',25),text='/',relief='flat',bg='#7AC5CD',command=lambda:self.show('/')).place(x=82.5, y=0,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='*',relief='flat',bg='#7AC5CD',command=lambda:self.show('*')).place(x=166, y=0,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',20),text='C',relief='flat',bg='#7AC5CD',command=lambda:self.clear()).place(x=248.5, y=0,width=82, height=68)
+        self.b1=Button(self.layout11,font=('Arial Bold',16),text='Tab',relief='flat',bg='white',command=lambda:self.show('Tab')).place(x=1, y=0,width=66, height=53)
+        self.b2=Button(self.layout11,font=('Arial Bold',16),text='/',relief='flat',bg='white',command=lambda:self.show('/')).place(x=68, y=0,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='*',relief='flat',bg='white',command=lambda:self.show('*')).place(x=136, y=0,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='#',relief='flat',bg='white',command=lambda:self.show('#')).place(x=204, y=0,width=67, height=53)
 
-        Button(self.layout11,font=('Arial Bold',25),text='7',relief='flat',bg='#7AC5CD',command=lambda:self.show('7')).place(x=0, y=69,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='8',relief='flat',bg='#7AC5CD',command=lambda:self.show('8')).place(x=82.5, y=69,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='9',relief='flat',bg='#7AC5CD',command=lambda:self.show('9')).place(x=166, y=69,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='_',relief='flat',bg='#7AC5CD',command=lambda:self.show('-')).place(x=249, y=69,width=82, height=68)
+        Button(self.layout11,font=('Arial Bold',16),text='7',relief='flat',bg='white',command=lambda:self.show('7')).place(x=1, y=54,width=66, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='8',relief='flat',bg='white',command=lambda:self.show('8')).place(x=68, y=54,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='9',relief='flat',bg='white',command=lambda:self.show('9')).place(x=136, y=54,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='_',relief='flat',bg='white',command=lambda:self.show('-')).place(x=204, y=54,width=67, height=53)
 
-        Button(self.layout11,font=('Arial Bold',25),text='4',relief='flat',bg='#7AC5CD',command=lambda:self.show('4')).place(x=0, y=138,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='5',relief='flat',bg='#7AC5CD',command=lambda:self.show('5')).place(x=83, y=138,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='6',relief='flat',bg='#7AC5CD',command=lambda:self.show('6')).place(x=166, y=138,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='+',relief='flat',bg='#7AC5CD',command=lambda:self.show('+')).place(x=249, y=138,width=82, height=68)
+        Button(self.layout11,font=('Arial Bold',16),text='4',relief='flat',bg='white',command=lambda:self.show('4')).place(x=1, y=108,width=66, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='5',relief='flat',bg='white',command=lambda:self.show('5')).place(x=68, y=108,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='6',relief='flat',bg='white',command=lambda:self.show('6')).place(x=136, y=108,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='+',relief='flat',bg='white',command=lambda:self.show('+')).place(x=204, y=108,width=67, height=53)
 
-        Button(self.layout11,font=('Arial Bold',25),text='1',relief='flat',bg='#7AC5CD',command=lambda:self.show('1')).place(x=0, y=207,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='2',relief='flat',bg='#7AC5CD',command=lambda:self.show('2')).place(x=82.5, y=207,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='3',relief='flat',bg='#7AC5CD',command=lambda:self.show('3')).place(x=166, y=207,width=82, height=68)
-        self.btn_enter=Button(self.layout11,font=('Arial Bold',22),text='Enter',relief='flat',bg='#7AC5CD',command=lambda:self.show(''))
-        self.btn_enter.place(x=249, y=207,width=82, height=136.5)
-        Button(self.layout11,font=('Arial Bold',25),text='0',relief='flat',bg='#7AC5CD',command=lambda:self.show('0')).place(x=0, y=276,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='00',relief='flat',bg='#7AC5CD',command=lambda:self.show('00')).place(x=82.5, y=276,width=82, height=68)
-        Button(self.layout11,font=('Arial Bold',25),text='.',relief='flat',bg='#7AC5CD',command=lambda:self.show('.')).place(x=166, y=276,width=82, height=68)
+        Button(self.layout11,font=('Arial Bold',16),text='1',relief='flat',bg='white',command=lambda:self.show('1')).place(x=1, y=162,width=66, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='2',relief='flat',bg='white',command=lambda:self.show('2')).place(x=68, y=162,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='3',relief='flat',bg='white',command=lambda:self.show('3')).place(x=136, y=162,width=67, height=53)
+        self.btn_enter=Button(self.layout11,font=('Arial Bold',16),text='Enter',relief='flat',bg='white',command=lambda:self.show(''))
+        self.btn_enter.place(x=204, y=162,width=67, height=107)
+        Button(self.layout11,font=('Arial Bold',16),text='0',relief='flat',bg='white',command=lambda:self.show('0')).place(x=1, y=216,width=66, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='00',relief='flat',bg='white',command=lambda:self.show('00')).place(x=68, y=216,width=67, height=53)
+        Button(self.layout11,font=('Arial Bold',16),text='.',relief='flat',bg='white',command=lambda:self.show('.')).place(x=136, y=216,width=67, height=53)
 
 
     def show(self,value):

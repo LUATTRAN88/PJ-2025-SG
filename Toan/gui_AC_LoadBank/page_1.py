@@ -81,34 +81,16 @@ class PAGE1:
         time_string = strftime('%H:%M:%S %p %x') # time format 
         l1.config(text=time_string)
         l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
-        
-        
-
-
-      
+         
     def label_power(self):
         self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
         self.picrun = ImageTk.PhotoImage(self.run_on)
         self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
-       
-        # self.lamp = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        # self.piclamp = ImageTk.PhotoImage(self.lamp)
-        # self.lb_lamp_run = Label(self.lay_power,bg='white',image=self.piclamp).place(x=460,y=0,width=40,height=40)
         
         self.tempcc = StringVar()
         self.lb_temp = Label(self.lay_power,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=423,y=33,width=46,height=22)  
         self.lb_temp_c = Label(self.lay_power,bg='white',font=('arial',13),text='ºC').place(x=468,y=33,width=23,height=22) 
-        
-        # self.lb_hour = Label(self.lay_power,bg='white',font=('arial',15),text='22').place(x=195,y=0,width=29,height=38)  
-        # self.lb_2c = Label(self.lay_power,bg='white',font=('arial',15),text=':').place(x=221,y=0,width=5,height=38)  
-        # self.lb_mins = Label(self.lay_power,bg='white',font=('arial',15),text='44').place(x=226,y=0,width=29,height=38)  
-        
-        # self.lb_day = Label(self.lay_power,bg='white',font=('arial',15),text='20').place(x=267,y=0,width=26,height=38)     
-        # self.lb_x1 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=294,y=0,width=7,height=38)  
-        # self.lb_month = Label(self.lay_power,bg='white',font=('arial',15),text='01').place(x=302,y=0,width=23,height=38) 
-        # self.lb_x2 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=325,y=0,width=7,height=38) 
-        # self.lb_year = Label(self.lay_power,bg='white',font=('arial',15),text='2025').place(x=332,y=0,width=50,height=38) 
-        
+         
         self.lb_power = Label(self.lay_power,bg='white',font=('arial bold',30),text='POWER',fg='red').place(x=25,y=75,width=150,height=30)
         self.tkw = StringVar()
         self.lb_power_val = Label(self.lay_power,bg='white',font=('arial bold',49),textvariable=self.tkw,fg='red').place(x=190,y=65,width=165,height=48)
@@ -136,7 +118,6 @@ class PAGE1:
         self.lb_line5d = Label(self.lay_parameter,bg='black').place(x=340, y=0,width=1,height=180)
         self.lb_line6d = Label(self.lay_parameter,bg='black').place(x=425, y=0,width=1,height=180)
         self.lb_line7d = Label(self.lay_parameter,bg='black').place(x=511, y=0,width=1,height=180)
-        
         
          # hàng đàu tiên, hàng đơn vị
         self.lb_none1 = Label(self.lay_parameter,bg='white').place(x=1, y=1,width=83,height=34)
@@ -290,20 +271,3 @@ class PAGE1:
             self.time_value -=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
         
-# class SIGNAL:
-#     def __init__(self):
-#         pass
-#     def create_layout(self,lay_button_load,x,text):
-#         self.layout =  Frame(lay_button_load,bg='white')
-#         self.layout.place(x=x+2,y=124, width=28,height=46)
-
-#         self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-#         self.picl = ImageTk.PhotoImage(self.photol)
-#         self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
-#         self.lb_lamp.place(x=0,y=12,width=28,height=23)
-        
-        
-#         self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
-
-#         self.text_relay_val = StringVar()
-#         self.lb_relay_val = Label(self.layout, bg='white',font=('arial bold',8),fg='black',textvariable=self.text_relay_val).place(x=0,y=36,width=28,height=11)
