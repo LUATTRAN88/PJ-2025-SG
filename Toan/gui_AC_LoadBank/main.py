@@ -27,11 +27,11 @@ class MAINGUI:
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
         self.btn_service.bind('<Button-1>', self.event_page4)
-        # self.btn_service.bind('<Button-1>', self.event_page5)
+        
         
     def event_page1(self,event):
         self.display1 = PAGE1()
-        self.display1.create_layout(self.layout) # chay chuong trinh tui chup hinh hoi
+        self.display1.create_layout(self.layout) 
     def event_page2(self,event):
         display2 = PAGE2()
         display2.create_layout(self.layout)
@@ -41,9 +41,7 @@ class MAINGUI:
     def event_page4(self,event):
         display4 = PAGE4()
         display4.create_layout(self.layout)
-    # def event_page5(self,event):
-    #     display5 = PAGE5()
-    #     display5.create_layout(self.layout)
+    
 
     def button_main(self):
         self.btn_auto_test = Button(self.layout_btn,bd=3,fg='#7D7D7D', bg='white',font=('Arial Bold',20),text='AUTO TEST',command=lambda:self.btn_light_auto())

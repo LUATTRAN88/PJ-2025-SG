@@ -7,6 +7,7 @@ from PIL import ImageTk, Image
 # import client as clientCall
 # import json
 from extend import *
+from time import strftime
 
 class PAGE2:
     def __init__(self):
@@ -49,6 +50,7 @@ class PAGE2:
         self.button_test()
         self.logo()
         self.line()
+        self.timeset()
         
         self.signal_object = []
         for i in range(16):
@@ -93,25 +95,31 @@ class PAGE2:
         self.lb_temp = Label(self.lay_power,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=423,y=33,width=46,height=22)  
         self.lb_temp_c = Label(self.lay_power,bg='white',font=('arial',13),text='ºC').place(x=468,y=33,width=23,height=22) 
         
-        self.lb_hour = Label(self.lay_power,bg='white',font=('arial',15),text='22').place(x=195,y=0,width=29,height=38)  
-        self.lb_2c = Label(self.lay_power,bg='white',font=('arial',15),text=':').place(x=221,y=0,width=5,height=38)  
-        self.lb_mins = Label(self.lay_power,bg='white',font=('arial',15),text='44').place(x=226,y=0,width=29,height=38)  
+        # self.lb_hour = Label(self.lay_power,bg='white',font=('arial',15),text='22').place(x=195,y=0,width=29,height=38)  
+        # self.lb_2c = Label(self.lay_power,bg='white',font=('arial',15),text=':').place(x=221,y=0,width=5,height=38)  
+        # self.lb_mins = Label(self.lay_power,bg='white',font=('arial',15),text='44').place(x=226,y=0,width=29,height=38)  
         
-        self.lb_day = Label(self.lay_power,bg='white',font=('arial',15),text='20').place(x=267,y=0,width=26,height=38)     
-        self.lb_x1 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=294,y=0,width=7,height=38)  
-        self.lb_month = Label(self.lay_power,bg='white',font=('arial',15),text='01').place(x=302,y=0,width=23,height=38) 
-        self.lb_x2 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=325,y=0,width=7,height=38) 
-        self.lb_year = Label(self.lay_power,bg='white',font=('arial',15),text='2025').place(x=332,y=0,width=50,height=38) 
+        # self.lb_day = Label(self.lay_power,bg='white',font=('arial',15),text='20').place(x=267,y=0,width=26,height=38)     
+        # self.lb_x1 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=294,y=0,width=7,height=38)  
+        # self.lb_month = Label(self.lay_power,bg='white',font=('arial',15),text='01').place(x=302,y=0,width=23,height=38) 
+        # self.lb_x2 = Label(self.lay_power,bg='white',font=('arial',15),text='/').place(x=325,y=0,width=7,height=38) 
+        # self.lb_year = Label(self.lay_power,bg='white',font=('arial',15),text='2025').place(x=332,y=0,width=50,height=38) 
         
         self.lb_power = Label(self.lay_power,bg='white',font=('arial bold',30),text='POWER',fg='red').place(x=25,y=75,width=150,height=30)
         self.tkw = StringVar()
         self.lb_power_val = Label(self.lay_power,bg='white',font=('arial bold',49),textvariable=self.tkw,fg='red').place(x=190,y=65,width=165,height=48)
         self.lb_power_kw = Label(self.lay_power,bg='white',font=('arial bold',49),text='KW',fg='red').place(x=370,y=65,width=110,height=48)
         
+    def timeset(self):
+        l1=Label(self.lay_power,font=('arial', 15),bg='white')
+        l1.place(x=180,y=7,width=210,height=20)
+        time_string = strftime('%H:%M:%S %p %x') # time format 
+        l1.config(text=time_string)
+        l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+        
     def line(self):
         self.lb_line_dt1 = Label(self.lay_power,bg='black').place(x=0,y=0,width=1,height=180)
         self.lb_line_dt2 = Label(self.lay_logo_switch,bg='black').place(x=0,y=0,width=1,height=180)
-        # self.lb_line_dt3 = Label(self.lay_timer_set,bg='black').place(x=0,y=0,width=512,height=1)
         self.lb_line_dt4 = Label(self.lay_timer_set,bg='black').place(x=0,y=179,width=512,height=1)
         
     def parameter(self):
@@ -131,7 +139,7 @@ class PAGE2:
         self.lb_line6d = Label(self.lay_parameter,bg='black').place(x=425, y=0,width=1,height=180)
         self.lb_line7d = Label(self.lay_parameter,bg='black').place(x=511, y=0,width=1,height=180)
          
-         # hàng đàu tiên, hàng đơn vị
+        # hàng đàu tiên, hàng đơn vị
         self.lb_none1 = Label(self.lay_parameter,bg='white').place(x=1, y=1,width=83,height=34)
         self.lb_pow = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='(KW)',fg='black').place(x=86, y=1,width=83,height=34)
         self.lb_ln_v = Label(self.lay_parameter,bg='white',font=('arial bold',15),text='L-N (V)',fg='black').place(x=171, y=1,width=83,height=34)

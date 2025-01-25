@@ -42,15 +42,8 @@ class PAGE4:
         self.label_run_temp()
         self.display_kb = KEYBOARD()
         self.display_kb.create_layout(self.layout1)
-        
         self.display_kb.btn_enter.config(command=lambda:self.test_pass())
         
-        
-    
-    
-            
- 
- 
         self.signal_list = []
         for i in range(16):
             x_space = i * 32
@@ -80,8 +73,8 @@ class PAGE4:
                 
                 
     def event_page5(self): 
-        # for widget in self.layout.winfo_children():
-        #     widget.destroy()
+        for widget in self.layout.winfo_children():   
+            widget.destroy()
         self.display5 = PAGE5()
         self.display5.create_layout(self.layout)
         
@@ -96,8 +89,7 @@ class PAGE4:
             self.notification()
             self.display_kb.clear()
             
-    
-                
+              
     def button_fan(self):
         a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
         self.on = ImageTk.PhotoImage(a1)
@@ -156,7 +148,6 @@ class PAGE4:
         self.lb_temp_c = Label(self.layout1,bg='white',font=('arial',13),text='ºC').place(x=980,y=34,width=23,height=20) 
     
             
-        
 class KEYBOARD:  
     def __init__(self):
         pass
