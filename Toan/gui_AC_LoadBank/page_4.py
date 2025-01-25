@@ -2,11 +2,13 @@ import tkinter as tk
 from tkinter import *
 # from tkinter import font as tkFont
 from PIL import ImageTk, Image
+import tkinter.messagebox 
 # import threading
 # from time import sleep
 # import client as clientCall
 # import json
 from extend import *
+from page_5 import *
 
 class PAGE4:
     def __init__(self):
@@ -16,12 +18,16 @@ class PAGE4:
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
+        self.code = '5959'
     def create_layout(self,lay4):
-        self.layout1 = Frame(lay4,bg='white')                   
-        self.layout1.place(x=0,y=60,width=1024,height=378)
+        self.layout = Frame(lay4,bg='orange')
+        self.layout.place(x=0,y=60,width=1024,height=540)
+        
+        self.layout1 = Frame(self.layout,bg='white')                   
+        self.layout1.place(x=0,y=0,width=1024,height=378)
 
-        self.layout2 = Frame(lay4,bg='pink')                        
-        self.layout2.place(x=0,y=438,width=1024,height=162)
+        self.layout2 = Frame(self.layout,bg='pink')                        
+        self.layout2.place(x=0,y=378,width=1024,height=162)
           
         self.lay_button_relay = Frame(self.layout2,bg='white')
         self.lay_button_relay.place(x=0,y=0,width=513,height=162)
@@ -34,9 +40,17 @@ class PAGE4:
         self.logo()
         self.timeset()
         self.label_run_temp()
-        display_kb = KEYBOARD()
-        display_kb.create_layout(self.layout1)
+        self.display_kb = KEYBOARD()
+        self.display_kb.create_layout(self.layout1)
         
+        self.display_kb.btn_enter.config(command=lambda:self.test_pass())
+        
+        
+    
+    
+            
+ 
+ 
         self.signal_list = []
         for i in range(16):
             x_space = i * 32
@@ -63,6 +77,26 @@ class PAGE4:
                 display_relay.text_relay.set('1.2')
             else:
                 display_relay.text_relay.set('20.2')
+                
+                
+    def event_page5(self): 
+        # for widget in self.layout.winfo_children():
+        #     widget.destroy()
+        self.display5 = PAGE5()
+        self.display5.create_layout(self.layout)
+        
+    def notification(self):
+        tkinter.messagebox.showinfo('Warning',"Enter password again please!")     
+        
+    def test_pass(self):
+        self.mk = self.display_kb.equation.get()
+        if self.mk == self.code:
+            self.event_page5()
+        else:
+            self.notification()
+            self.display_kb.clear()
+            
+    
                 
     def button_fan(self):
         a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
@@ -120,6 +154,8 @@ class PAGE4:
         self.tempcc = StringVar()
         self.lb_temp = Label(self.layout1,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=930,y=34,width=46,height=20)  
         self.lb_temp_c = Label(self.layout1,bg='white',font=('arial',13),text='ºC').place(x=980,y=34,width=23,height=20) 
+    
+            
         
 class KEYBOARD:  
     def __init__(self):
@@ -133,7 +169,7 @@ class KEYBOARD:
 
         self.equation = StringVar()
         self.entry_value=''
-        Entry(self.layout10,bg='white',bd=0,justify='center',font=('Arial Bold',16),textvariable=self.equation).place(x=1,y=1,width=270,height=52)
+        Entry(self.layout10,bg='white',bd=0,justify='center',font=('Arial Bold',16),textvariable=self.equation,show='*').place(x=1,y=1,width=270,height=52)
 
         self.b1=Button(self.layout11,font=('Arial Bold',16),text='Tab',relief='flat',bg='white',command=lambda:self.show('Tab')).place(x=1, y=0,width=66, height=53)
         self.b2=Button(self.layout11,font=('Arial Bold',16),text='/',relief='flat',bg='white',command=lambda:self.show('/')).place(x=68, y=0,width=67, height=53)
@@ -171,4 +207,8 @@ class KEYBOARD:
     def solve(self):
         result = eval(self.entry_value)
         self.equation.set(result)
+        
+    # def set_text_entry(self,text):
+    #     self.equation.set(text)
+    
 

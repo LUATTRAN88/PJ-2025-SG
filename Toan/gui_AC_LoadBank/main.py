@@ -41,9 +41,9 @@ class MAINGUI:
     def event_page4(self,event):
         display4 = PAGE4()
         display4.create_layout(self.layout)
-    def event_page5(self,event):
-        display5 = PAGE5()
-        display5.create_layout(self.layout)
+    # def event_page5(self,event):
+    #     display5 = PAGE5()
+    #     display5.create_layout(self.layout)
 
     def button_main(self):
         self.btn_auto_test = Button(self.layout_btn,bd=3,fg='#7D7D7D', bg='white',font=('Arial Bold',20),text='AUTO TEST',command=lambda:self.btn_light_auto())
