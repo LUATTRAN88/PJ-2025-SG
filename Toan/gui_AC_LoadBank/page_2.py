@@ -87,7 +87,7 @@ class PAGE2:
              
       
     def label_power(self):
-        self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
+        self.run_on = Image.open(get_path_img()+'stop.png').resize((122,44))
         self.picrun = ImageTk.PhotoImage(self.run_on)
         self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
         

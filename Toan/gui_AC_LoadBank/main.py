@@ -13,7 +13,7 @@ class MAINGUI:
         self.layout.title('AC LOAD BANK')
         self.layout.geometry('1024x600')
         self.layout.config(bg='white')
-        # self.layout.overrideredirect(1)
+        self.layout.overrideredirect(1)
 
         self.layout_btn = Frame(self.layout, bg='yellow')
         self.layout_btn.place(x=0,y=0,width=1024,height=60)
@@ -21,10 +21,7 @@ class MAINGUI:
         self.button_main()
         self.current_page = None
         self.event_page1(None)
-        
-        # self.display1 = PAGE1()
-        # self.display1.create_layout(self.layout)
-        
+         
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
