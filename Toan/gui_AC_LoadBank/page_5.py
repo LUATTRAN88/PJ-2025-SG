@@ -181,9 +181,11 @@ class PAGE5:
         if self.is_on:
             self.btn_on.config(image=self.off)
             self.is_on = False 
+            control_relay(req='300',id='14',status='0')
         else :
             self.btn_on.config(image=self.on)
             self.is_on = True
+            control_relay(req='300',id='14',status='1')
             
     def button_test(self):
         test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
@@ -197,9 +199,11 @@ class PAGE5:
         if self.is_test:
             self.btn_on.config(image=self.offt)
             self.is_test = False 
+            control_relay(req='300',id='15',status='0')
         else :
             self.btn_on.config(image=self.ont)
             self.is_test = True
+            control_relay(req='300',id='15',status='1')
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))

@@ -187,9 +187,11 @@ class PAGE1:
         if self.is_on:
             self.btn_on.config(image=self.off)
             self.is_on = False 
+            control_relay(req='300',id='14',status='0')
         else :
             self.btn_on.config(image=self.on)
             self.is_on = True
+            control_relay(req='300',id='14',status='1')
             
     def button_test(self):
         test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
@@ -203,9 +205,11 @@ class PAGE1:
         if self.is_test:
             self.btn_on.config(image=self.offt)
             self.is_test = False 
+            control_relay(req='300',id='15',status='0')
         else :
             self.btn_on.config(image=self.ont)
             self.is_test = True
+            control_relay(req='300',id='15',status='1')
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -220,7 +224,7 @@ class PAGE1:
         self.lb_powset = Label(self.lay_power_set,bg='white',font=('arial bold',30),text='POWER\n SET',fg='orange').place(x=15,y=48,width=150,height=75)
         self.lb_powset_kw = Label(self.lay_power_set,bg='white',font=('arial bold',45),text='KW',fg='orange').place(x=295,y=69,width=100,height=45)
         
-        # self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=175,y=69,width=105,height=45)
+        self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=175,y=69,width=105,height=45)
 
         self.lb_available = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='AVAILABLE POWER').place(x=15,y=145,width=197,height=20)
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='99.8').place(x=235,y=145,width=65,height=20)
@@ -229,7 +233,7 @@ class PAGE1:
 
         self.lb_timer = Label(self.lay_timer_set,bg='white',font=('arial bold',30),text='TIMER\n SET',fg='orange').place(x=15,y=48,width=120,height=76)
         self.lb_timer_mins = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='mins',fg='orange').place(x=265,y=69,width=135,height=45)
-        # self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=150,y=69,width=100,height=45)
+        self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=150,y=69,width=100,height=45)
 
       
     def tab_button(self):
@@ -258,16 +262,21 @@ class PAGE1:
         if self.power_value < 150:
             self.power_value += 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
+            result=number_of_objects(self.power_value)
+            print(result)
     def reduce_power_set(self):
         if self.power_value > 0:
             self.power_value -= 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)        
+            result=number_of_objects(self.power_value)
+            print(result)
     def increase_timer_set(self):
         if self.time_value < 60:
             self.time_value +=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)        
+            
     def reduce_timer_set(self):
         if self.time_value > 0:
             self.time_value -=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
-        
+            

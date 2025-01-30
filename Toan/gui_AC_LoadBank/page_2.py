@@ -82,10 +82,11 @@ class PAGE2:
             x_space= col * 74       # khoảng cách giữa các (cột) đối tượng
             y_space= row * 85       # khoảng cách giữa 2 hàng
             self.relay_signal = RELAY_POWER()
+            self.relay_signal.set_id(i+1)
             self.relay_signal.create_layout(self.lay_timer_set, x=x_space,y=y_space,text = 'RL'+ str(i+1))
             self.relay_object.append(self.relay_signal)
-             
-      
+            
+            
     def label_power(self):
         self.run_on = Image.open(get_path_img()+'stop.png').resize((122,44))
         self.picrun = ImageTk.PhotoImage(self.run_on)
@@ -207,9 +208,11 @@ class PAGE2:
         if self.is_on:
             self.btn_on.config(image=self.off)
             self.is_on = False 
+            control_relay(req='300',id='14',status='0')
         else :
             self.btn_on.config(image=self.on)
             self.is_on = True
+            control_relay(req='300',id='14',status='1')
             
     def button_test(self):
         test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
@@ -223,9 +226,11 @@ class PAGE2:
         if self.is_test:
             self.btn_on.config(image=self.offt)
             self.is_test = False 
+            control_relay(req='300',id='15',status='0')
         else :
             self.btn_on.config(image=self.ont)
             self.is_test = True
+            control_relay(req='300',id='15',status='1')
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -260,6 +265,7 @@ class PAGE2:
 class RELAY_POWER:
     def __init__(self):
         self.lamp_relay = False
+        self.id=-1;
     def create_layout(self,lay_timer_set, x,y,text):
         self.layout = Frame(lay_timer_set,bg='white')
         self.layout.place(x=x+48,y=y+8,width=48,height=66)
@@ -267,7 +273,9 @@ class RELAY_POWER:
         self.lb_relay1 = Label(self.layout,bg='white',font=('arial',12),text=text).place(x=0,y=0,width=55,height=14)
         
         self.lamp_signal_relay()
-
+    def set_id(self,id):
+        self.id = id
+    
     def lamp_signal_relay(self):
         i1 = Image.open(get_path_img()+'relay_s.png').resize((48,47))
         self.onr = ImageTk.PhotoImage(i1)
@@ -280,6 +288,19 @@ class RELAY_POWER:
         if self.lamp_relay:
             self.btn_on.config(image=self.offr)
             self.lamp_relay = False 
+            control_relay(req='300',id=self.id,status='0')
         else:
             self.btn_on.config(image=self.onr)
             self.lamp_relay = True
+            control_relay(req='300',id=self.id,status='1')
+            
+            
+    # if i==2 and self.lamp_relay == False:
+            #     # elif self.lamp_relay:
+            #         self.btn_on.config(image=self.offr)
+            #         # self.lamp_relay = False 
+            #         control_relay(req='300',id='2',status='0')
+            # else:
+            #         self.btn_on.config(image=self.onr)
+            #         # self.lamp_relay = True
+            #         control_relay(req='300',id='2',status='1')
