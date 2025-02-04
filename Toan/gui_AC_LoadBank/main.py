@@ -7,55 +7,86 @@ from page_5 import *
 
 class MAINGUI:
     def __init__(self):
-        self.current_page = None
+        pass
+        # self.current_page = None
     def create_layout(self):
         self.layout = Tk()
         self.layout.title('AC LOAD BANK')
         self.layout.geometry('1024x600')
         self.layout.config(bg='white')
-        self.layout.overrideredirect(1)
+        # self.layout.overrideredirect(1)
 
         self.layout_btn = Frame(self.layout, bg='yellow')
         self.layout_btn.place(x=0,y=0,width=1024,height=60)
 
         self.button_main()
-        self.current_page = None
-        self.event_page1(None)
+        # self.current_page = None
+        # self.event_page1(None)
          
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
         self.btn_service.bind('<Button-1>', self.event_page4)
         
+        self.display4 = PAGE4()
+        self.display4.create_layout(self.layout)
+        self.display3 = PAGE3()
+        self.display3.create_layout(self.layout)
+       
+        self.display2 = PAGE2()
+        self.display2.create_layout(self.layout)
+        
+        self.display1 = PAGE1()
+        self.display1.create_layout(self.layout)
+        
+        
     def event_page1(self,event):
-        self._destroy_current_page()
-        display1 = PAGE1()
-        display1.create_layout(self.layout) 
-        self.current_page = display1
+        # self._destroy_current_page()
+        try:
+            self.display1.layout1.tkraise()
+            self.display1.layout2.tkraise() 
+        except:
+        # self.current_page = display1
+            pass
+
         
     def event_page2(self,event):
-        self._destroy_current_page()
-        display2 = PAGE2()
-        display2.create_layout(self.layout)
-        self.current_page = display2
-        
+        # self._destroy_current_page()
+        # display2 = PAGE2()
+        # display2.create_layout(self.layout)
+        # self.current_page = display2
+        try:
+            self.display2.layout1.tkraise()
+            self.display2.layout2.tkraise() 
+        except:
+            pass
     def event_page3(self,event):
-        self._destroy_current_page()
-        display3 = PAGE3()
-        display3.create_layout(self.layout)
-        self.current_page = display3
-        
+        # self._destroy_current_page()
+        # display3 = PAGE3()
+        # display3.create_layout(self.layout)
+        # self.current_page = display3
+        try:
+            self.display3.layout1.tkraise()
+            self.display3.layout2.tkraise() 
+        except:
+            pass
     def event_page4(self,event):
-        self._destroy_current_page()
-        display4 = PAGE4()
-        display4.create_layout(self.layout)
-        self.current_page = display4
+        # self._destroy_current_page()
+        # display4 = PAGE4()
+        # display4.create_layout(self.layout)
+        # self.current_page = display4
+        try:
+            self.display4.layout.tkraise()
+            self.display4.layout1.tkraise()
+            self.display4.layout2.tkraise() 
+        except:
+            pass
          
-    def _destroy_current_page(self):
-        if self.current_page is not None:
-            for widget in self.layout.winfo_children():
-                if widget != self.layout_btn:
-                    widget.destroy()     
+    # def _destroy_current_page(self):
+    #     if self.current_page is not None:
+    #         for widget in self.layout.winfo_children():
+    #             if widget != self.layout_btn:
+    #                 widget.destroy()     
         
         
     def button_main(self):
