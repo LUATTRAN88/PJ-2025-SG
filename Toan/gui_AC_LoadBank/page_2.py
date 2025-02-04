@@ -279,7 +279,7 @@ class RELAY_POWER:
     def lamp_signal_relay(self):
         i1 = Image.open(get_path_img()+'relay_s.png').resize((48,47))
         self.onr = ImageTk.PhotoImage(i1)
-        a2 = Image.open(get_path_img()+'relay_off.png').resize((48,47))
+        a2 = Image.open(get_path_img()+'relay_off1.png').resize((48,47))
         self.offr = ImageTk.PhotoImage(a2)
         
         self.btn_on = Button(self.layout,image=self.onr,bg='white',font=('arial',13),text='19.2',fg='black',compound="center", bd=0,command=lambda:self.lamp_signal_relay())
