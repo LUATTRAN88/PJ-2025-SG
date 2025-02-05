@@ -73,10 +73,11 @@ class PAGE4:
                 
                 
     def event_page5(self): 
-        for widget in self.layout.winfo_children():   
-            widget.destroy()
+        # self.layout.place_forget()      # ẩn Frame PAGE4
+        
         self.display5 = PAGE5()
         self.display5.create_layout(self.layout)
+        
         
     def notification(self):
         tkinter.messagebox.showinfo('Warning',"Enter password again please!")     
@@ -85,6 +86,7 @@ class PAGE4:
         self.mk = self.display_kb.equation.get()
         if self.mk == self.code:
             self.event_page5()
+            # self.display5.layout.tkraise()
         else:
             self.notification()
             self.display_kb.clear()

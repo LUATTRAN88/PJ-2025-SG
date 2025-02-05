@@ -19,10 +19,10 @@ class PAGE5:
         self.time_value = 0
     def create_layout(self,lay5):
         self.layout1 = Frame(lay5,bg='red')                   
-        self.layout1.place(x=0,y=0,width=1024,height=378)
+        self.layout1.place(x=0,y=0,width=1024,height=378)       #   y=0
 
         self.layout2 = Frame(lay5,bg='pink')                        
-        self.layout2.place(x=0,y=378,width=1024,height=162)
+        self.layout2.place(x=0,y=378,width=1024,height=162)     #   y=378
         
         self.lay_run_temp = Frame(self.layout1,bg='white')
         self.lay_run_temp.place(x=0,y=0,width=1024,height=54)

@@ -32,63 +32,40 @@ class MAINGUI:
         self.display4.create_layout(self.layout)
         self.display3 = PAGE3()
         self.display3.create_layout(self.layout)
-       
         self.display2 = PAGE2()
         self.display2.create_layout(self.layout)
-        
         self.display1 = PAGE1()
         self.display1.create_layout(self.layout)
         
         
     def event_page1(self,event):
-        # self._destroy_current_page()
         try:
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
         except:
-        # self.current_page = display1
             pass
 
-        
     def event_page2(self,event):
-        # self._destroy_current_page()
-        # display2 = PAGE2()
-        # display2.create_layout(self.layout)
-        # self.current_page = display2
         try:
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
         except:
             pass
     def event_page3(self,event):
-        # self._destroy_current_page()
-        # display3 = PAGE3()
-        # display3.create_layout(self.layout)
-        # self.current_page = display3
         try:
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
         except:
             pass
     def event_page4(self,event):
-        # self._destroy_current_page()
-        # display4 = PAGE4()
-        # display4.create_layout(self.layout)
-        # self.current_page = display4
         try:
             self.display4.layout.tkraise()
             self.display4.layout1.tkraise()
             self.display4.layout2.tkraise() 
         except:
-            pass
-         
-    # def _destroy_current_page(self):
-    #     if self.current_page is not None:
-    #         for widget in self.layout.winfo_children():
-    #             if widget != self.layout_btn:
-    #                 widget.destroy()     
+            pass       
         
-        
+     
     def button_main(self):
         self.btn_auto_test = Button(self.layout_btn,bd=3,fg='#7D7D7D', bg='white',font=('Arial Bold',20),text='AUTO TEST',command=self.btn_light_auto)
         self.btn_auto_test.place(x=0,y=0,width=256,height=60)

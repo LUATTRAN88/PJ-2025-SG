@@ -8,6 +8,7 @@ from PIL import ImageTk, Image
 # import json
 from extend import *
 from time import strftime
+from config.config_setting import *
 
 class PAGE3:
     def __init__(self):
@@ -17,6 +18,8 @@ class PAGE3:
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
+        self.config_setting = ConfigSetting()
+        
     def create_layout(self,lay3):
         self.layout1 = Frame(lay3,bg='red')                   
         self.layout1.place(x=0,y=60,width=1024,height=378)
@@ -121,12 +124,20 @@ class PAGE3:
         self.lb_voltage = Label(self.board,bg='white',font=('arial',16),text='Voltage L-N limit (V):',anchor="w",fg='orange',padx=10).place(x=0,y=109,width=383,height=52)
         self.lb_temp = Label(self.board,bg='white',font=('arial',16),text='Temperature limit (°C):',anchor="w",fg='orange',padx=10).place(x=0,y=163,width=383,height=52) 
         
-        self.power_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=55,width=126,height=52)
-        self.voltage_value = Label(self.board,bg='white',font=('arial',16),text='240').place(x=385,y=109,width=126,height=52)
-        self.temp_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=163,width=126,height=52)
+        # self.power_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=55,width=126,height=52)
+        # self.voltage_value = Label(self.board,bg='white',font=('arial',16),text='240').place(x=385,y=109,width=126,height=52)
+        # self.temp_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=163,width=126,height=52)
+        self.power_input = StringVar()
+        self.voltage_input = StringVar()
+        self.temp_input = StringVar()
+        
+        self.power_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.power_input).place(x=385,y=55,width=127,height=53)
+        self.voltage_value = Entry(self.board,bg='white',font=('arial',16),justify='center', textvariable=self.voltage_input).place(x=385,y=109,width=127,height=53)
+        self.temp_value = Entry(self.board,bg='white',font=('arial',16),justify='center', textvariable=self.temp_input).place(x=385,y=163,width=127,height=53)
+        
         
     def tab_button(self):
-        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white')
+        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white',command=self.write_file)
         self.btn_apply.place(x=21,y=48,width=150,height=48)
         
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
@@ -177,6 +188,13 @@ class PAGE3:
         self.lb_test_mode = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='TEST MODE').place(x=185,y=132,width=110,height=15)
         self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=308,y=132,width=198,height=15)
         
+    def read_file(self):
+        self.config_setting.read_file()
         
-        
-        
+    def write_file(self):
+        power = self.power_input.get()
+        voltage = self.voltage_input.get()
+        temp = self.temp_input.get()
+        # print(power, '')
+        print('tYpe ', type(power))
+        self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)    

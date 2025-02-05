@@ -1,0 +1,3 @@
+power_limit: 90
+temperature_limit: 980
+voltage_LN_limit: 500
