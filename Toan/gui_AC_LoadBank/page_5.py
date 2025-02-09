@@ -8,15 +8,18 @@ from PIL import ImageTk, Image
 # import json
 from extend import *
 from time import strftime
+from config.config_service import *
 
 class PAGE5:
     def __init__(self):
         self.origin_data = None
-        self.is_on = False
-        self.is_test = False
+        # self.is_on = False
+        # self.is_test = False
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
+        self.config_service = ConfigService()
+        
     def create_layout(self,lay5):
         self.layout1 = Frame(lay5,bg='red')                   
         self.layout1.place(x=0,y=0,width=1024,height=378)       #   y=0
@@ -41,7 +44,7 @@ class PAGE5:
         self.r_emer_setting()
         self.tab_button()
         self.button_fan()
-        self.button_test()
+        self.button_testmode()
         self.logo()
         self.timeset()
         
@@ -142,67 +145,121 @@ class PAGE5:
         self.lb_voltage = Label(self.board,bg='white',font=('arial',16),text='Voltage L-N limit (V):',anchor="w",fg='orange',padx=10).place(x=513,y=109,width=383,height=53)
         self.lb_temperature = Label(self.board,bg='white',font=('arial',16),text='Temperature limit (°C):',anchor="w",fg='orange',padx=10).place(x=513,y=163,width=383,height=53)
        
-        self.resistor_threshold_minus = Label(self.board,bg='white',font=('arial',16),text='-20',fg='black').place(x=341,y=271,width=84,height=52)
-        self.resistor_threshold_plus = Label(self.board,bg='white',font=('arial',16),text='20',fg='black').place(x=426,y=271,width=85,height=52)
+        self.resistor_threshold_minus_input = StringVar()
+        self.resistor_threshold_plus_input = StringVar()
+        
+        self.r1_input = StringVar()
+        self.r2_input = StringVar()
+        self.r3_input = StringVar()
+        self.r4_input = StringVar()
+        self.r5_input = StringVar()
+        self.r6_input = StringVar()
+        self.r7_input = StringVar()
+        self.r8_input = StringVar()
+        self.r9_input = StringVar()
+        self.r10_input = StringVar()
+        self.r11_input = StringVar()
+        self.r12_input = StringVar()
+
+        self.current_input = StringVar()
+        self.voltage_input = StringVar()
+        self.temperature_input = StringVar()
+        
+        
+        try:
+            (r1, r2, r3, r4, r5, r6,
+            r7, r8, r9, r10, r11, r12,
+            mn, mx, current, voltage, 
+            temperature) = self.read_file()
+            
+            self.r1_input.set(r1)
+            self.r2_input.set(r2)
+            self.r3_input.set(r3)
+            self.r4_input.set(r4)
+            self.r5_input.set(r5)
+            self.r6_input.set(r6)
+            self.r7_input.set(r7)
+            self.r8_input.set(r8)
+            self.r9_input.set(r9)
+            self.r10_input.set(r10)
+            self.r11_input.set(r11)
+            self.r12_input.set(r12)
+            
+            self.resistor_threshold_minus_input.set(mn)
+            self.resistor_threshold_plus_input.set(mx)
+            
+            self.current_input.set(current)
+            self.voltage_input.set(voltage)
+            self.temperature_input.set(temperature)
+            
+        except:
+            tk.messagebox.showinfo('Warning',"Read Data Configure Failed")  
+
+        self.resistor_threshold_minus = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.resistor_threshold_minus_input).place(x=341,y=271,width=84,height=52)
+        self.resistor_threshold_plus = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.resistor_threshold_plus_input).place(x=426,y=271,width=85,height=52)
        
-        self.r1_value = Label(self.board,bg='white',font=('arial',16),text='3').place(x=86,y=55,width=84,height=53)
-        self.r4_value = Label(self.board,bg='white',font=('arial',16),text='5.9').place(x=86,y=109,width=84,height=53)
-        self.r7_value = Label(self.board,bg='white',font=('arial',16),text='11.9').place(x=86,y=163,width=84,height=53) 
-        self.r10_value = Label(self.board,bg='white',font=('arial',16),text='25.4').place(x=86,y=217,width=84,height=53)
-        self.r2_value = Label(self.board,bg='white',font=('arial',16),text='3').place(x=256,y=55,width=84,height=53)
-        self.r5_value = Label(self.board,bg='white',font=('arial',16),text='5.9').place(x=256,y=109,width=84,height=53)
-        self.r8_value = Label(self.board,bg='white',font=('arial',16),text='11.9').place(x=256,y=163,width=84,height=53)
-        self.r11_value = Label(self.board,bg='white',font=('arial',16),text='25.4').place(x=256,y=217,width=84,height=53)
-        self.r3_value = Label(self.board,bg='white',font=('arial',16),text='3').place(x=426,y=55,width=85,height=53)
-        self.r6_value = Label(self.board,bg='white',font=('arial',16),text='5.9').place(x=426,y=109,width=85,height=53)
-        self.r9_value = Label(self.board,bg='white',font=('arial',16),text='11.9').place(x=426,y=163,width=85,height=53)
-        self.r12_value = Label(self.board,bg='white',font=('arial',16),text='25.4').place(x=426,y=217,width=85,height=53)
+        self.r1_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r1_input).place(x=86,y=55,width=84,height=53)
+        self.r4_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r4_input).place(x=86,y=109,width=84,height=53)
+        self.r7_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r7_input).place(x=86,y=163,width=84,height=53) 
+        self.r10_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r10_input).place(x=86,y=217,width=84,height=53)
+        self.r2_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r2_input).place(x=256,y=55,width=84,height=53)
+        self.r5_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r5_input).place(x=256,y=109,width=84,height=53)
+        self.r8_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r8_input).place(x=256,y=163,width=84,height=53)
+        self.r11_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r11_input).place(x=256,y=217,width=84,height=53)
+        self.r3_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r3_input).place(x=426,y=55,width=85,height=53)
+        self.r6_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r6_input).place(x=426,y=109,width=85,height=53)
+        self.r9_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r9_input).place(x=426,y=163,width=85,height=53)
+        self.r12_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.r12_input).place(x=426,y=217,width=85,height=53)
        
-        self.current_value = Label(self.board,bg='white',font=('arial',16),text='180').place(x=897,y=55,width=127,height=53)
-        self.voltage_value = Label(self.board,bg='white',font=('arial',16),text='250').place(x=897,y=109,width=127,height=53)
-        self.temperature_value = Label(self.board,bg='white',font=('arial',16),text='90').place(x=897,y=163,width=127,height=53)
+        self.current_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.current_input).place(x=897,y=55,width=127,height=53)
+        self.voltage_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.voltage_input).place(x=897,y=109,width=127,height=53)
+        self.temperature_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.temperature_input).place(x=897,y=163,width=127,height=53)
         
     def tab_button(self):
-        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white')
+        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white',command=self.write_file)
         self.btn_apply.place(x=21,y=48,width=150,height=48)
         
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
         self.btn_apply.place(x=182,y=48,width=150,height=48)
         
     def button_fan(self):
-        a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.off = ImageTk.PhotoImage(a2)
+        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
-        self.btn_on.place(x=15,y=28,width=139,height=70)
+        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_on_fan.place(x=15,y=28,width=139,height=70)
+        self.is_fan_on = True
 
-        if self.is_on:
-            self.btn_on.config(image=self.off)
-            self.is_on = False 
+    def clickfan(self):
+        if self.is_fan_on:
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False 
             control_relay(req='300',id='14',status='0')
         else :
-            self.btn_on.config(image=self.on)
-            self.is_on = True
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
             control_relay(req='300',id='14',status='1')
             
-    def button_test(self):
-        test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.ont = ImageTk.PhotoImage(test1)
-        test2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.offt = ImageTk.PhotoImage(test2)
+    def button_testmode(self):
+        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        test_phase2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase2 = ImageTk.PhotoImage(test_phase2)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.ont,bg='white', bd=0,command=lambda:self.button_test())
-        self.btn_on.place(x=171,y=28,width=139,height=70)
+        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
+        self.btn_testmode_on.place(x=171,y=28,width=139,height=70)
+        self.test_phase1 = True
 
-        if self.is_test:
-            self.btn_on.config(image=self.offt)
-            self.is_test = False 
+    def clickphase(self):
+        if self.test_phase1:
+            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.test_phase1 = False 
             control_relay(req='300',id='15',status='0')
         else :
-            self.btn_on.config(image=self.ont)
-            self.is_test = True
+            self.btn_testmode_on.config(image=self.img_test_phase2)
+            self.test_phase1 = True
             control_relay(req='300',id='15',status='1')
             
     def logo(self):
@@ -215,5 +272,31 @@ class PAGE5:
         self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=308,y=132,width=198,height=15)
         
         
+    def read_file(self):
+        return self.config_service.read_file()
+    
+    def write_file(self):
+        r1 = self.r1_input.get()
+        r2 = self.r2_input.get()
+        r3 = self.r3_input.get()
+        r4 = self.r4_input.get()
+        r5 = self.r5_input.get()
+        r6 = self.r6_input.get()
+        r7 = self.r7_input.get()
+        r8 = self.r8_input.get()
+        r9 = self.r9_input.get()
+        r10 = self.r10_input.get()
+        r11 = self.r11_input.get()
+        r12 = self.r12_input.get()
         
+        mn = self.resistor_threshold_minus_input.get()
+        mx = self.resistor_threshold_plus_input.get()
+        
+        current = self.current_input.get()
+        voltage = self.voltage_input.get()
+        temperature = self.temperature_input.get()
+        
+        self.config_service.write_file(r1, r2, r3, r4, r5, r6,
+                                       r7, r8, r9, r10, r11, r12, 
+                                       mn, mx, current, voltage, temperature)
         

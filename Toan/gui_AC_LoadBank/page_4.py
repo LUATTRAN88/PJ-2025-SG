@@ -13,8 +13,8 @@ from page_5 import *
 class PAGE4:
     def __init__(self):
         self.origin_data = None
-        self.is_on = False
-        self.is_test = False
+        # self.is_on = False
+        # self.is_test = False
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
@@ -36,7 +36,7 @@ class PAGE4:
         self.lay_logo_switch.place(x=513,y=0,width=511,height=162)
         
         self.button_fan()
-        self.button_test()
+        self.button_testmode()
         self.logo()
         self.timeset()
         self.label_run_temp()
@@ -74,10 +74,8 @@ class PAGE4:
                 
     def event_page5(self): 
         # self.layout.place_forget()      # ẩn Frame PAGE4
-        
         self.display5 = PAGE5()
         self.display5.create_layout(self.layout)
-        
         
     def notification(self):
         tkinter.messagebox.showinfo('Warning',"Enter password again please!")     
@@ -93,39 +91,41 @@ class PAGE4:
             
               
     def button_fan(self):
-        a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.off = ImageTk.PhotoImage(a2)
+        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
-        self.btn_on.place(x=15,y=28,width=139,height=70)
+        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.button_fan())
+        self.btn_on_fan.place(x=15,y=28,width=139,height=70)
 
-        if self.is_on:
-            self.btn_on.config(image=self.off)
-            self.is_on = False 
+    def clickfan(self):
+        if self.is_fan_on:
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False 
             control_relay(req='300',id='14',status='0')
         else :
-            self.btn_on.config(image=self.on)
-            self.is_on = True
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
             control_relay(req='300',id='14',status='1')
             
-    def button_test(self):
-        test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.ont = ImageTk.PhotoImage(test1)
-        test2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.offt = ImageTk.PhotoImage(test2)
+    def button_testmode(self):
+        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        test_phase2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase2 = ImageTk.PhotoImage(test_phase2)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.ont,bg='white', bd=0,command=lambda:self.button_test())
-        self.btn_on.place(x=171,y=28,width=139,height=70)
+        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_testmode_on.place(x=171,y=28,width=139,height=70)
 
-        if self.is_test:
-            self.btn_on.config(image=self.offt)
-            self.is_test = False 
+    def clickphase(self):
+        if self.test_phase1:
+            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.test_phase1 = False 
             control_relay(req='300',id='15',status='0')
         else :
-            self.btn_on.config(image=self.ont)
-            self.is_test = True
+            self.btn_testmode_on.config(image=self.img_test_phase2)
+            self.test_phase1 = True
             control_relay(req='300',id='15',status='1')
             
     def logo(self):
@@ -168,7 +168,7 @@ class KEYBOARD:
         self.entry_value=''
         Entry(self.layout10,bg='white',bd=0,justify='center',font=('Arial Bold',16),textvariable=self.equation,show='*').place(x=1,y=1,width=270,height=52)
 
-        self.b1=Button(self.layout11,font=('Arial Bold',16),text='Tab',relief='flat',bg='white',command=lambda:self.show('Tab')).place(x=1, y=0,width=66, height=53)
+        self.b1=Button(self.layout11,font=('Arial Bold',16),text='C',relief='flat',bg='white',command=lambda:self.clear()).place(x=1, y=0,width=66, height=53)
         self.b2=Button(self.layout11,font=('Arial Bold',16),text='/',relief='flat',bg='white',command=lambda:self.show('/')).place(x=68, y=0,width=67, height=53)
         Button(self.layout11,font=('Arial Bold',16),text='*',relief='flat',bg='white',command=lambda:self.show('*')).place(x=136, y=0,width=67, height=53)
         Button(self.layout11,font=('Arial Bold',16),text='#',relief='flat',bg='white',command=lambda:self.show('#')).place(x=204, y=0,width=67, height=53)

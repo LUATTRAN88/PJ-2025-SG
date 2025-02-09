@@ -11,12 +11,15 @@ from time import strftime
 class PAGE1:
     def __init__(self):
         self.origin_data = None
-        self.is_on = False
-        self.is_test = False
+        # self.is_on = False
+        # self.is_test = False
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
+        self.hold_powerup=FALSE;
+        self.hold_timeup=FALSE;
     def create_layout(self,lay1):
+        self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
         self.layout1.place(x=0,y=60,width=512,height=540)
 
@@ -46,7 +49,7 @@ class PAGE1:
         self.label_power()
         self.parameter()
         self.button_fan()
-        self.button_test()
+        self.button_testmode()
         self.logo()
         self.line()
         self.timeset()
@@ -176,40 +179,44 @@ class PAGE1:
         self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),text='0.99',fg='black').place(x=426,y=145,width=84,height=34)
          
     def button_fan(self):
-        a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.off = ImageTk.PhotoImage(a2)
+        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
-        self.btn_on.place(x=15,y=46,width=139,height=70)
-
-        if self.is_on:
-            self.btn_on.config(image=self.off)
-            self.is_on = False 
+        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_on_fan.place(x=15,y=46,width=139,height=70)
+        self.is_fan_on = True
+       
+    def clickfan(self):
+        if self.is_fan_on:
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False 
             control_relay(req='300',id='14',status='0')
         else :
-            self.btn_on.config(image=self.on)
-            self.is_on = True
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
             control_relay(req='300',id='14',status='1')
             
-    def button_test(self):
-        test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.ont = ImageTk.PhotoImage(test1)
-        test2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.offt = ImageTk.PhotoImage(test2)
+    def button_testmode(self):
+        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.ont,bg='white', bd=0,command=lambda:self.button_test())
-        self.btn_on.place(x=171,y=46,width=139,height=70)
-
-        if self.is_test:
-            self.btn_on.config(image=self.offt)
-            self.is_test = False 
+        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
+        self.btn_testmode_on.place(x=171,y=46,width=139,height=70)
+        self.test_phase1=TRUE;
+        
+    def clickphase(self):     
+        if self.test_phase1:
+            self.btn_testmode_on.config(image=self.img_test_phase3)
+            self.test_phase1 = False 
             control_relay(req='300',id='15',status='0')
         else :
-            self.btn_on.config(image=self.ont)
-            self.is_test = True
-            control_relay(req='300',id='15',status='1')
+            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.test_phase1 = True
+            control_relay(req='300',id='15',status='1')  
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -242,10 +249,22 @@ class PAGE1:
         self.picup = ImageTk.PhotoImage(self.up)
         self.picdown = ImageTk.PhotoImage(self.down)
         
-        self.btn_powset_up = Button(self.lay_power_set,bd=3, bg='#191970',image=self.picup,command=lambda:self.increase_power_set()).place(x=412,y=18,width=84,height=55)
+        self.btn_powset_up = Button(self.lay_power_set,bd=3, bg='#191970',image=self.picup,command=lambda:self.increase_power_set())
+        self.btn_powset_up.place(x=412,y=18,width=84,height=55)
+        
+        self.btn_powset_up.bind("<ButtonPress-1>", self.on_press_powerup)
+        self.btn_powset_up.bind("<ButtonRelease-1>", self.on_release_powerup)
+    
+        
         self.btn_powset_down = Button(self.lay_power_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_power_set()).place(x=412,y=108,width=84,height=55)
 
-        self.btn_time_up = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picup,command=lambda:self.increase_timer_set()).place(x=412,y=18,width=84,height=55)
+        self.btn_time_up = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picup,command=lambda:self.increase_timer_set())
+        self.btn_time_up.place(x=412,y=18,width=84,height=55)
+        
+        self.btn_time_up.bind("<ButtonPress-1>", self.on_press_timesetup)
+        self.btn_time_up.bind("<ButtonRelease-1>", self.on_release_timesetup)
+        
+        
         self.btn_time_down = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_timer_set()).place(x=412,y=108,width=84,height=55)
 
         
@@ -257,9 +276,16 @@ class PAGE1:
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
         self.btn_logging.place(x=21,y=66,width=150,height=48)
-        
+    def on_press_powerup(self, event):
+        self.hold_powerup = True
+        print("test")
+        self.hold_event_updown()
+
+    def on_release_powerup(self, event):
+        self.hold_powerup = False   
+            
     def increase_power_set(self):
-        if self.power_value < 150:
+        if self.power_value < 100:
             self.power_value += 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
             result=number_of_objects(self.power_value)
@@ -270,8 +296,25 @@ class PAGE1:
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)        
             result=number_of_objects(self.power_value)
             print(result)
+            
+    def on_press_timesetup(self, event):
+        self.hold_timeup = True
+        print("test time")
+        self.hold_event_updown()
+
+    def on_release_timesetup(self, event):
+        self.hold_timeup = False   
+    def hold_event_updown(self):
+        if self.hold_timeup == TRUE:
+            self.increase_timer_set()
+            self.root.after(100, self.hold_event_updown)  # Repeat action every 100ms      
+        elif self.hold_powerup == TRUE:
+            self.increase_power_set()
+            self.root.after(100, self.hold_event_updown)  # Repeat action every 100ms 
+            
+            
     def increase_timer_set(self):
-        if self.time_value < 60:
+        if self.time_value <= 300:
             self.time_value +=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)        
             

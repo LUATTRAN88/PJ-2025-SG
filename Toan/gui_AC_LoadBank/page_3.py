@@ -13,12 +13,15 @@ from config.config_setting import *
 class PAGE3:
     def __init__(self):
         self.origin_data = None
-        self.is_on = False
-        self.is_test = False
+        # self.is_on = False
+        # self.is_test = False
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
         self.config_setting = ConfigSetting()
+        # self.power_input = self.read_file()[0]
+        # self.voltage_input = self.read_file()[1]
+        # self.temp_input = self.read_file()[2]
         
     def create_layout(self,lay3):
         self.layout1 = Frame(lay3,bg='red')                   
@@ -44,7 +47,7 @@ class PAGE3:
         self.alarm_setting()
         self.tab_button()
         self.button_fan()
-        self.button_test()
+        self.button_testmode()
         self.logo()
         self.timeset()
         
@@ -127,9 +130,19 @@ class PAGE3:
         # self.power_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=55,width=126,height=52)
         # self.voltage_value = Label(self.board,bg='white',font=('arial',16),text='240').place(x=385,y=109,width=126,height=52)
         # self.temp_value = Label(self.board,bg='white',font=('arial',16),text='80').place(x=385,y=163,width=126,height=52)
+        
         self.power_input = StringVar()
         self.voltage_input = StringVar()
         self.temp_input = StringVar()
+        
+        
+        try:
+            power, voltage, temp = self.read_file()
+            self.power_input.set(power)
+            self.voltage_input.set(voltage)
+            self.temp_input.set(temp)
+        except:
+             tk.messagebox.showinfo('Warning',"Read Data Configure Failed")  
         
         self.power_value = Entry(self.board,bg='white',font=('arial',16),justify='center',textvariable=self.power_input).place(x=385,y=55,width=127,height=53)
         self.voltage_value = Entry(self.board,bg='white',font=('arial',16),justify='center', textvariable=self.voltage_input).place(x=385,y=109,width=127,height=53)
@@ -144,39 +157,43 @@ class PAGE3:
         self.btn_apply.place(x=182,y=48,width=150,height=48)
         
     def button_fan(self):
-        a1 = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.on = ImageTk.PhotoImage(a1)
-        a2 = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.off = ImageTk.PhotoImage(a2)
+        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.on,bg='white', bd=0,command=lambda:self.button_fan())
-        self.btn_on.place(x=15,y=28,width=139,height=70)
-
-        if self.is_on:
-            self.btn_on.config(image=self.off)
-            self.is_on = False 
+        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_on_fan.place(x=15,y=28,width=139,height=70)
+        self.is_fan_on = True
+        
+    def clickfan(self):
+        if self.is_fan_on:
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False 
             control_relay(req='300',id='14',status='0')
         else :
-            self.btn_on.config(image=self.on)
-            self.is_on = True
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
             control_relay(req='300',id='14',status='1')
             
-    def button_test(self):
-        test1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.ont = ImageTk.PhotoImage(test1)
-        test2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.offt = ImageTk.PhotoImage(test2)
+    def button_testmode(self):
+        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        test_phase2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase2 = ImageTk.PhotoImage(test_phase2)
 
-        self.btn_on = Button(self.lay_logo_switch,image=self.ont,bg='white', bd=0,command=lambda:self.button_test())
-        self.btn_on.place(x=171,y=28,width=139,height=70)
-
-        if self.is_test:
-            self.btn_on.config(image=self.offt)
-            self.is_test = False 
+        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
+        self.btn_testmode_on.place(x=171,y=28,width=139,height=70)
+        self.test_phase1 = True
+        
+    def clickphase(self):
+        if self.test_phase1:
+            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.test_phase1 = False 
             control_relay(req='300',id='15',status='0')
         else :
-            self.btn_on.config(image=self.ont)
-            self.is_test = True
+            self.btn_testmode_on.config(image=self.img_test_phase2)
+            self.test_phase1 = True
             control_relay(req='300',id='15',status='1')
             
     def logo(self):
@@ -189,12 +206,12 @@ class PAGE3:
         self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=308,y=132,width=198,height=15)
         
     def read_file(self):
-        self.config_setting.read_file()
+        return self.config_setting.read_file()
         
     def write_file(self):
         power = self.power_input.get()
         voltage = self.voltage_input.get()
         temp = self.temp_input.get()
         # print(power, '')
-        print('tYpe ', type(power))
+        # print('tYpe ', type(power))
         self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)    
