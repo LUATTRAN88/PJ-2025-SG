@@ -25,9 +25,9 @@ class Arduino:
                 return False;
             else:
                 print("Connect successfully!");
-                self.threading_read = Thread(target=self.read_port, args=());          
+                self.threading_read = Thread(target=self.read_data, args=());          
                 self.flag_thread_read = True;
-                #self.threading_read.start();
+                self.threading_read.start();
               
             return True;
         except:
@@ -55,10 +55,13 @@ class Arduino:
                 
                 self.serial_con.write(bytes(data, 'utf-8'));
         
-    def read_port(self):
+    def read_data(self):
         while self.flag_thread_read:
-            self.store_data = self.serial_con.readline();
-            print(self.store_data);
+            if self.serial_con != None:
+                if self.serial_con.is_open:
+                    self.store_data = self.serial_con.readline();
     def readline(self):
-        self.store_data = self.serial_con.readline();
+        if self.serial_con != None:
+            if self.serial_con.is_open:
+                self.store_data = self.serial_con.readline();
         return self.store_data;

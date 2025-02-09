@@ -23,9 +23,6 @@ class PAGE1:
         self.time_value = 0
         self.hold_powerup=FALSE;
         self.hold_timeup=FALSE;
-        self.ADRUINO_REQ =ADRUINO_REQ_FULL_DATA;
-        self.ADRUINO_REQ_STATUS_PORT = 0;
-
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -62,13 +59,12 @@ class PAGE1:
         self.line()
         self.timeset()
         
-        self.signal_object = []
+        self.signal_list = []
         for i in range(16):
             x_spacing= i * 32
-            signal = SIGNAL()
-            
+            signal = SIGNAL() 
             signal.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
-            self.signal_object.append(signal)
+            self.signal_list.append(signal)
             if i==12:
                 signal.text_relay.set('Fan')
             elif i==13:
@@ -191,9 +187,9 @@ class PAGE1:
         
         
         
-        
+        self.txt_apf_sum = StringVar()
         self.lb_fre_none5 = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.PF',fg='black').place(x=341,y=145,width=83,height=33)
-        self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),text='0.99',fg='black').place(x=426,y=145,width=84,height=34)
+        self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.txt_apf_sum,fg='black').place(x=426,y=145,width=84,height=34)
          
     def button_fan(self):
         img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
@@ -206,17 +202,17 @@ class PAGE1:
         self.is_fan_on = True
        
     def clickfan(self):
-        self.ADRUINO_REQ=ADRUINO_PORT_CTRL_FAN
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
-            self.ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
-            self.ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
-        self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,self.ADRUINO_REQ_STATUS_PORT);
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,ADRUINO_REQ_STATUS_PORT);
            
             
     def button_testmode(self):
@@ -229,15 +225,17 @@ class PAGE1:
         self.btn_testmode_on.place(x=171,y=46,width=139,height=70)
         self.test_phase1=TRUE;
         
-    def clickphase(self):     
+    def clickphase(self):  
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF   
         if self.test_phase1:
             self.btn_testmode_on.config(image=self.img_test_phase3)
             self.test_phase1 = False 
-            control_relay(req='300',id='15',status='0')
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
             self.btn_testmode_on.config(image=self.img_test_phase1)
             self.test_phase1 = True
-            control_relay(req='300',id='15',status='1')  
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_PHASE,ADRUINO_REQ_STATUS_PORT);
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -345,32 +343,18 @@ class PAGE1:
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
             
     def createThreadAdruino(self):
-        self.threading_req = Thread(target=self.requestdata, args=()); 
-        self.threading_rep = Thread(target=self.loadingdata, args=());          
+        #self.threading_req = Thread(target=self.requestdata, args=()); 
+        threading_rep = Thread(target=self.loadingdata, args=());          
         self.flag_thread_req_rep = True;
-        self.threading_req.start();
-        self.threading_rep.start();
-    def requestdata(self):
-       while self.flag_thread_req_rep:
-            if self.ADRUINO_REQ==ADRUINO_REQ_FULL_DATA:
-                #self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
-                sleep(0.5)
-            elif self.ADRUINO_REQ==ADRUINO_PORT_CTRL_FAN:
-                #self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,self.ADRUINO_REQ_STATUS_PORT);
-                self.ADRUINO_REQ=ADRUINO_REQ_FULL_DATA
-                sleep(2)
-            
- 
+        #self.threading_req.start();
+        threading_rep.start();  
+    def stopThreadAdruino(self):
+        self.flag_thread_req_rep=False;
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                #response = self.adruino.store_data;
-                #self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
-                #sleep(0.5)
-                response = self.adruino.readline();
+                response = self.adruino.store_data;
                 data = json.loads(response);
-
-                    # print(type())
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
                     #print(self.kw1)
@@ -388,20 +372,20 @@ class PAGE1:
                 self.freqq.set(str(self.origin_data['freq']))
                 self.tempcc.set(str(self.origin_data['tempc']))
                 self.tkw.set(str(self.origin_data['tkw']))
-                
-                sum_aln=self.origin_data['cur1']+self.origin_data['cur2']+self.origin_data['cur3']
-                self.txt_aln_sum.set(sum_aln)
+
+                self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                self.txt_aln_sum.set(str(self.origin_data['vln']))
                 self.rl_array = data['rls']
-                
                 index=0;
                 for i in self.rl_array:
                     
                     if i==1:
-                        self.signal_object[index].setonoff(1);
+                        self.signal_list[index].setonoff(1);
                     else:
-                        self.signal_object[index].setonoff(0);
+                        self.signal_list[index].setonoff(0);
                     index+=1;
                     pass
+                sleep(0.1)
             except :
-                print("Connect Server Abnormal")
+                print("Connect Server Abnormal Page1")
                 sleep(1)

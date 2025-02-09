@@ -29,21 +29,33 @@ class MAINGUI:
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
         self.btn_service.bind('<Button-1>', self.event_page4)
-        
+        self.adruino= Arduino();
         self.display4 = PAGE4()
+        self.display4.adruino=self.adruino;
         self.display4.create_layout(self.layout)
+        self.display4.createThreadAdruino();
+
         self.display3 = PAGE3()
+        self.display3.adruino=self.adruino;
         self.display3.create_layout(self.layout)
+        self.display3.createThreadAdruino();
+
         self.display2 = PAGE2()
+        self.display2.adruino=self.adruino;
         self.display2.create_layout(self.layout)
+        self.display2.createThreadAdruino();
+
         self.display1 = PAGE1()
+        self.display1.adruino=self.adruino;
         self.display1.create_layout(self.layout)
+        self.display1.createThreadAdruino();
+
         self.state_ctrl = STATE_M_CONNECTION;
         self.state_margin();
         
     def state_margin(self):
         if self.state_ctrl == STATE_M_CONNECTION:
-            self.adruino= Arduino();
+            
             result=self.adruino.connect_port();
             if result==True:
                 self.state_ctrl=STATE_M_CONNECTED;
@@ -51,38 +63,46 @@ class MAINGUI:
             else:
                 tkinter.messagebox.showinfo('Warning',"Hardware Connection Failed!") 
         elif self.state_ctrl == STATE_M_CONNECTED:
-            self.display1.adruino=self.adruino;
-            self.display2.adruino=self.adruino;
-            self.display3.adruino=self.adruino;
-            self.display4.adruino=self.adruino;
-            self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
-            self.display1.createThreadAdruino();
             pass;          
-        
+
+    def stopAllThreadAdruino(self):
+        # self.display1.stopThreadAdruino();
+        # self.display2.stopThreadAdruino();
+        # self.display3.stopThreadAdruino();
+        # self.display4.stopThreadAdruino();
+        pass
     def event_page1(self,event):
         try:
+            self.stopAllThreadAdruino()
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
+            self.display1.createThreadAdruino();
         except:
             pass
 
     def event_page2(self,event):
         try:
+            self.stopAllThreadAdruino()
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
+            self.display2.createThreadAdruino();
         except:
             pass
     def event_page3(self,event):
         try:
+            self.stopAllThreadAdruino()
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
+            self.display3.createThreadAdruino();
         except:
             pass
     def event_page4(self,event):
         try:
+            self.stopAllThreadAdruino()
             self.display4.layout.tkraise()
             self.display4.layout1.tkraise()
             self.display4.layout2.tkraise() 
+            self.display4.createThreadAdruino();
         except:
             pass       
         

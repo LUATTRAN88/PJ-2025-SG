@@ -9,7 +9,11 @@ from PIL import ImageTk, Image
 from extend import *
 from time import strftime
 from config.config_service import *
-
+import json
+from extend import *
+from time import strftime
+from threading import Thread
+from time import sleep
 class PAGE5:
     def __init__(self):
         self.adruino=None
@@ -54,28 +58,28 @@ class PAGE5:
         for i in range(16):
             x_space = i * 32
             
-            display_relay = SIGNAL()
-            display_relay.create_layout(self.lay_button_relay,x=x_space,y=106,text ='RL'+str(i+1))
-            self.signal_list.append(display_relay)
+            signal = SIGNAL()
+            signal.create_layout(self.lay_button_relay,x=x_space,y=106,text ='RL'+str(i+1))
+            self.signal_list.append(signal)
             
             if i==12:
-                display_relay.text_relay.set('Fan')
+                signal.text_relay.set('Fan')
             elif i==13:
-                display_relay.text_relay.set('Alar')
+                signal.text_relay.set('Alar')
             elif i==14:
-                display_relay.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==15:
-                display_relay.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==3 or i==4 or i==5:
-                display_relay.text_relay.set('10.2')
+                signal.text_relay.set('10.2')
             elif i==6 or i==7 or i==8:
-                display_relay.text_relay.set('5.2')
+                signal.text_relay.set('5.2')
             elif i==9 or i==10:
-                display_relay.text_relay.set('2.2')
+                signal.text_relay.set('2.2')
             elif i==11:
-                display_relay.text_relay.set('1.2')
+                signal.text_relay.set('1.2')
             else:
-                display_relay.text_relay.set('20.2')
+                signal.text_relay.set('20.2')
                 
         
     def label_run_temp(self):
@@ -300,4 +304,32 @@ class PAGE5:
         self.config_service.write_file(r1, r2, r3, r4, r5, r6,
                                        r7, r8, r9, r10, r11, r12, 
                                        mn, mx, current, voltage, temperature)
+    def createThreadAdruino(self):
+        #self.threading_req = Thread(target=self.requestdata, args=()); 
+        threading_rep = Thread(target=self.loadingdata, args=());          
+        self.flag_thread_req_rep = True;
+        #self.threading_req.start();
+        threading_rep.start();  
+    def stopThreadAdruino(self):
+        self.flag_thread_req_rep=False;
+    def loadingdata(self):
+        while self.flag_thread_req_rep:
+            try:
+                response = self.adruino.store_data;
+                data = json.loads(response);
+                self.origin_data = data['info']
+                self.rl_array = data['rls']
+                index=0;
+                for i in self.rl_array:
+                    
+                    if i==1:
+                        self.signal_list[index].setonoff(1);
+                    else:
+                        self.signal_list[index].setonoff(0);
+                    index+=1;
+                    pass
+                sleep(1)
+            except :
+                print("Connect Server Abnormal")
+                sleep(1)   
         

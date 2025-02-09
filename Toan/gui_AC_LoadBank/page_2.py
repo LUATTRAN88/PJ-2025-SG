@@ -8,6 +8,11 @@ from PIL import ImageTk, Image
 # import json
 from extend import *
 from time import strftime
+import json
+from extend import *
+from time import strftime
+from threading import Thread
+from time import sleep
 
 class PAGE2:
     def __init__(self):
@@ -53,28 +58,28 @@ class PAGE2:
         self.line()
         self.timeset()
         
-        self.signal_object = []
+        self.signal_list = []
         for i in range(16):
             x_spacing= i * 32
-            self.display1 = SIGNAL()
-            self.display1.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
-            self.signal_object.append(self.display1)
+            signal = SIGNAL()
+            signal.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
+            self.signal_list.append(signal)
             if i==12:
-                self.display1.text_relay.set('Fan')
+                signal.text_relay.set('Fan')
             elif i==13:
-                self.display1.text_relay.set('Alar')
+                signal.text_relay.set('Alar')
             elif i==14 or i==15:
-                self.display1.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==11:
-                self.display1.text_relay.set('1.2')
+                signal.text_relay.set('1.2')
             elif i==10 or i==9:
-                self.display1.text_relay.set('2.2')
+                signal.text_relay.set('2.2')
             elif i==8 or i==7 or i==6:
-                self.display1.text_relay.set('5.2')
+                signal.text_relay.set('5.2')
             elif i==5 or i==4 or i==3:
-                self.display1.text_relay.set('10.2')   
+                signal.text_relay.set('10.2')   
             else:
-                self.display1.text_relay.set('20.2')
+                signal.text_relay.set('20.2')
                 
         self.relay_object = []
         for i in range(12):
@@ -82,10 +87,11 @@ class PAGE2:
             col= i % 6              # mỗi hàng có 6 (cột) đối tượng
             x_space= col * 74       # khoảng cách giữa các (cột) đối tượng
             y_space= row * 85       # khoảng cách giữa 2 hàng
-            self.relay_signal = RELAY_POWER()
-            self.relay_signal.set_id(i+1)
-            self.relay_signal.create_layout(self.lay_timer_set, x=x_space,y=y_space,text = 'RL'+ str(i+1))
-            self.relay_object.append(self.relay_signal)
+            relay_signal = RELAY_POWER()
+            relay_signal.set_port(i)
+            relay_signal.create_layout(self.lay_timer_set, x=x_space,y=y_space,text = 'RL'+ str(i+1))
+            self.relay_object.append(relay_signal)
+            relay_signal.adruino=self.adruino
             
             
     def label_power(self):
@@ -265,12 +271,64 @@ class PAGE2:
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
         self.btn_logging.place(x=21,y=66,width=150,height=48)
+    def createThreadAdruino(self):
+        #self.threading_req = Thread(target=self.requestdata, args=()); 
+        threading_rep = Thread(target=self.loadingdata, args=());          
+        self.flag_thread_req_rep = True;
+        #self.threading_req.start();
+        threading_rep.start();  
+        
+    def stopThreadAdruino(self):
+        self.flag_thread_req_rep=False;
+    def loadingdata(self):
+        while self.flag_thread_req_rep:
+            try:
+                response = self.adruino.store_data;
+                data = json.loads(response);
+                self.origin_data = data['info']
+                # self.kw1.set(str(self.origin_data['kw1']))
+                #     #print(self.kw1)
+                # self.kw2.set(str(self.origin_data['kw2']))
+                # self.kw3.set(str(self.origin_data['kw3']))
+                # self.vln1.set(str(self.origin_data['vln1']))
+                # self.vln2.set(str(self.origin_data['vln2']))
+                # self.vln3.set(str(self.origin_data['vln3']))
+                # self.cur1.set(str(self.origin_data['cur1']))
+                # self.cur2.set(str(self.origin_data['cur2']))
+                # self.cur3.set(str(self.origin_data['cur3']))
+                # self.v12.set(str(self.origin_data['v12']))
+                # self.v23.set(str(self.origin_data['v23']))
+                # self.v31.set(str(self.origin_data['v31']))
+                # self.freqq.set(str(self.origin_data['freq']))
+                # self.tempcc.set(str(self.origin_data['tempc']))
+                # self.tkw.set(str(self.origin_data['tkw']))
+
+                # self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                # self.txt_aln_sum.set(str(self.origin_data['vln']))
+                rl_array = data['rls']
+                index=0;
+                for i in rl_array:        
+                    if i==1:
+                        self.signal_list[index].setonoff(1);
+                        if index<12:
+                            self.relay_object[index].setonoff(1);
+                    else:
+                        self.signal_list[index].setonoff(0);
+                        if index<12:
+                            self.relay_object[index].setonoff(0);
+                    index+=1;
+                    pass
+                sleep(0.1)
+            except :
+                print("Connect Server Abnormal")
+                sleep(1) 
         
 # 12 relay
 class RELAY_POWER:
     def __init__(self):
         self.lamp_relay = False
-        self.id=-1;
+        self.port=-1;
+        self.adruino=None
     def create_layout(self,lay_timer_set, x,y,text):
         self.layout = Frame(lay_timer_set,bg='white')
         self.layout.place(x=x+48,y=y+8,width=48,height=66)
@@ -278,38 +336,40 @@ class RELAY_POWER:
         self.lb_relay1 = Label(self.layout,bg='white',font=('arial',12),text=text).place(x=0,y=0,width=55,height=14)
         
         self.lamp_signal_relay()
-    def set_id(self,id):
-        self.id = id
+    def set_port(self,port):
+        self.port = port
     
     def clickRelay(self):
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.lamp_relay:
-            self.btn_on.config(image=self.offr)
-            self.lamp_relay = False 
-            control_relay(req='300',id=self.id,status='0')
-        else:
             self.btn_on.config(image=self.onr)
+            self.lamp_relay = False 
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            
+        else:
+            self.btn_on.config(image=self.offr)
             self.lamp_relay = True
-            control_relay(req='300',id=self.id,status='1')
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(self.port,ADRUINO_REQ_STATUS_PORT);
+    def setonoff(self,val):
+        if val:
+            self.btn_on.config(image=self.onr)
+            self.lamp_relay = False 
+        else:
+            self.btn_on.config(image=self.offr)
+            self.lamp_relay = True
+
     
     def lamp_signal_relay(self):
-        i1 = Image.open(get_path_img()+'relay_s.png').resize((48,47))
-        self.onr = ImageTk.PhotoImage(i1)
-        a2 = Image.open(get_path_img()+'relay_off1.png').resize((48,47))
-        self.offr = ImageTk.PhotoImage(a2)
+        img_relay_on = Image.open(get_path_img()+'relay_s.png').resize((48,47))
+        self.onr = ImageTk.PhotoImage(img_relay_on)
+        img_relay_off = Image.open(get_path_img()+'relay_off1.png').resize((48,47))
+        self.offr = ImageTk.PhotoImage(img_relay_off)
         
-        self.btn_on = Button(self.layout,image=self.onr,bg='white',font=('arial',13),text='19.2',fg='black',compound="center", bd=0,command=lambda:self.clickRelay())
+        self.btn_on = Button(self.layout,image=self.offr,bg='white',font=('arial',13),text='19.2',fg='black',compound="center", bd=0,command=lambda:self.clickRelay())
         self.btn_on.place(x=0,y=18,width=48,height=47)
         self.btn_on.config(image=self.offr)
         self.lamp_relay = False 
-        
+       
             
             
-    # if i==2 and self.lamp_relay == False:
-            #     # elif self.lamp_relay:
-            #         self.btn_on.config(image=self.offr)
-            #         # self.lamp_relay = False 
-            #         control_relay(req='300',id='2',status='0')
-            # else:
-            #         self.btn_on.config(image=self.onr)
-            #         # self.lamp_relay = True
-            #         control_relay(req='300',id='2',status='1')

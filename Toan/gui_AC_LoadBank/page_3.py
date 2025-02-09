@@ -9,6 +9,11 @@ from PIL import ImageTk, Image
 from extend import *
 from time import strftime
 from config.config_setting import *
+import json
+from extend import *
+from time import strftime
+from threading import Thread
+from time import sleep
 
 class PAGE3:
     def __init__(self):
@@ -57,28 +62,28 @@ class PAGE3:
         for i in range(16):
             x_space = i * 32
             
-            display_relay = SIGNAL()
-            display_relay.create_layout(self.lay_button_relay,x=x_space,y=106,text ='RL'+str(i+1))
-            self.signal_list.append(display_relay)
+            signal = SIGNAL()
+            signal.create_layout(self.lay_button_relay,x=x_space,y=106,text ='RL'+str(i+1))
+            self.signal_list.append(signal)
             
             if i==12:
-                display_relay.text_relay.set('Fan')
+                signal.text_relay.set('Fan')
             elif i==13:
-                display_relay.text_relay.set('Alar')
+                signal.text_relay.set('Alar')
             elif i==14:
-                display_relay.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==15:
-                display_relay.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==3 or i==4 or i==5:
-                display_relay.text_relay.set('10.2')
+                signal.text_relay.set('10.2')
             elif i==6 or i==7 or i==8:
-                display_relay.text_relay.set('5.2')
+                signal.text_relay.set('5.2')
             elif i==9 or i==10:
-                display_relay.text_relay.set('2.2')
+                signal.text_relay.set('2.2')
             elif i==11:
-                display_relay.text_relay.set('1.2')
+                signal.text_relay.set('1.2')
             else:
-                display_relay.text_relay.set('20.2')
+                signal.text_relay.set('20.2')
                 
         
     def label_run_temp(self):
@@ -215,4 +220,52 @@ class PAGE3:
         temp = self.temp_input.get()
         # print(power, '')
         # print('tYpe ', type(power))
-        self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)    
+        self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)  
+
+    def createThreadAdruino(self):
+        #self.threading_req = Thread(target=self.requestdata, args=()); 
+        threading_rep = Thread(target=self.loadingdata, args=());          
+        self.flag_thread_req_rep = True;
+        #self.threading_req.start();
+        threading_rep.start();  
+    def stopThreadAdruino(self):
+        self.flag_thread_req_rep=False;
+    def loadingdata(self):
+        while self.flag_thread_req_rep:
+            try:
+                response = self.adruino.store_data;
+                data = json.loads(response);
+                self.origin_data = data['info']
+                # self.kw1.set(str(self.origin_data['kw1']))
+                #     #print(self.kw1)
+                # self.kw2.set(str(self.origin_data['kw2']))
+                # self.kw3.set(str(self.origin_data['kw3']))
+                # self.vln1.set(str(self.origin_data['vln1']))
+                # self.vln2.set(str(self.origin_data['vln2']))
+                # self.vln3.set(str(self.origin_data['vln3']))
+                # self.cur1.set(str(self.origin_data['cur1']))
+                # self.cur2.set(str(self.origin_data['cur2']))
+                # self.cur3.set(str(self.origin_data['cur3']))
+                # self.v12.set(str(self.origin_data['v12']))
+                # self.v23.set(str(self.origin_data['v23']))
+                # self.v31.set(str(self.origin_data['v31']))
+                # self.freqq.set(str(self.origin_data['freq']))
+                # self.tempcc.set(str(self.origin_data['tempc']))
+                # self.tkw.set(str(self.origin_data['tkw']))
+
+                # self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                # self.txt_aln_sum.set(str(self.origin_data['vln']))
+                self.rl_array = data['rls']
+                index=0;
+                for i in self.rl_array:
+                    
+                    if i==1:
+                        self.signal_list[index].setonoff(1);
+                    else:
+                        self.signal_list[index].setonoff(0);
+                    index+=1;
+                    pass
+                sleep(0.5)
+            except :
+                print("Connect Server Abnormal")
+                sleep(1)    
