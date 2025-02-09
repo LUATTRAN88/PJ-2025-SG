@@ -163,8 +163,8 @@ class PAGE2:
         self.lb_L1_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw1,fg='red').place(x=86,y=37,width=83,height=34)
         self.vln1 = StringVar()
         self.lb_L1_Ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln1,fg='red').place(x=171,y=37,width=83,height=34)
-        self.a1 = StringVar()
-        self.lb_L1_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a1,fg='red').place(x=256,y=37,width=83,height=34)
+        self.cur1 = StringVar()
+        self.lb_L1_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur1,fg='red').place(x=256,y=37,width=83,height=34)
         self.v12 = StringVar()
         self.lb_L1_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v12,fg='red').place(x=426,y=37,width=84,height=34)
         
@@ -176,8 +176,8 @@ class PAGE2:
         self.lb_L2_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw2,fg='orange').place(x=86,y=73,width=83,height=34)
         self.vln2 = StringVar()
         self.lb_L2_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln2,fg='orange').place(x=171,y=73,width=83,height=34)
-        self.a2 = StringVar()
-        self.lb_L2_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a2,fg='orange').place(x=256,y=73,width=83,height=34)
+        self.cur2 = StringVar()
+        self.lb_L2_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur2,fg='orange').place(x=256,y=73,width=83,height=34)
         self.v23 = StringVar()
         self.lb_L2_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v23,fg='orange').place(x=426,y=73,width=84,height=34)
 
@@ -189,8 +189,8 @@ class PAGE2:
         self.lb_L3_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw3,fg='blue').place(x=86,y=109,width=83,height=34)
         self.vln3 = StringVar()
         self.lb_L3_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln3,fg='blue').place(x=171,y=109,width=83,height=34)
-        self.a3 = StringVar()
-        self.lb_L3_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a3,fg='blue').place(x=256,y=109,width=83,height=34)
+        self.cur3 = StringVar()
+        self.lb_L3_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur3,fg='blue').place(x=256,y=109,width=83,height=34)
         self.v31 = StringVar()
         self.lb_L3_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v31,fg='blue').place(x=426,y=109,width=84,height=34)
         
@@ -199,9 +199,18 @@ class PAGE2:
         self.freqq = StringVar()
         self.lb_fre_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.freqq,fg='black').place(x=86,y=145,width=83,height=33)
         self.lb_fre_ln_v = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.LN',fg='black').place(x=171,y=145,width=83,height=33)
-        self.lb_fre_A = Label(self.lay_parameter,bg='white',font=('arial',15),text='232.4',fg='black').place(x=256,y=145,width=83,height=33)
+
+
+        self.txt_aln_sum = StringVar()
+        self.lb_fre_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.txt_aln_sum,fg='black').place(x=256,y=145,width=83,height=33)
+
+
+
         self.lb_fre_none5 = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.PF',fg='black').place(x=341,y=145,width=83,height=33)
-        self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),text='0.99',fg='black').place(x=426,y=145,width=84,height=34)
+
+
+        self.txt_apf_sum = StringVar()
+        self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.txt_apf_sum,fg='black').place(x=426,y=145,width=84,height=34)
          
     def button_fan(self):
         img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
@@ -286,25 +295,25 @@ class PAGE2:
                 response = self.adruino.store_data;
                 data = json.loads(response);
                 self.origin_data = data['info']
-                # self.kw1.set(str(self.origin_data['kw1']))
-                #     #print(self.kw1)
-                # self.kw2.set(str(self.origin_data['kw2']))
-                # self.kw3.set(str(self.origin_data['kw3']))
-                # self.vln1.set(str(self.origin_data['vln1']))
-                # self.vln2.set(str(self.origin_data['vln2']))
-                # self.vln3.set(str(self.origin_data['vln3']))
-                # self.cur1.set(str(self.origin_data['cur1']))
-                # self.cur2.set(str(self.origin_data['cur2']))
-                # self.cur3.set(str(self.origin_data['cur3']))
-                # self.v12.set(str(self.origin_data['v12']))
-                # self.v23.set(str(self.origin_data['v23']))
-                # self.v31.set(str(self.origin_data['v31']))
-                # self.freqq.set(str(self.origin_data['freq']))
-                # self.tempcc.set(str(self.origin_data['tempc']))
-                # self.tkw.set(str(self.origin_data['tkw']))
+                self.kw1.set(str(self.origin_data['kw1']))
+                    #print(self.kw1)
+                self.kw2.set(str(self.origin_data['kw2']))
+                self.kw3.set(str(self.origin_data['kw3']))
+                self.vln1.set(str(self.origin_data['vln1']))
+                self.vln2.set(str(self.origin_data['vln2']))
+                self.vln3.set(str(self.origin_data['vln3']))
+                self.cur1.set(str(self.origin_data['cur1']))
+                self.cur2.set(str(self.origin_data['cur2']))
+                self.cur3.set(str(self.origin_data['cur3']))
+                self.v12.set(str(self.origin_data['v12']))
+                self.v23.set(str(self.origin_data['v23']))
+                self.v31.set(str(self.origin_data['v31']))
+                self.freqq.set(str(self.origin_data['freq']))
+                self.tempcc.set(str(self.origin_data['tempc']))
+                self.tkw.set(str(self.origin_data['tkw']))
 
-                # self.txt_apf_sum.set(str(self.origin_data['avpf']))
-                # self.txt_aln_sum.set(str(self.origin_data['vln']))
+                self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                self.txt_aln_sum.set(str(self.origin_data['vln']))
                 rl_array = data['rls']
                 index=0;
                 for i in rl_array:        
