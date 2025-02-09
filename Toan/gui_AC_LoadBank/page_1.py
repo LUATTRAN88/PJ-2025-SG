@@ -2,14 +2,19 @@ from tkinter import *
 # from tkinter import font as tkFont
 from PIL import ImageTk, Image
 # import threading
-# from time import sleep
+from time import sleep
 # import client as clientCall
-# import json
+import json
 from extend import *
 from time import strftime
+from threading import Thread
+
+# import http.client
+
 
 class PAGE1:
     def __init__(self):
+        self.adruino=None
         self.origin_data = None
         # self.is_on = False
         # self.is_test = False
@@ -57,27 +62,28 @@ class PAGE1:
         self.signal_object = []
         for i in range(16):
             x_spacing= i * 32
-            self.display1 = SIGNAL()
-            self.display1.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
-            self.signal_object.append(self.display1)
+            signal = SIGNAL()
+            
+            signal.create_layout(self.lay_button_load,x=x_spacing,y=124,text='RL' + str(i+1))
+            self.signal_object.append(signal)
             if i==12:
-                self.display1.text_relay.set('Fan')
+                signal.text_relay.set('Fan')
             elif i==13:
-                self.display1.text_relay.set('Alar')
+                signal.text_relay.set('Alar')
             elif i==14 or i==15:
-                self.display1.text_relay.set('Spar')
+                signal.text_relay.set('Spar')
             elif i==11:
-                self.display1.text_relay.set('1.2')
+                signal.text_relay.set('1.2')
             elif i==10 or i==9:
-                self.display1.text_relay.set('2.2')
+                signal.text_relay.set('2.2')
             elif i==8 or i==7 or i==6:
-                self.display1.text_relay.set('5.2')
+                signal.text_relay.set('5.2')
             elif i==5 or i==4 or i==3:
-                self.display1.text_relay.set('10.2')   
+                signal.text_relay.set('10.2')   
             else:
-                self.display1.text_relay.set('20.2')
+                signal.text_relay.set('20.2')
       
-      
+
     def timeset(self):
         l1=Label(self.lay_power,font=('arial', 15),bg='white')
         l1.place(x=180,y=7,width=210,height=20)
@@ -138,8 +144,8 @@ class PAGE1:
         self.lb_L1_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw1,fg='red').place(x=86,y=37,width=83,height=34)
         self.vln1 = StringVar()
         self.lb_L1_Ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln1,fg='red').place(x=171,y=37,width=83,height=34)
-        self.a1 = StringVar()
-        self.lb_L1_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a1,fg='red').place(x=256,y=37,width=83,height=34)
+        self.cur1 = StringVar()
+        self.lb_L1_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur1,fg='red').place(x=256,y=37,width=83,height=34)
         self.v12 = StringVar()
         self.lb_L1_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v12,fg='red').place(x=426,y=37,width=84,height=34)
         
@@ -151,8 +157,8 @@ class PAGE1:
         self.lb_L2_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw2,fg='orange').place(x=86,y=73,width=83,height=34)
         self.vln2 = StringVar()
         self.lb_L2_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln2,fg='orange').place(x=171,y=73,width=83,height=34)
-        self.a2 = StringVar()
-        self.lb_L2_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a2,fg='orange').place(x=256,y=73,width=83,height=34)
+        self.cur2 = StringVar()
+        self.lb_L2_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur2,fg='orange').place(x=256,y=73,width=83,height=34)
         self.v23 = StringVar()
         self.lb_L2_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v23,fg='orange').place(x=426,y=73,width=84,height=34)
 
@@ -164,8 +170,8 @@ class PAGE1:
         self.lb_L3_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.kw3,fg='blue').place(x=86,y=109,width=83,height=34)
         self.vln3 = StringVar()
         self.lb_L3_ln_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.vln3,fg='blue').place(x=171,y=109,width=83,height=34)
-        self.a3 = StringVar()
-        self.lb_L3_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.a3,fg='blue').place(x=256,y=109,width=83,height=34)
+        self.cur3 = StringVar()
+        self.lb_L3_A = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.cur3,fg='blue').place(x=256,y=109,width=83,height=34)
         self.v31 = StringVar()
         self.lb_L3_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.v31,fg='blue').place(x=426,y=109,width=84,height=34)
         
@@ -174,7 +180,15 @@ class PAGE1:
         self.freqq = StringVar()
         self.lb_fre_kw = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.freqq,fg='black').place(x=86,y=145,width=83,height=33)
         self.lb_fre_ln_v = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.LN',fg='black').place(x=171,y=145,width=83,height=33)
-        self.lb_fre_A = Label(self.lay_parameter,bg='white',font=('arial',15),text='232.4',fg='black').place(x=256,y=145,width=83,height=33)
+        
+        
+        self.txt_aln_sum = StringVar()
+        self.lb_aln_sum= Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.txt_aln_sum,fg='black')
+        self.lb_aln_sum.place(x=256,y=145,width=83,height=33)
+        
+        
+        
+        
         self.lb_fre_none5 = Label(self.lay_parameter,bg='white',font=('arial BOLD',15),text='A.PF',fg='black').place(x=341,y=145,width=83,height=33)
         self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),text='0.99',fg='black').place(x=426,y=145,width=84,height=34)
          
@@ -323,3 +337,63 @@ class PAGE1:
             self.time_value -=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
             
+    def createThreadAdruino(self):
+        self.threading_req = Thread(target=self.requestdata, args=()); 
+        self.threading_rep = Thread(target=self.loadingdata, args=());          
+        self.flag_thread_req_rep = True;
+        self.threading_req.start();
+        self.threading_rep.start();
+    def requestdata(self):
+       while self.flag_thread_req_rep:
+            self.adruino.write_port({"req":ADRUINO_REQ_FULL_DATA});
+            sleep(3)
+    def loadingdata(self):
+        while self.flag_thread_req_rep:
+            try:
+                response = self.adruino.store_data;
+                print(response)
+                sleep(1);
+                data = json.loads(response);
+                    # print(data)
+                    # print(type())
+                self.origin_data = data['info']
+                self.kw1.set(str(self.origin_data['kw1']))
+                    #print(self.kw1)
+                self.kw2.set(str(self.origin_data['kw2']))
+                self.kw3.set(str(self.origin_data['kw3']))
+                self.vln1.set(str(self.origin_data['vln1']))
+                self.vln2.set(str(self.origin_data['vln2']))
+                self.vln3.set(str(self.origin_data['vln3']))
+                self.cur1.set(str(self.origin_data['cur1']))
+                self.cur2.set(str(self.origin_data['cur2']))
+                self.cur3.set(str(self.origin_data['cur3']))
+                # self.pf1.set(str(self.origin_data['pf1']))
+                # self.pf2.set(str(self.origin_data['pf2']))
+                # self.pf3.set(str(self.origin_data['pf3']))
+                self.v12.set(str(self.origin_data['v12']))
+                self.v23.set(str(self.origin_data['v23']))
+                self.v31.set(str(self.origin_data['v31']))
+                self.freqq.set(str(self.origin_data['freq']))
+                self.tempcc.set(str(self.origin_data['tempc']))
+                self.tkw.set(str(self.origin_data['tkw']))
+                
+                sum_aln=self.origin_data['cur1']+self.origin_data['cur2']+self.origin_data['cur3']
+                self.txt_aln_sum.set(sum_aln)
+                self.rl_array = data['rls']
+                
+                index=0;
+                for i in self.rl_array:
+                    
+                    if i==1:
+                        self.signal_object[index].setonoff(1);
+                    else:
+                        self.signal_object[index].setonoff(0);
+                    index+=1;
+                    pass
+                else:
+                   print("Status: {} and reason: {}".format(response.status, response.reason)) 
+                
+                sleep(1)
+            except:
+                print("Connect Server Abnormal")
+                sleep(1)

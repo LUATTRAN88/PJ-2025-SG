@@ -4,6 +4,8 @@ from page_2 import *
 from page_3 import *
 from page_4 import *
 from page_5 import *
+from serialport import *
+from extend import *
 
 class MAINGUI:
     def __init__(self):
@@ -36,6 +38,29 @@ class MAINGUI:
         self.display2.create_layout(self.layout)
         self.display1 = PAGE1()
         self.display1.create_layout(self.layout)
+        self.state_ctrl = STATE_M_CONNECTION;
+        self.state_margin();
+        
+    def state_margin(self):
+        if self.state_ctrl == STATE_M_CONNECTION:
+            self.adruino= Arduino();
+            result=self.adruino.connect_port();
+            if result==True:
+                self.state_ctrl=STATE_M_CONNECTED;
+                self.state_margin()
+            else:
+                tkinter.messagebox.showinfo('Warning',"Hardware Connection Failed!") 
+        elif self.state_ctrl == STATE_M_CONNECTED:
+            self.display1.adruino=self.adruino;
+            self.display2.adruino=self.adruino;
+            self.display3.adruino=self.adruino;
+            self.display4.adruino=self.adruino;
+            self.display1.createThreadAdruino();
+            pass;
+        
+            
+        
+        pass;
         
         
     def event_page1(self,event):

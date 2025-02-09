@@ -5,6 +5,13 @@ from PIL import ImageTk, Image
 from time import strftime
 import pandas as pd
 
+STATE_M_CONNECTION =100
+STATE_M_CONNECTED =101
+STATE_M_CONNECT_FAILED=102
+
+ADRUINO_REQ_FULL_DATA = 1001
+
+
 def get_path_img():
     path=Path(__file__).parent.resolve()
     final_path=str(path.as_posix())+'/img/'
@@ -19,9 +26,14 @@ class SIGNAL:
         self.layout =  Frame(lay_button_relay,bg='white')
         self.layout.place(x=x+1,y=y, width=28,height=52)
 
-        self.photol = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        self.picl = ImageTk.PhotoImage(self.photol)
-        self.lb_lamp = Label(self.layout, bg='white',image=self.picl)
+        self.lamp_on = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
+        self.pic_lamp_on = ImageTk.PhotoImage(self.lamp_on)
+        
+        self.lamp_off = Image.open(get_path_img()+'lamp_off1.png').resize((17,17))
+        self.pic_lamp_off = ImageTk.PhotoImage(self.lamp_off)
+        
+        
+        self.lb_lamp = Label(self.layout, bg='white',image=self.pic_lamp_on)
         self.lb_lamp.place(x=0,y=12,width=28,height=23)
         
         
@@ -30,6 +42,16 @@ class SIGNAL:
         self.text_relay = StringVar()
         self.lb_relay_val = Label(self.layout,bg='white',pady=0,font=('arial bold',8),fg='black',textvariable=self.text_relay).place(x=0,y=32,width=28,height=17)  
         pass
+    def set_relay_value(self,text):
+        self.relay_text_value.set(text)
+        
+    def setonoff(self,val):
+        if val == 1:
+            self.lb_lamp.configure(image=self.pic_lamp_on)
+            self.lb_lamp.image=self.pic_lamp_on
+        else:
+            self.lb_lamp.configure(image=self.pic_lamp_off)
+            self.lb_lamp.image=self.pic_lamp_off
 
 array_load_bank = [{'id':1, 'kw': 1, 'port':0x01},
        {'id': 2, 'kw': 2, 'port':0x02},

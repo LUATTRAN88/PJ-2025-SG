@@ -12,6 +12,7 @@ from config.config_service import *
 
 class PAGE5:
     def __init__(self):
+        self.adruino=None
         self.origin_data = None
         # self.is_on = False
         # self.is_test = False
