@@ -2,7 +2,7 @@ from serial import *
 from threading import Thread
 import time
 import json
-
+from extend import *
 
 class Arduino:
     def __init__(self):
@@ -13,7 +13,7 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = 'COM3';
+        self.PORT_NAME = 'COM5';
         
     def connect_port(self):
         try:
@@ -27,7 +27,7 @@ class Arduino:
                 print("Connect successfully!");
                 self.threading_read = Thread(target=self.read_port, args=());          
                 self.flag_thread_read = True;
-                self.threading_read.start();
+                #self.threading_read.start();
               
             return True;
         except:
@@ -36,17 +36,28 @@ class Arduino:
     def disconnect_port(self):
         self.flag_thread_read = False;
         self.serial_con.close();
-        
-    def write_port(self, obj):
-        data = json.dumps(obj)
-        data +='\n'
-        print(data)
-        self.serial_con.write(bytes(data, 'utf-8'));
+    
+    def write_port(self, port,status):
+        if self.serial_con != None:
+            if self.serial_con.is_open:
+                
+                obj= {"req":ADRUINO_REQ_CTRL_SINGLE_RELAY , "port": port, "status":status};
+                data = json.dumps(obj)
+                data +='\r\n'
+                print(data)
+                self.serial_con.write(bytes(data, 'utf-8'));
+    
+    def write_obj(self, obj):
+        if self.serial_con != None:
+            if self.serial_con.is_open:
+                data = json.dumps(obj)
+                data +='\r\n'
+                
+                self.serial_con.write(bytes(data, 'utf-8'));
         
     def read_port(self):
         while self.flag_thread_read:
             self.store_data = self.serial_con.readline();
-            time.sleep(1000/1000);
             print(self.store_data);
     def readline(self):
         self.store_data = self.serial_con.readline();

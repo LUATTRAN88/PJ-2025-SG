@@ -23,6 +23,9 @@ class PAGE1:
         self.time_value = 0
         self.hold_powerup=FALSE;
         self.hold_timeup=FALSE;
+        self.ADRUINO_REQ =ADRUINO_REQ_FULL_DATA;
+        self.ADRUINO_REQ_STATUS_PORT = 0;
+
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -203,14 +206,18 @@ class PAGE1:
         self.is_fan_on = True
        
     def clickfan(self):
+        self.ADRUINO_REQ=ADRUINO_PORT_CTRL_FAN
         if self.is_fan_on:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
-            control_relay(req='300',id='14',status='0')
+            self.ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
-            control_relay(req='300',id='14',status='1')
+            self.ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,self.ADRUINO_REQ_STATUS_PORT);
+           
             
     def button_testmode(self):
         test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
@@ -345,16 +352,24 @@ class PAGE1:
         self.threading_rep.start();
     def requestdata(self):
        while self.flag_thread_req_rep:
-            self.adruino.write_port({"req":ADRUINO_REQ_FULL_DATA});
-            sleep(3)
+            if self.ADRUINO_REQ==ADRUINO_REQ_FULL_DATA:
+                #self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
+                sleep(0.5)
+            elif self.ADRUINO_REQ==ADRUINO_PORT_CTRL_FAN:
+                #self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,self.ADRUINO_REQ_STATUS_PORT);
+                self.ADRUINO_REQ=ADRUINO_REQ_FULL_DATA
+                sleep(2)
+            
+ 
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = self.adruino.store_data;
-                print(response)
-                sleep(1);
+                #response = self.adruino.store_data;
+                #self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
+                #sleep(0.5)
+                response = self.adruino.readline();
                 data = json.loads(response);
-                    # print(data)
+
                     # print(type())
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
@@ -367,9 +382,6 @@ class PAGE1:
                 self.cur1.set(str(self.origin_data['cur1']))
                 self.cur2.set(str(self.origin_data['cur2']))
                 self.cur3.set(str(self.origin_data['cur3']))
-                # self.pf1.set(str(self.origin_data['pf1']))
-                # self.pf2.set(str(self.origin_data['pf2']))
-                # self.pf3.set(str(self.origin_data['pf3']))
                 self.v12.set(str(self.origin_data['v12']))
                 self.v23.set(str(self.origin_data['v23']))
                 self.v31.set(str(self.origin_data['v31']))
@@ -390,10 +402,6 @@ class PAGE1:
                         self.signal_object[index].setonoff(0);
                     index+=1;
                     pass
-                else:
-                   print("Status: {} and reason: {}".format(response.status, response.reason)) 
-                
-                sleep(1)
-            except:
+            except :
                 print("Connect Server Abnormal")
                 sleep(1)

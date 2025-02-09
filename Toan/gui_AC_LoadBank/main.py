@@ -55,13 +55,9 @@ class MAINGUI:
             self.display2.adruino=self.adruino;
             self.display3.adruino=self.adruino;
             self.display4.adruino=self.adruino;
+            self.adruino.write_obj({"req":ADRUINO_REQ_FULL_DATA});
             self.display1.createThreadAdruino();
-            pass;
-        
-            
-        
-        pass;
-        
+            pass;          
         
     def event_page1(self,event):
         try:
