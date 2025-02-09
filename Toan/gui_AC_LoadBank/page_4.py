@@ -101,37 +101,51 @@ class PAGE4:
         img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
         self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.button_fan())
+        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
         self.btn_on_fan.place(x=15,y=28,width=139,height=70)
-
+        self.is_fan_on = True
     def clickfan(self):
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
-            control_relay(req='300',id='14',status='0')
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
-            control_relay(req='300',id='14',status='1')
-            
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,ADRUINO_REQ_STATUS_PORT);
+    
+    def setvalue_fan(self,val):
+        if val:
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = False 
+        else :
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = True      
+
     def button_testmode(self):
         test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
         self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
-        test_phase2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.img_test_phase2 = ImageTk.PhotoImage(test_phase2)
+        test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
-        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
         self.btn_testmode_on.place(x=171,y=28,width=139,height=70)
+        self.is_test_phase1=True;
 
     def clickphase(self):
-        if self.test_phase1:
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        if self.is_test_phase1:
             self.btn_testmode_on.config(image=self.img_test_phase1)
-            self.test_phase1 = False 
-            control_relay(req='300',id='15',status='0')
+            self.is_test_phase1 = False 
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
-            self.btn_testmode_on.config(image=self.img_test_phase2)
-            self.test_phase1 = True
-            control_relay(req='300',id='15',status='1')
+            self.btn_testmode_on.config(image=self.img_test_phase3)
+            self.is_test_phase1 = True
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_PHASE,ADRUINO_REQ_STATUS_PORT);
+
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -179,11 +193,12 @@ class PAGE4:
                         self.signal_list[index].setonoff(1);
                     else:
                         self.signal_list[index].setonoff(0);
+
                     index+=1;
                     pass
-                sleep(0.5)
+                sleep(1)
             except :
-                print("Connect Server Abnormal")
+                print("Connect Server Abnormal Page 4")
                 sleep(1)   
             
 class KEYBOARD:  

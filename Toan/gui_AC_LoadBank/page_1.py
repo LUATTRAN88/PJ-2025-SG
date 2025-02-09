@@ -23,6 +23,7 @@ class PAGE1:
         self.time_value = 0
         self.hold_powerup=FALSE;
         self.hold_timeup=FALSE;
+        self.valuerelay_fan_phase=None;
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -206,13 +207,32 @@ class PAGE1:
         if self.is_fan_on:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
-            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
-            
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
-            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=1;
         self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,ADRUINO_REQ_STATUS_PORT);
+        
+   
+    def setvalue_fan_phase(self):
+        
+        if self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS:
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
+        else :
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False
+        
+        # if self.valuerelay_fan_phase.RELAY_SWITCHING_PHASE_STATUS:
+        #     self.btn_testmode_on.config(image=self.img_test_phase1)
+        #     self.is_test_phase1=True;
+        # else :
+        #     self.btn_testmode_on.config(image=self.img_test_phase3)
+        #     self.is_test_phase1=False;
+        
            
             
     def button_testmode(self):
@@ -223,19 +243,23 @@ class PAGE1:
 
         self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
         self.btn_testmode_on.place(x=171,y=46,width=139,height=70)
-        self.test_phase1=TRUE;
+        self.is_test_phase1=TRUE;
         
     def clickphase(self):  
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF   
-        if self.test_phase1:
+        if self.is_test_phase1:
             self.btn_testmode_on.config(image=self.img_test_phase3)
-            self.test_phase1 = False 
+            self.is_test_phase1= False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
             self.btn_testmode_on.config(image=self.img_test_phase1)
-            self.test_phase1 = True
+            self.is_test_phase1 = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+
         self.adruino.write_port(ADRUINO_PORT_CTRL_PHASE,ADRUINO_REQ_STATUS_PORT);
+    
+
+
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -377,8 +401,7 @@ class PAGE1:
                 self.txt_aln_sum.set(str(self.origin_data['vln']))
                 self.rl_array = data['rls']
                 index=0;
-                for i in self.rl_array:
-                    
+                for i in self.rl_array: 
                     if i==1:
                         self.signal_list[index].setonoff(1);
                     else:

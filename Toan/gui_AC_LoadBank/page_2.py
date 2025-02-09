@@ -23,6 +23,7 @@ class PAGE2:
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
+        self.valuerelay_fan_phase=None;
     def create_layout(self,lay2):
         self.layout1 = Frame(lay2,bg='white')                   
         self.layout1.place(x=0,y=60,width=512,height=540)
@@ -223,34 +224,59 @@ class PAGE2:
         self.is_fan_on = True
 
     def clickfan(self):
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
-            control_relay(req='300',id='14',status='0')
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
-            control_relay(req='300',id='14',status='1')
-            
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=1;
+        self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,ADRUINO_REQ_STATUS_PORT);
+       
     def button_testmode(self):
         test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
         self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
-        test_phase2 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.img_test_phase2 = ImageTk.PhotoImage(test_phase2)
+        test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
         self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
         self.btn_testmode_on.place(x=171,y=46,width=139,height=70)
-        self.test_phase1 = True
+        self.is_test_phase1 = True
 
     def clickphase(self):
-        if self.test_phase1:
-            self.btn_testmode_on.config(image=self.img_test_phase1)
-            self.test_phase1 = False 
-            control_relay(req='300',id='15',status='0')
+        ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+        if self.is_test_phase1:
+            self.btn_testmode_on.config(image=self.img_test_phase3)
+            self.is_test_phase1 = False 
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            RELAY_SWITCHING_PHASE_STATUS=0
         else :
-            self.btn_testmode_on.config(image=self.img_test_phase2)
-            self.test_phase1 = True
-            control_relay(req='300',id='15',status='1')
+            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.is_test_phase1 = True
+            ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+            RELAY_SWITCHING_PHASE_STATUS=1
+        self.adruino.write_port(ADRUINO_PORT_CTRL_PHASE,ADRUINO_REQ_STATUS_PORT);
+        
+    
+    def setvalue_fan_phase(self):
+        
+        if self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS:
+            self.btn_on_fan.config(image=self.fan_on)
+            self.is_fan_on = True
+        else :
+            self.btn_on_fan.config(image=self.fan_off)
+            self.is_fan_on = False
+        
+        # if RELAY_SWITCHING_PHASE_STATUS:
+        #     self.btn_testmode_on.config(image=self.img_test_phase1)
+        #     self.is_test_phase1=True;
+        # else :
+        #     self.btn_testmode_on.config(image=self.img_test_phase3)
+        #     self.is_test_phase1=False;
             
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
@@ -321,15 +347,17 @@ class PAGE2:
                         self.signal_list[index].setonoff(1);
                         if index<12:
                             self.relay_object[index].setonoff(1);
+
                     else:
                         self.signal_list[index].setonoff(0);
                         if index<12:
                             self.relay_object[index].setonoff(0);
+ 
                     index+=1;
                     pass
                 sleep(0.1)
             except :
-                print("Connect Server Abnormal")
+                print("Connect Server Abnormal Page 2")
                 sleep(1) 
         
 # 12 relay
@@ -351,7 +379,7 @@ class RELAY_POWER:
     def clickRelay(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.lamp_relay:
-            self.btn_on.config(image=self.onr)
+            self.btn_on.config(image=self.waiting_r)
             self.lamp_relay = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             
@@ -370,6 +398,8 @@ class RELAY_POWER:
 
     
     def lamp_signal_relay(self):
+        img_relay_waiting = Image.open(get_path_img()+'waiting.png').resize((48,47))
+        self.waiting_r = ImageTk.PhotoImage(img_relay_waiting)
         img_relay_on = Image.open(get_path_img()+'relay_s.png').resize((48,47))
         self.onr = ImageTk.PhotoImage(img_relay_on)
         img_relay_off = Image.open(get_path_img()+'relay_off1.png').resize((48,47))

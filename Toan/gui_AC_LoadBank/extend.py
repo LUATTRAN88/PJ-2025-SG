@@ -34,6 +34,12 @@ ADRUINO_STATUS_PORT_ON =1;
 ADRUINO_STATUS_PORT_OFF =0;
 
 
+class VALUERELAY_FAN_PHASE:
+    def __init__(self):
+        RELAY_SWITCHING_FAN_STATUS=1;
+        RELAY_SWITCHING_PHASE_STATUS=1
+
+
 
 
 def get_path_img():

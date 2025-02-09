@@ -24,7 +24,9 @@ class MAINGUI:
         self.button_main()
         # self.current_page = None
         # self.event_page1(None)
-         
+        self.valuerelay_fan_phase=VALUERELAY_FAN_PHASE();
+
+
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
@@ -44,11 +46,13 @@ class MAINGUI:
         self.display2.adruino=self.adruino;
         self.display2.create_layout(self.layout)
         self.display2.createThreadAdruino();
+        self.display2.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display1 = PAGE1()
         self.display1.adruino=self.adruino;
         self.display1.create_layout(self.layout)
         self.display1.createThreadAdruino();
+        self.display1.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.state_ctrl = STATE_M_CONNECTION;
         self.state_margin();
@@ -76,6 +80,7 @@ class MAINGUI:
             self.stopAllThreadAdruino()
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
+            self.display1.setvalue_fan_phase();
             self.display1.createThreadAdruino();
         except:
             pass
@@ -85,6 +90,7 @@ class MAINGUI:
             self.stopAllThreadAdruino()
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
+            self.display2.setvalue_fan_phase();
             self.display2.createThreadAdruino();
         except:
             pass
