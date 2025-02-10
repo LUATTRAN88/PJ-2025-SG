@@ -297,6 +297,17 @@ class PAGE2:
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='99.8').place(x=305,y=145,width=65,height=20)
         self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=375,y=145,width=45,height=20)
  
+ 
+ 
+    def pop_up(self):
+        window = Tk()
+        window.title('popup')
+        window.geometry("572x230")
+        window.overrideredirect(1)
+        T = Text(window, height = 10, width = 70).pack()
+        b1 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
+        b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
+        
     def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
@@ -304,7 +315,7 @@ class PAGE2:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white')
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 

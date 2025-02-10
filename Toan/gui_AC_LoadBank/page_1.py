@@ -226,6 +226,8 @@ class PAGE1:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False
         
+        
+        
         # if self.valuerelay_fan_phase.RELAY_SWITCHING_PHASE_STATUS:
         #     self.btn_testmode_on.config(image=self.img_test_phase1)
         #     self.is_test_phase1=True;
@@ -233,6 +235,7 @@ class PAGE1:
         #     self.btn_testmode_on.config(image=self.img_test_phase3)
         #     self.is_test_phase1=False;
         
+           
            
             
     def button_testmode(self):
@@ -410,5 +413,5 @@ class PAGE1:
                     pass
                 sleep(0.1)
             except :
-                print("Connect Server Abnormal Page1")
+                #print("Connect Server Abnormal Page1")
                 sleep(1)

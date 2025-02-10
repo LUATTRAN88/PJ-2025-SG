@@ -20,6 +20,7 @@ class PAGE4:
         self.origin_data = None
         # self.is_on = False
         # self.is_test = False
+        self.valuerelay_fan_phase=None;
         self.is_switch = False
         self.power_value = 0
         self.time_value = 0
@@ -110,19 +111,21 @@ class PAGE4:
             self.btn_on_fan.config(image=self.fan_off)
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
         else :
             self.btn_on_fan.config(image=self.fan_on)
             self.is_fan_on = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
+            self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=1;
         self.adruino.write_port(ADRUINO_PORT_CTRL_FAN,ADRUINO_REQ_STATUS_PORT);
     
-    def setvalue_fan(self,val):
-        if val:
+    def setvalue_fan_phase(self):
+        if self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS:
             self.btn_on_fan.config(image=self.fan_on)
-            self.is_fan_on = False 
+            self.is_fan_on = True 
         else :
             self.btn_on_fan.config(image=self.fan_off)
-            self.is_fan_on = True      
+            self.is_fan_on = False    
 
     def button_testmode(self):
         test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))

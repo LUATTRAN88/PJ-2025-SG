@@ -31,32 +31,35 @@ class MAINGUI:
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
         self.btn_setting.bind('<Button-1>', self.event_page3)
         self.btn_service.bind('<Button-1>', self.event_page4)
+        self.btn_light_auto()
+        
         self.adruino= Arduino();
         self.display4 = PAGE4()
         self.display4.adruino=self.adruino;
         self.display4.create_layout(self.layout)
-        self.display4.createThreadAdruino();
+        #self.display4.createThreadAdruino();
 
         self.display3 = PAGE3()
         self.display3.adruino=self.adruino;
         self.display3.create_layout(self.layout)
-        self.display3.createThreadAdruino();
+        #self.display3.createThreadAdruino();
+        self.display3.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display2 = PAGE2()
         self.display2.adruino=self.adruino;
         self.display2.create_layout(self.layout)
-        self.display2.createThreadAdruino();
+        #self.display2.createThreadAdruino();
         self.display2.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display1 = PAGE1()
         self.display1.adruino=self.adruino;
         self.display1.create_layout(self.layout)
-        self.display1.createThreadAdruino();
+        #self.display1.createThreadAdruino();
         self.display1.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.state_ctrl = STATE_M_CONNECTION;
         self.state_margin();
-        
+          
     def state_margin(self):
         if self.state_ctrl == STATE_M_CONNECTION:
             
@@ -99,6 +102,7 @@ class MAINGUI:
             self.stopAllThreadAdruino()
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
+            self.display3.setvalue_fan_phase();
             self.display3.createThreadAdruino();
         except:
             pass
@@ -108,6 +112,7 @@ class MAINGUI:
             self.display4.layout.tkraise()
             self.display4.layout1.tkraise()
             self.display4.layout2.tkraise() 
+            self.display4.setvalue_fan_phase();
             self.display4.createThreadAdruino();
         except:
             pass       
