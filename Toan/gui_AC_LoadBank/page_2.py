@@ -302,8 +302,8 @@ class PAGE2:
     def pop_up(self):
         window = Tk()
         window.title('popup')
-        window.geometry("572x230")
-        window.overrideredirect(1)
+        window.geometry("572x220")
+        # window.overrideredirect(1)
         T = Text(window, height = 10, width = 70).pack()
         b1 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
         b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)

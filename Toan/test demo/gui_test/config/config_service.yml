@@ -1,0 +1,20 @@
+emergency_settings:
+  current_limit: 268
+  temperature_limit: 989
+  voltage_LN_limit: 863
+resistor_settings:
+  r1: 5.9
+  r10: 43.8
+  r11: 11.3
+  r12: 599.6
+  r2: 55.9
+  r3: 987.2
+  r4: 200.9
+  r5: 66.2
+  r6: 643.1
+  r7: 4.5
+  r8: 22.1
+  r9: 245.67
+resistor_threshold_allow:
+  max: 20
+  min: 20

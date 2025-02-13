@@ -82,6 +82,8 @@ class PAGE1:
                 signal.text_relay.set('10.2')   
             else:
                 signal.text_relay.set('20.2')
+                
+        signal = None
       
 
     def timeset(self):
@@ -193,24 +195,24 @@ class PAGE1:
         self.lb_fre_ll_v = Label(self.lay_parameter,bg='white',font=('arial',15),textvariable=self.txt_apf_sum,fg='black').place(x=426,y=145,width=84,height=34)
          
     def button_fan(self):
-        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.fan_on = ImageTk.PhotoImage(img_fan_on)
-        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.fan_off = ImageTk.PhotoImage(img_fan_off)
+        # img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        # self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        # img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        # self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
+        self.btn_on_fan = Button(self.lay_logo_switch,text='ON',bg='#00FF00',font=('arial bold',22) ,bd=3,command=lambda:self.clickfan())
         self.btn_on_fan.place(x=15,y=46,width=139,height=70)
         self.is_fan_on = True
        
     def clickfan(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
-            self.btn_on_fan.config(image=self.fan_off)
+            self.btn_on_fan.config(text='OFF',bg='White')
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
         else :
-            self.btn_on_fan.config(image=self.fan_on)
+            self.btn_on_fan.config(text='ON',bg='#00FF00')
             self.is_fan_on = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=1;
@@ -239,23 +241,23 @@ class PAGE1:
            
             
     def button_testmode(self):
-        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
-        test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
+        # test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        # self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        # test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        # self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
-        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
+        self.btn_testmode_on = Button(self.lay_logo_switch,text='1P',bg='#00FF00',font=('arial bold',22), bd=3,command=lambda:self.clickphase())
         self.btn_testmode_on.place(x=171,y=46,width=139,height=70)
         self.is_test_phase1=TRUE;
         
     def clickphase(self):  
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF   
         if self.is_test_phase1:
-            self.btn_testmode_on.config(image=self.img_test_phase3)
+            self.btn_testmode_on.config(text='3P',bg='white')
             self.is_test_phase1= False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
-            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.btn_testmode_on.config(text='1P',bg='#00FF00')
             self.is_test_phase1 = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
 
@@ -296,28 +298,28 @@ class PAGE1:
       
       
     def tab_button(self):
-        self.up = Image.open(get_path_img()+'up.png').resize((36,34))
-        self.down = Image.open(get_path_img()+'down.png').resize((36,34))
-        self.picup = ImageTk.PhotoImage(self.up)
-        self.picdown = ImageTk.PhotoImage(self.down)
+        # self.up = Image.open(get_path_img()+'up.png').resize((36,34))
+        # self.down = Image.open(get_path_img()+'down.png').resize((36,34))
+        # self.picup = ImageTk.PhotoImage(self.up)
+        # self.picdown = ImageTk.PhotoImage(self.down)
         
-        self.btn_powset_up = Button(self.lay_power_set,bd=3, bg='#191970',image=self.picup,command=lambda:self.increase_power_set())
+        self.btn_powset_up = Button(self.lay_power_set,bd=3,fg='orange',bg='#191970',text='Up',font=('arial bold',16),command=lambda:self.increase_power_set())
         self.btn_powset_up.place(x=412,y=18,width=84,height=55)
         
         self.btn_powset_up.bind("<ButtonPress-1>", self.on_press_powerup)
         self.btn_powset_up.bind("<ButtonRelease-1>", self.on_release_powerup)
     
         
-        self.btn_powset_down = Button(self.lay_power_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_power_set()).place(x=412,y=108,width=84,height=55)
+        self.btn_powset_down = Button(self.lay_power_set,bd=3,fg='orange',bg='#191970',text='Down',font=('arial bold',16),command=lambda:self.reduce_power_set()).place(x=412,y=108,width=84,height=55)
 
-        self.btn_time_up = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picup,command=lambda:self.increase_timer_set())
+        self.btn_time_up = Button(self.lay_timer_set,bd=3,fg='orange',bg='#191970',text='Up',font=('arial bold',16),command=lambda:self.increase_timer_set())
         self.btn_time_up.place(x=412,y=18,width=84,height=55)
         
         self.btn_time_up.bind("<ButtonPress-1>", self.on_press_timesetup)
         self.btn_time_up.bind("<ButtonRelease-1>", self.on_release_timesetup)
         
         
-        self.btn_time_down = Button(self.lay_timer_set,bd=3,bg='#191970',image=self.picdown,command=lambda:self.reduce_timer_set()).place(x=412,y=108,width=84,height=55)
+        self.btn_time_down = Button(self.lay_timer_set,bd=3,fg='orange',bg='#191970',text='Down',font=('arial bold',16),command=lambda:self.reduce_timer_set()).place(x=412,y=108,width=84,height=55)
 
         
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
