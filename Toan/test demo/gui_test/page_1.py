@@ -88,15 +88,18 @@ class PAGE1:
 
     def timeset(self):
         l1=Label(self.lay_power,font=('arial', 15),bg='white')
-        l1.place(x=180,y=7,width=210,height=20)
-        time_string = strftime('%H:%M:%S %p %x') # time format 
+        l1.place(x=150,y=7,width=210,height=20)
+        time_string = strftime('%H:%M:%S %p   %x') # time format 
         l1.config(text=time_string)
         l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
          
     def label_power(self):
-        self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
-        self.picrun = ImageTk.PhotoImage(self.run_on)
-        self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
+        # self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
+        # self.picrun = ImageTk.PhotoImage(self.run_on)
+        # self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
+        self.lb_running = Label(self.lay_power,bg='white',text='Running',font=('arial bold',15)).place(x=382,y=7,width=80,height=20)
+        self.lb_run_on = Label(self.lay_power,bg='#00FF00').place(x=470,y=7,width=18,height=18)
+        
         
         self.tempcc = StringVar()
         self.lb_temp = Label(self.lay_power,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=423,y=33,width=46,height=22)  

@@ -96,9 +96,12 @@ class PAGE3:
                 
         
     def label_run_temp(self):
-        self.run_lamp = Image.open(get_path_img()+'running_on.png').resize((122,44))
-        self.run = ImageTk.PhotoImage(self.run_lamp)
-        self.lb_running = Label(self.layout1,bg='white',image=self.run).place(x=906,y=0,width=101,height=40)
+        # self.run_lamp = Image.open(get_path_img()+'running_on.png').resize((122,44))
+        # self.run = ImageTk.PhotoImage(self.run_lamp)
+        # self.lb_running = Label(self.layout1,bg='white',image=self.run).place(x=906,y=0,width=101,height=40)
+        self.lb_running = Label(self.layout1,bg='white',text='Running',font=('arial bold',15)).place(x=894,y=7,width=80,height=20)
+        self.lb_run_on = Label(self.layout1,bg='#00FF00').place(x=982,y=7,width=18,height=18)
+        
             
         self.tempcc = StringVar()
         self.lb_temp = Label(self.layout1,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=930,y=34,width=46,height=20)  
@@ -116,8 +119,8 @@ class PAGE3:
     
     def timeset(self):
         l1=Label(self.layout1,font=('arial', 15),bg='white')
-        l1.place(x=692,y=7,width=210,height=20)
-        time_string = strftime('%H:%M:%S %p %x') # time format 
+        l1.place(x=662,y=7,width=210,height=20)
+        time_string = strftime('%H:%M:%S %p   %x') # time format 
         l1.config(text=time_string)
         l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
              
@@ -172,24 +175,24 @@ class PAGE3:
         self.btn_apply.place(x=182,y=48,width=150,height=48)
         
     def button_fan(self):
-        img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
-        self.fan_on = ImageTk.PhotoImage(img_fan_on)
-        img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
-        self.fan_off = ImageTk.PhotoImage(img_fan_off)
+        # img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
+        # self.fan_on = ImageTk.PhotoImage(img_fan_on)
+        # img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
+        # self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on_fan = Button(self.lay_logo_switch,image=self.fan_on,bg='white', bd=0,command=lambda:self.clickfan())
-        self.btn_on_fan.place(x=15,y=28,width=139,height=70)
+        self.btn_on_fan = Button(self.lay_logo_switch,text='ON',bg='#00FF00',font=('arial bold',22), bd=3,command=lambda:self.clickfan())
+        self.btn_on_fan.place(x=14,y=28,width=139,height=70)
         self.is_fan_on = True
         
     def clickfan(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
-            self.btn_on_fan.config(image=self.fan_off)
+            self.btn_on_fan.config(text='OFF',bg='White')
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
         else :
-            self.btn_on_fan.config(image=self.fan_on)
+            self.btn_on_fan.config(text='ON',bg='#00FF00')
             self.is_fan_on = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=1;
@@ -204,23 +207,23 @@ class PAGE3:
             self.is_fan_on = False    
 
     def button_testmode(self):
-        test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
-        self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
-        test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
-        self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
+        # test_phase1 = Image.open(get_path_img()+'sw_1p.png').resize((139,65))
+        # self.img_test_phase1 = ImageTk.PhotoImage(test_phase1)
+        # test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
+        # self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
-        self.btn_testmode_on = Button(self.lay_logo_switch,image=self.img_test_phase1,bg='white', bd=0,command=lambda:self.clickphase())
-        self.btn_testmode_on.place(x=171,y=28,width=139,height=70)
+        self.btn_testmode_on = Button(self.lay_logo_switch,text='1P',bg='#00FF00',font=('arial bold',22), bd=3,command=lambda:self.clickphase())
+        self.btn_testmode_on.place(x=170,y=28,width=139,height=70)
         self.is_test_phase1=True;
         
     def clickphase(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_test_phase1:
-            self.btn_testmode_on.config(image=self.img_test_phase1)
+            self.btn_testmode_on.config(text='3P',bg='white')
             self.is_test_phase1 = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
-            self.btn_testmode_on.config(image=self.img_test_phase3)
+            self.btn_testmode_on.config(text='1P',bg='#00FF00')
             self.is_test_phase1 = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         self.adruino.write_port(ADRUINO_PORT_CTRL_PHASE,ADRUINO_REQ_STATUS_PORT);
@@ -237,11 +240,11 @@ class PAGE3:
     def logo(self):
         logo = Image.open(get_path_img()+'logo.jpg').resize((117,117))
         self.piclo = ImageTk.PhotoImage(logo)
-        self.label_logo = Label(self.lay_logo_switch, bg='red',image=self.piclo).place(x=350, y=4,width=117,height=117)
+        self.label_logo = Label(self.lay_logo_switch, bg='red',image=self.piclo).place(x=349, y=4,width=117,height=117)
         
-        self.lb_fan_control = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='FAN CONTROL').place(x=29,y=132,width=110,height=15)
-        self.lb_test_mode = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='TEST MODE').place(x=185,y=132,width=110,height=15)
-        self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=308,y=132,width=198,height=15)
+        self.lb_fan_control = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='FAN CONTROL').place(x=28,y=132,width=110,height=15)
+        self.lb_test_mode = Label(self.lay_logo_switch, bg='white',fg='orange',font=('arial bold',10),text='TEST MODE').place(x=184,y=132,width=110,height=15)
+        self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=307,y=132,width=198,height=15)
         
     def read_file(self):
         return self.config_setting.read_file()

@@ -29,8 +29,8 @@ class MAINGUI:
 
         self.btn_auto_test.bind('<Button-1>', self.event_page1)
         self.btn_manual_test.bind('<Button-1>', self.event_page2)
-        # self.btn_setting.bind('<Button-1>', self.event_page3)
-        # self.btn_service.bind('<Button-1>', self.event_page4)
+        self.btn_setting.bind('<Button-1>', self.event_page3)
+        self.btn_service.bind('<Button-1>', self.event_page4)
         self.btn_light_auto()
         
         self.adruino= Arduino();
