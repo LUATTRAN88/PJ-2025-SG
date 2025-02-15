@@ -4,7 +4,6 @@ from page_2 import *
 from page_3 import *
 from page_4 import *
 from page_5 import *
-from serialport import *
 from extend import *
 
 class MAINGUI:
@@ -33,28 +32,24 @@ class MAINGUI:
         self.btn_service.bind('<Button-1>', self.event_page4)
         self.btn_light_auto()
         
-        self.adruino= Arduino();
+
         self.display4 = PAGE4()
-        self.display4.adruino=self.adruino;
         self.display4.create_layout(self.layout)
         #self.display4.createThreadAdruino();
 
         self.display3 = PAGE3()
-        self.display3.adruino=self.adruino;
         self.display3.create_layout(self.layout)
         #self.display3.createThreadAdruino();
         self.display3.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display2 = PAGE2()
-        self.display2.adruino=self.adruino;
         self.display2.create_layout(self.layout)
         #self.display2.createThreadAdruino();
         self.display2.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display1 = PAGE1()
-        self.display1.adruino=self.adruino;
         self.display1.create_layout(self.layout)
-        #self.display1.createThreadAdruino();
+        self.display1.createThreadAdruino();
         self.display1.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.state_ctrl = STATE_M_CONNECTION;
@@ -63,7 +58,7 @@ class MAINGUI:
     def state_margin(self):
         if self.state_ctrl == STATE_M_CONNECTION:
             
-            result=self.adruino.connect_port();
+            result=True;
             if result==True:
                 self.state_ctrl=STATE_M_CONNECTED;
                 self.state_margin()
@@ -73,24 +68,26 @@ class MAINGUI:
             pass;          
 
     def stopAllThreadAdruino(self):
-        # self.display1.stopThreadAdruino();
-        # self.display2.stopThreadAdruino();
-        # self.display3.stopThreadAdruino();
-        # self.display4.stopThreadAdruino();
+        self.display1.stopThreadAdruino()
+        self.display2.stopThreadAdruino()
+        self.display3.stopThreadAdruino()
+        self.display4.stopThreadAdruino()
         pass
     def event_page1(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display1.createThreadAdruino();
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
             self.display1.setvalue_fan_phase();
-            self.display1.createThreadAdruino();
+          
         except:
             pass
 
     def event_page2(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display2.createThreadAdruino();
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
             self.display2.setvalue_fan_phase();
@@ -100,18 +97,18 @@ class MAINGUI:
     def event_page3(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display3.createThreadAdruino();
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
             self.display3.setvalue_fan_phase();
-            self.display3.createThreadAdruino();
+         
         except:
             pass
     def event_page4(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display4.createThreadAdruino();
             self.display4.layout.tkraise()
-            # self.display4.layout1.tkraise()
-            # self.display4.layout2.tkraise() 
             self.display4.setvalue_fan_phase();
             self.display4.createThreadAdruino();
         except:

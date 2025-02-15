@@ -3,10 +3,7 @@ from tkinter import *
 # from tkinter import font as tkFont
 from PIL import ImageTk, Image
 import tkinter.messagebox 
-# import threading
-# from time import sleep
-# import client as clientCall
-# import json
+import client as clientCall
 from extend import *
 from page_5 import *
 import json
@@ -181,17 +178,21 @@ class PAGE4:
         self.lb_temp = Label(self.layout1,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=930,y=34,width=46,height=20)  
         self.lb_temp_c = Label(self.layout1,bg='white',font=('arial',13),text='ºC').place(x=980,y=34,width=23,height=20) 
     def createThreadAdruino(self):
-        #self.threading_req = Thread(target=self.requestdata, args=()); 
-        threading_rep = Thread(target=self.loadingdata, args=());          
-        self.flag_thread_req_rep = True;
-        #self.threading_req.start();
-        threading_rep.start();  
+        if self.threading_rep == None:
+            self.threading_rep = Thread(target=self.loadingdata, args=());    
+            self.flag_thread_req_rep = True;
+            self.threading_rep.start();   
     def stopThreadAdruino(self):
-        self.flag_thread_req_rep=False;
+        try: 
+            self.flag_thread_req_rep=False;
+            self.threading_rep=None;
+        except:
+            pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = self.adruino.store_data;
+                response = clientCall.requestGET("20002").readline();
+                print ("Response 444: %s", response)
                 data = json.loads(response);
                 self.origin_data = data['info']
                 self.rl_array = data['rls']

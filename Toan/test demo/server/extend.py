@@ -1,7 +1,4 @@
 from pathlib import Path
-import tkinter as tk
-from tkinter import *
-from PIL import ImageTk, Image
 from time import strftime
 import pandas as pd
 
@@ -49,37 +46,6 @@ def get_path_img():
 
 
 
-class SIGNAL:
-    def __init__(self):
-        pass
-    def create_layout(self,lay_button_relay,x,y,text):
-        self.layout =  Frame(lay_button_relay,bg='white')
-        self.layout.place(x=x+1,y=y, width=28,height=52)
-
-        # self.lamp_on = Image.open(get_path_img()+'lamp_on.png').resize((17,17))
-        # self.pic_lamp_on = ImageTk.PhotoImage(self.lamp_on)
-        
-        # self.lamp_off = Image.open(get_path_img()+'lamp_off1.png').resize((17,17))
-        # self.pic_lamp_off = ImageTk.PhotoImage(self.lamp_off)
-        
-        
-        self.lb_lamp = Label(self.layout, bg='#00FF00')
-        self.lb_lamp.place(x=4,y=15,width=18,height=19)
-        
-        
-        self.lb_relay = Label(self.layout, bg='white',font=('arial bold',8),fg='black',text=text).place(x=0,y=0,width=28,height=11)
-
-        self.text_relay = StringVar()
-        self.lb_relay_val = Label(self.layout,bg='white',pady=0,font=('arial bold',8),fg='black',textvariable=self.text_relay).place(x=0,y=32,width=28,height=17)  
-        pass
-    def set_relay_value(self,text):
-        self.relay_text_value.set(text)
-        
-    def setonoff(self,val):
-        if val == 1:
-            self.lb_lamp.configure(bg='#00FF00')
-        else:
-            self.lb_lamp.configure(bg='grey')
 
 array_load_bank = [{'id':1, 'kw': 1, 'port':0x01},
        {'id': 2, 'kw': 2, 'port':0x02},

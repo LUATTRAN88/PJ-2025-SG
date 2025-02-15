@@ -4,7 +4,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 # import threading
 # from time import sleep
-# import client as clientCall
+import client as clientCall
 # import json
 from extend import *
 from time import strftime
@@ -258,17 +258,22 @@ class PAGE3:
         self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)  
 
     def createThreadAdruino(self):
-        #self.threading_req = Thread(target=self.requestdata, args=()); 
-        threading_rep = Thread(target=self.loadingdata, args=());          
-        self.flag_thread_req_rep = True;
-        #self.threading_req.start();
-        threading_rep.start();  
+        if self.threading_rep == None:
+            self.threading_rep = Thread(target=self.loadingdata, args=());    
+            self.flag_thread_req_rep = True;
+            self.threading_rep.start();  
+ 
     def stopThreadAdruino(self):
-        self.flag_thread_req_rep=False;
+        try: 
+            self.flag_thread_req_rep=False;
+            self.threading_rep=None;
+        except:
+            pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = self.adruino.store_data;
+                response = clientCall.requestGET("20002").readline();
+                print ("Response 333: %s", response)
                 data = json.loads(response);
                 self.origin_data = data['info']
                 # self.kw1.set(str(self.origin_data['kw1']))

@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 # import threading
 from time import sleep
-# import client as clientCall
+import client as clientCall
 import json
 from extend import *
 from time import strftime
@@ -24,6 +24,7 @@ class PAGE1:
         self.hold_powerup=FALSE;
         self.hold_timeup=FALSE;
         self.valuerelay_fan_phase=None;
+        self.threading_rep = None;
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -381,17 +382,25 @@ class PAGE1:
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
             
     def createThreadAdruino(self):
+        print ("Create Thread1")
         #self.threading_req = Thread(target=self.requestdata, args=()); 
-        threading_rep = Thread(target=self.loadingdata, args=());          
-        self.flag_thread_req_rep = True;
-        #self.threading_req.start();
-        threading_rep.start();  
+        if self.threading_rep == None:
+            self.threading_rep = Thread(target=self.loadingdata, args=());    
+            self.flag_thread_req_rep = True;
+            self.threading_rep.start();  
+    
+
     def stopThreadAdruino(self):
-        self.flag_thread_req_rep=False;
+        print ("Stop Thread1")     
+        try: 
+            self.flag_thread_req_rep=False;
+            self.threading_rep=None;
+        except:
+            pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = self.adruino.store_data;
+                response = clientCall.requestGET("20002").readline();
                 data = json.loads(response);
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
@@ -423,6 +432,6 @@ class PAGE1:
                     index+=1;
                     pass
                 sleep(0.1)
-            except :
-                #print("Connect Server Abnormal Page1")
-                sleep(1)
+            except:
+                print ("FORMAT DATA Wrong");
+                sleep(5)

@@ -2,7 +2,7 @@ from serial import *
 from threading import Thread
 from time import sleep
 import json
-from extend import *
+
 
 class Arduino:
     def __init__(self):
@@ -13,7 +13,7 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = 'COM4';
+        self.PORT_NAME = 'COM5';
         
     def connect_port(self):
             self.serial_con = Serial(self.PORT_NAME)
@@ -38,7 +38,7 @@ class Arduino:
         if self.serial_con != None:
             if self.serial_con.is_open:
                 
-                obj= {"req":ADRUINO_REQ_CTRL_SINGLE_RELAY , "port": port, "status":status};
+                obj= {"req":1004 , "port": port, "status":status};
                 data = json.dumps(obj)
                 data +='\r\n'
                 print(data)
@@ -49,7 +49,6 @@ class Arduino:
             if self.serial_con.is_open:
                 data = json.dumps(obj)
                 data +='\r\n'
-                print(data)
                 self.serial_con.write(bytes(data, 'utf-8'));
         
     def read_data(self):
@@ -59,7 +58,6 @@ class Arduino:
                     self.write_obj({"req":1001});
                     sleep(1);
                     self.store_data = self.serial_con.readline();
-                    print(self.store_data)
                     sleep(2);
     def readline(self):
         if self.serial_con != None:
