@@ -2,7 +2,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import *
 from PIL import ImageTk, Image
-from time import strftime
+import time 
 import pandas as pd
 
 STATE_M_CONNECTION =100
@@ -33,6 +33,7 @@ ADRUINO_PORT_CTRL_PHASE = 14
 ADRUINO_STATUS_PORT_ON =1;
 ADRUINO_STATUS_PORT_OFF =0;
 
+FLAG_EXT_PRINT =TRUE
 
 class VALUERELAY_FAN_PHASE:
     def __init__(self):
@@ -263,3 +264,6 @@ def control_relay(req,id,status):
     req = {'req':req,'id':id,'status':status}
     print(req)
     return req
+def extPrint(data):
+    if FLAG_EXT_PRINT:
+        print("%s-%s",time.time(),data)

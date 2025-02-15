@@ -253,8 +253,8 @@ class PAGE3:
         power = self.power_input.get()
         voltage = self.voltage_input.get()
         temp = self.temp_input.get()
-        # print(power, '')
-        # print('tYpe ', type(power))
+        # extPrint(power, '')
+        # extPrint('tYpe ', type(power))
         self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)  
 
     def createThreadAdruino(self):
@@ -277,7 +277,7 @@ class PAGE3:
                 data = json.loads(response);
                 self.origin_data = data['info']
                 # self.kw1.set(str(self.origin_data['kw1']))
-                #     #print(self.kw1)
+                #     #extPrint(self.kw1)
                 # self.kw2.set(str(self.origin_data['kw2']))
                 # self.kw3.set(str(self.origin_data['kw3']))
                 # self.vln1.set(str(self.origin_data['vln1']))
@@ -307,5 +307,5 @@ class PAGE3:
                     pass
                 sleep(1)
             except :
-                print("Connect Server Abnormal Page 3")
+                extPrint("Connect Server Abnormal Page 3")
                 sleep(1)    

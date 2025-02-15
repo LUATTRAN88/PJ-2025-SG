@@ -13,12 +13,12 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = 'COM5';
+        self.PORT_NAME = '/dev/ttyUSB0';
         
     def connect_port(self):
             self.serial_con = Serial(self.PORT_NAME)
             self.serial_con.baudrate = self.baudrate;
-            self.serial_con.timeout=0.01;
+            self.serial_con.timeout=None;
             if self.serial_con == None:
                 print("Failed to connect");
                 return False;
@@ -38,7 +38,7 @@ class Arduino:
         if self.serial_con != None:
             if self.serial_con.is_open:
                 
-                obj= {"req":1004 , "port": port, "status":status};
+                obj= {"req":2000 , "port": port, "status":status};
                 data = json.dumps(obj)
                 data +='\r\n'
                 print(data)

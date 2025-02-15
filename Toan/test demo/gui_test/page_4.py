@@ -208,7 +208,7 @@ class PAGE4:
                     pass
                 sleep(1)
             except :
-                print("Connect Server Abnormal Page 4")
+                extPrint("Connect Server Abnormal Page 4")
                 sleep(1)   
             
 class KEYBOARD:  

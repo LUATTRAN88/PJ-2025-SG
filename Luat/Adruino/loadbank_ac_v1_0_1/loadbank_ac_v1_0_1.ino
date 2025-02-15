@@ -27,7 +27,7 @@ Crc16 crc;
 // SERIAL INPUT CONTROL
 String dataInputCtrl = "";      // a String to hold incoming data
 bool dataComplete = false;  // whether the string is complete
-String output="";
+ String output="";
 SoftwareSerial pzemSerial(9,8); //rx, tx new board
 byte datacmd[8];
 byte list_port_inf[16];
@@ -103,8 +103,9 @@ OutParams  outParams;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.setTimeout(100);
+  Serial.setTimeout(1000);
   pzemSerial.begin(9600);
+  pzemSerial.setTimeout(100);
   pzemSerial.flush();
   //pzemSerial.setTimeout(10);
   init_pcf8575();
@@ -126,6 +127,7 @@ void setup() {
 ISR (TIMER1_OVF_vect) 
 {
     TCNT1 = 49911;
+  
 }
 void init_pcf8575()
 {
@@ -151,13 +153,21 @@ void init_pcf8575()
 
 
 }
-
+int cnt_get_mfm=0;
 void loop() {
 
 //serialInputData();
-//sendmfm383relaytorasp(1001,STS_SEND_NRM);       
-serialEvent();
-sendmfm383relaytorasp();                                                                                                                                                                                                                                                                                                                                   
+//sendmfm383relaytorasp(1001,STS_SEND_NRM);
+  if(dataComplete==false)   
+  { 
+    serialEvent();
+  }
+  if(cnt_get_mfm++>100)
+  {
+    sendmfm383relaytorasp();
+    cnt_get_mfm=0;
+  }
+                                                                                                                                                                                                                                                                                                                             
 
 }
 
@@ -183,56 +193,129 @@ void sendmfm383relaytorasp()
 {
  
 outParams.V1N=reqmfm383(sendmfm383(0),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.V2N=reqmfm383(sendmfm383(1),8);
-delayMicroseconds(1000);
+//delayMicroseconds(100);
 outParams.V3N=reqmfm383(sendmfm383(2),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.VLN=reqmfm383(sendmfm383(3),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.V12=reqmfm383(sendmfm383(4),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.V23=reqmfm383(sendmfm383(5),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.V31=reqmfm383(sendmfm383(6),8);
-delayMicroseconds(1000);
+delayMicroseconds(10);
 outParams.VLL=reqmfm383(sendmfm383(7),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.I1=reqmfm383(sendmfm383(8),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.I2=reqmfm383(sendmfm383(9),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.I3=reqmfm383(sendmfm383(10),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.AVI=reqmfm383(sendmfm383(11),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.KW1=reqmfm383(sendmfm383(12),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.KW2=reqmfm383(sendmfm383(13),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.KW3=reqmfm383(sendmfm383(14),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.TKW=reqmfm383(sendmfm383(15),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.FRQ=reqmfm383(sendmfm383(16),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.PF1=reqmfm383(sendmfm383(17),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.PF2=reqmfm383(sendmfm383(18),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.PF3=reqmfm383(sendmfm383(19),8);
-delayMicroseconds(1000);
+//delayMicroseconds(10);
 outParams.AVPF=reqmfm383(sendmfm383(20),8);
 
 int thermo_status = thermoCouple.read();
 outParams.temperature = thermoCouple.getTemperature();
-
-
-
-
-
 }
 
+void collectiondata()
+{
+    
+     readPortPCF8575();
+      output="";
+      output +="{\"req\":200,";
+      output +="\"status\":200,";
+      output +="\"info\":{";
+      sendStringSerial(output);
+      output="";
+      output +="\"vln1\" : "+String(outParams.V1N) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"v12\" : "+String(outParams.V12) +",";
+      output +="\"v23\" : "+String(outParams.V23) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"v31\" : "+String(outParams.V31) +",";
+      output +="\"vll\" : "+String(outParams.VLL) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"cur1\" : "+String(outParams.I1) +",";
+      output +="\"cur2\" : "+String(outParams.I2) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"cur3\" : "+String(outParams.I3) +",";
+      output +="\"avi\" : "+String(outParams.AVI) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"kw1\" : "+String(outParams.KW1) +",";
+      output +="\"kw2\" : "+String(outParams.KW2) +",";
+      output +="\"kw3\" : "+String(outParams.KW3) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"tkw\" : "+String(outParams.TKW) +",";
+      output +="\"freq\" : "+String(outParams.FRQ) +",";
+      output +="\"pf1\" : "+String(outParams.PF1) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"pf2\" : "+String(outParams.PF2) +",";
+      output +="\"pf3\" : "+String(outParams.PF3) +",";
+      output +="\"avpf\" : "+String(outParams.AVPF) +",";
+      sendStringSerial(output);
+      output="";
+      output +="\"tim1_cnt\" : "+String(outParams.timer1_counter_val) +",";
+      output +="\"tempc\" : "+String(outParams.temperature) +"";
+      output +="},";
+      sendStringSerial(output);
+      output="";
+      output +="\"rls\":[";
+      output +=String(list_port_inf[0]) +"," ;
+      output +=String(list_port_inf[1]) +"," ;
+      output +=String(list_port_inf[2]) +"," ;
+      sendStringSerial(output);
+      output="";
+      output +=String(list_port_inf[3]) +"," ;
+      output +=String(list_port_inf[4]) +"," ;
+      output +=String(list_port_inf[5]) +"," ;
+      sendStringSerial(output);
+      output="";
+      output +=String(list_port_inf[6]) +"," ;
+      output +=String(list_port_inf[7]) +"," ;
+      output +=String(list_port_inf[8]) +"," ;
+      sendStringSerial(output);
+      output="";
+      output +=String(list_port_inf[9]) +"," ;
+      output +=String(list_port_inf[10]) +"," ;
+      output +=String(list_port_inf[11]) +"," ;
+      output +=String(list_port_inf[12]) +"," ;
+      sendStringSerial(output);
+      output="";
+      output +=String(list_port_inf[13]) +"," ;
+      output +=String(list_port_inf[14]) +"," ;
+      output +=String(list_port_inf[15]) +"" ;
+      output +="]}";
+      sendStringSerial(output+"\r\n");
+
+}
 
 
 byte* sendmfm383(int row)
@@ -256,7 +339,7 @@ float reqmfm383(byte *reqdata, int length)
     int cnt_data=0;
     int data_length=9;
     byte repdata[9]={};
-    while(cnt_data<100)
+    while(cnt_data<10000)
     { 
       if(pzemSerial.available()>8)
       { 
@@ -265,7 +348,7 @@ float reqmfm383(byte *reqdata, int length)
         break;
       }
       cnt_data++;
-      delayMicroseconds(1000);
+      delayMicroseconds(10);
     }
     pzemSerial.flush();
     crc.clearCrc();
@@ -344,77 +427,7 @@ void deliverCtrl(String rawDT)
         returnServerStatus(resq,"",STS_SEND_NRM);    
       break;
     case 1001: // Read Data sensor and control
-      readPortPCF8575();
-      output="";
-      output +="{";
-      output +="\"req\" : 1001,";
-      output +="\"status\" : 200,";
-      output +="\"info\" : {";
-      sendStringSerial(output);
-      output="";
-      output +="\"vln1\" : "+String(outParams.V1N) +",";
-      output +="\"vln2\" : "+String(outParams.V2N) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"vln3\" : "+String(outParams.V3N) +",";
-      output +="\"vln\" : "+String(outParams.VLN) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"v12\" : "+String(outParams.V12) +",";
-      output +="\"v23\" : "+String(outParams.V23) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"v31\" : "+String(outParams.V31) +",";
-      output +="\"vll\" : "+String(outParams.VLL) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"cur1\" : "+String(outParams.I1) +",";
-      output +="\"cur2\" : "+String(outParams.I2) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"cur3\" : "+String(outParams.I3) +",";
-      output +="\"avi\" : "+String(outParams.AVI) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"kw1\" : "+String(outParams.KW1) +",";
-      output +="\"kw2\" : "+String(outParams.KW2) +",";
-      output +="\"kw3\" : "+String(outParams.KW3) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"tkw\" : "+String(outParams.TKW) +",";
-      output +="\"freq\" : "+String(outParams.FRQ) +",";
-      output +="\"pf1\" : "+String(outParams.PF1) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"pf2\" : "+String(outParams.PF2) +",";
-      output +="\"pf3\" : "+String(outParams.PF3) +",";
-      output +="\"avpf\" : "+String(outParams.AVPF) +",";
-      sendStringSerial(output);
-      output="";
-      output +="\"tim1_cnt\" : "+String(outParams.timer1_counter_val) +",";
-      output +="\"tempc\" : "+String(outParams.temperature) +"";
-      output +="},";
-      sendStringSerial(output);
-      output="";
-      output +="\"rls\":[";
-      output +=String(list_port_inf[0]) +"," ;
-      output +=String(list_port_inf[1]) +"," ;
-      output +=String(list_port_inf[2]) +"," ;
-      output +=String(list_port_inf[3]) +"," ;
-      output +=String(list_port_inf[4]) +"," ;
-      output +=String(list_port_inf[5]) +"," ;
-      output +=String(list_port_inf[6]) +"," ;
-      output +=String(list_port_inf[7]) +"," ;
-      output +=String(list_port_inf[8]) +"," ;
-      output +=String(list_port_inf[9]) +"," ;
-      output +=String(list_port_inf[10]) +"," ;
-      output +=String(list_port_inf[11]) +"," ;
-      output +=String(list_port_inf[12]) +"," ;
-      output +=String(list_port_inf[13]) +"," ;
-      output +=String(list_port_inf[14]) +"," ;
-      output +=String(list_port_inf[15]) +"" ;
-      output +="]}";
-      sendStringSerial(output+"\r\n");
+      collectiondata();
       break;
     case 1002: // Enable counter Timer 1
        TIMSK1 = (1 << TOIE1); 
@@ -448,9 +461,9 @@ void deliverCtrl(String rawDT)
         {
           onoffCtrlRelay(port,OFF_RELAY_LOAD);
         }
-         //sendmfm383relaytorasp(resq,STS_SEND_NRM); 
+         
       }
-      
+      collectiondata();
       break;
   }
   
@@ -466,7 +479,7 @@ void sendStringSerial(String buffer)
   {
     Serial.write(buffer[i]);
   }
-  Serial.flush();
+  
 }
 
 void stopAllLoad()

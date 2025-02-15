@@ -22,7 +22,7 @@ class show_info(Resource):
                      status = int(request.args.get('status'))
                      print(port)
                      print(status)
-                     #aruidno.write_port(port,status)
+                     aruidno.write_port(port,status)
               elif reqsv == 20001:
                      res = {'respsv': reqsv, 'error': 0, 'data': ''}
               elif reqsv == 20002:
@@ -31,8 +31,9 @@ class show_info(Resource):
                      res =  self.dataAdruino()
               return jsonify(res)
        def dataAdruino(self):
-              y = json.loads(aruidno.store_data)
-              return y;
+              print(aruidno.store_data)
+              data = json.loads(aruidno.store_data)
+              return data;
               
 api.add_resource(show_info, '/infos/') # Route_3
 

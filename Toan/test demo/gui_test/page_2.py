@@ -340,7 +340,7 @@ class PAGE2:
                 data = json.loads(response);
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
-                    #print(self.kw1)
+                    #extPrint(self.kw1)
                 self.kw2.set(str(self.origin_data['kw2']))
                 self.kw3.set(str(self.origin_data['kw3']))
                 self.vln1.set(str(self.origin_data['vln1']))
@@ -375,7 +375,7 @@ class PAGE2:
                     pass
                 sleep(0.1)
             except:
-                print ("FORMAT DATA Wrong");
+                extPrint("FORMAT DATA Wrong");
                 sleep(5)
 
         

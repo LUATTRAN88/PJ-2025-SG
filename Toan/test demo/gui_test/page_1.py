@@ -336,7 +336,7 @@ class PAGE1:
         self.btn_logging.place(x=21,y=66,width=150,height=48)
     def on_press_powerup(self, event):
         self.hold_powerup = True
-        print("test")
+        extPrint("test")
         self.hold_event_updown()
 
     def on_release_powerup(self, event):
@@ -347,17 +347,17 @@ class PAGE1:
             self.power_value += 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
             result=number_of_objects(self.power_value)
-            print(result)
+            extPrint(result)
     def reduce_power_set(self):
         if self.power_value > 0:
             self.power_value -= 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)        
             result=number_of_objects(self.power_value)
-            print(result)
+            extPrint(result)
             
     def on_press_timesetup(self, event):
         self.hold_timeup = True
-        print("test time")
+        extPrint("test time")
         self.hold_event_updown()
 
     def on_release_timesetup(self, event):
@@ -401,10 +401,12 @@ class PAGE1:
         while self.flag_thread_req_rep:
             try:
                 response = clientCall.requestGET("20002").readline();
+ 
                 data = json.loads(response);
+                
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
-                    #print(self.kw1)
+                    #extPrint(self.kw1)
                 self.kw2.set(str(self.origin_data['kw2']))
                 self.kw3.set(str(self.origin_data['kw3']))
                 self.vln1.set(str(self.origin_data['vln1']))
@@ -422,16 +424,16 @@ class PAGE1:
 
                 self.txt_apf_sum.set(str(self.origin_data['avpf']))
                 self.txt_aln_sum.set(str(self.origin_data['vln']))
-                self.rl_array = data['rls']
-                index=0;
-                for i in self.rl_array: 
-                    if i==1:
-                        self.signal_list[index].setonoff(1);
-                    else:
-                        self.signal_list[index].setonoff(0);
-                    index+=1;
-                    pass
+                # self.rl_array = data['rls']
+                # index=0;
+                # for i in self.rl_array: 
+                #     if i==1:
+                #         self.signal_list[index].setonoff(1);
+                #     else:
+                #         self.signal_list[index].setonoff(0);
+                #     index+=1;
+                #     pass
                 sleep(0.1)
             except:
-                print ("FORMAT DATA Wrong");
+                extPrint("FORMAT DATA Wrong");
                 sleep(5)
