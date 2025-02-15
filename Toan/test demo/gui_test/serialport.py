@@ -1,6 +1,6 @@
 from serial import *
 from threading import Thread
-import time
+from time import sleep
 import json
 from extend import *
 
@@ -13,13 +13,12 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = 'COM5';
+        self.PORT_NAME = 'COM4';
         
     def connect_port(self):
-        try:
             self.serial_con = Serial(self.PORT_NAME)
             self.serial_con.baudrate = self.baudrate;
-            self.serial_con.timeout=500;
+            self.serial_con.timeout=None;
             if self.serial_con == None:
                 print("Failed to connect");
                 return False;
@@ -30,8 +29,6 @@ class Arduino:
                 self.threading_read.start();
               
             return True;
-        except:
-            return False;
     
     def disconnect_port(self):
         self.flag_thread_read = False;
@@ -52,16 +49,20 @@ class Arduino:
             if self.serial_con.is_open:
                 data = json.dumps(obj)
                 data +='\r\n'
-                
+                print(data)
                 self.serial_con.write(bytes(data, 'utf-8'));
         
     def read_data(self):
         while self.flag_thread_read:
             if self.serial_con != None:
                 if self.serial_con.is_open:
+                    self.write_obj({"req":1001});
+                    sleep(1);
                     self.store_data = self.serial_con.readline();
+                    sleep(2);
     def readline(self):
         if self.serial_con != None:
             if self.serial_con.is_open:
+                self.write_obj({"req":1001});
                 self.store_data = self.serial_con.readline();
         return self.store_data;
