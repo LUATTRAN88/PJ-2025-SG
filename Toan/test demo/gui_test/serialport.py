@@ -18,7 +18,7 @@ class Arduino:
     def connect_port(self):
             self.serial_con = Serial(self.PORT_NAME)
             self.serial_con.baudrate = self.baudrate;
-            self.serial_con.timeout=None;
+            self.serial_con.timeout=0.01;
             if self.serial_con == None:
                 print("Failed to connect");
                 return False;
@@ -59,6 +59,7 @@ class Arduino:
                     self.write_obj({"req":1001});
                     sleep(1);
                     self.store_data = self.serial_con.readline();
+                    print(self.store_data)
                     sleep(2);
     def readline(self):
         if self.serial_con != None:
