@@ -43,12 +43,12 @@ class PAGE4:
         self.button_fan()
         self.button_testmode()
         self.logo()
-        self.timeset()
+      
         self.label_run_temp()
         self.display_kb = KEYBOARD()
         self.display_kb.create_layout(self.layout1)
         self.display_kb.btn_enter.config(command=lambda:self.test_pass())
-        
+        self.timeset()
         self.signal_list = []
         for i in range(16):
             x_space = i * 32
@@ -160,16 +160,18 @@ class PAGE4:
         self.lb_logo_name = Label(self.lay_logo_switch, bg='white',fg='black',font=('arial bold',10),text='TLC ENGINEERING SOLUTIONS').place(x=307,y=132,width=198,height=15)
         
     def timeset(self):
-            l1=Label(self.layout1,font=('arial', 15),bg='white')
-            l1.place(x=662,y=7,width=210,height=20)
-            time_string = strftime('%H:%M:%S %p   %x') # time format 
-            l1.config(text=time_string)
-            l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+        time_string = strftime('%H:%M:%S %p   %x') # time format 
+        self.time_string.set(time_string)
+        self.lb_time.after(1000,self.timeset) # time delay of 1000 milliseconds 
             
     def label_run_temp(self):
         # self.run_lamp = Image.open(get_path_img()+'running_on.png').resize((122,44))
         # self.run = ImageTk.PhotoImage(self.run_lamp)
         # self.lb_running = Label(self.layout1,bg='white',image=self.run).place(x=906,y=0,width=101,height=40)
+        self.time_string = StringVar()
+        self.lb_time=Label(self.layout1,font=('arial', 15),bg='white',textvariable=self.time_string)
+        self.lb_time.place(x=150,y=7,width=210,height=20)
+
         self.lb_running = Label(self.layout1,bg='white',text='Running',font=('arial bold',15)).place(x=894,y=7,width=80,height=20)
         self.lb_run_on = Label(self.layout1,bg='#00FF00').place(x=982,y=7,width=18,height=18)
         

@@ -11,6 +11,8 @@ def requestGET(reqsv):
     
     response = connection.getresponse()  
     connection.close()
+    connection=None
+    del connection
     return response
 def requestCtrlPort_GET(reqsv,port,status):
     # Use HTTPConnection for an HTTP server

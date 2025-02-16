@@ -50,6 +50,8 @@ class PAGE1:
         
         self.lay_logo_switch = Frame(self.layout2,bg='white')
         self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
+
+
         
         self.label_powtime()
         self.tab_button()
@@ -88,16 +90,19 @@ class PAGE1:
       
 
     def timeset(self):
-        l1=Label(self.lay_power,font=('arial', 15),bg='white')
-        l1.place(x=150,y=7,width=210,height=20)
+
         time_string = strftime('%H:%M:%S %p   %x') # time format 
-        l1.config(text=time_string)
-        l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+        self.time_string.set(time_string)
+        self.lb_time.after(1000,self.timeset) # time delay of 1000 milliseconds 
          
     def label_power(self):
         # self.run_on = Image.open(get_path_img()+'running_on.png').resize((122,44))
         # self.picrun = ImageTk.PhotoImage(self.run_on)
         # self.lb_running = Label(self.lay_power,bg='white',image=self.picrun).place(x=394,y=0,width=101,height=40)
+        self.time_string = StringVar()
+        self.lb_time=Label(self.lay_power,font=('arial', 15),bg='white',textvariable=self.time_string)
+        self.lb_time.place(x=150,y=7,width=210,height=20)
+
         self.lb_running = Label(self.lay_power,bg='white',text='Running',font=('arial bold',15)).place(x=382,y=7,width=80,height=20)
         self.lb_run_on = Label(self.lay_power,bg='#00FF00').place(x=470,y=7,width=18,height=18)
         
@@ -364,11 +369,10 @@ class PAGE1:
         self.hold_timeup = False   
     def hold_event_updown(self):
         if self.hold_timeup == TRUE:
-            self.increase_timer_set()
-            self.root.after(100, self.hold_event_updown)  # Repeat action every 100ms      
+            self.increase_timer_set()   
         elif self.hold_powerup == TRUE:
             self.increase_power_set()
-            self.root.after(100, self.hold_event_updown)  # Repeat action every 100ms 
+
             
             
     def increase_timer_set(self):
@@ -399,40 +403,47 @@ class PAGE1:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
-            
-                response = clientCall.requestGET("20002");
-                if response.status != 200:
-                    continue
-                data =response.readline();
-                data = json.loads(data);
+                try:
+                    response = clientCall.requestGET("20002");
+                    if response.status != 200:
+                        continue
+                    data =response.readline();
+                    data = json.loads(data);
                 
-                self.origin_data = data['info']
-                self.kw1.set(str(self.origin_data['kw1']))
-                    #extPrint(self.kw1)
-                self.kw2.set(str(self.origin_data['kw2']))
-                self.kw3.set(str(self.origin_data['kw3']))
-                self.vln1.set(str(self.origin_data['vln1']))
-                self.vln2.set(str(self.origin_data['vln2']))
-                self.vln3.set(str(self.origin_data['vln3']))
-                self.cur1.set(str(self.origin_data['cur1']))
-                self.cur2.set(str(self.origin_data['cur2']))
-                self.cur3.set(str(self.origin_data['cur3']))
-                self.v12.set(str(self.origin_data['v12']))
-                self.v23.set(str(self.origin_data['v23']))
-                self.v31.set(str(self.origin_data['v31']))
-                self.freqq.set(str(self.origin_data['freq']))
-                self.tempcc.set(str(self.origin_data['tempc']))
-                self.tkw.set(str(self.origin_data['tkw']))
+                    self.origin_data = data['info']
+                    self.kw1.set(str(self.origin_data['kw1']))
+                        #extPrint(self.kw1)
+                    self.kw2.set(str(self.origin_data['kw2']))
+                    self.kw3.set(str(self.origin_data['kw3']))
+                    self.vln1.set(str(self.origin_data['vln1']))
+                    self.vln2.set(str(self.origin_data['vln2']))
+                    self.vln3.set(str(self.origin_data['vln3']))
+                    self.cur1.set(str(self.origin_data['cur1']))
+                    self.cur2.set(str(self.origin_data['cur2']))
+                    self.cur3.set(str(self.origin_data['cur3']))
+                    self.v12.set(str(self.origin_data['v12']))
+                    self.v23.set(str(self.origin_data['v23']))
+                    self.v31.set(str(self.origin_data['v31']))
+                    self.freqq.set(str(self.origin_data['freq']))
+                    self.tempcc.set(str(self.origin_data['tempc']))
+                    self.tkw.set(str(self.origin_data['tkw']))
 
-                self.txt_apf_sum.set(str(self.origin_data['avpf']))
-                self.txt_aln_sum.set(str(self.origin_data['vln']))
-                self.rl_array = data['rls']
-                index=0;
-                for i in self.rl_array: 
-                    if i==1:
-                        self.signal_list[index].setonoff(1);
-                    else:
-                        self.signal_list[index].setonoff(0);
-                    index+=1;
-
+                    self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                    self.txt_aln_sum.set(str(self.origin_data['vln']))
+                    self.rl_array = data['rls']
+                    index=0;
+                    for i in self.rl_array: 
+                        if i==1:
+                            self.signal_list[index].setonoff(1);
+                        else:
+                            self.signal_list[index].setonoff(0);
+                        index+=1;
+                except:
+                    pass
+                response=None;
+                self.origin_data=None;
+                data=None;
+                self.rl_array=None
+                del response
+                del data
                 sleep(3)

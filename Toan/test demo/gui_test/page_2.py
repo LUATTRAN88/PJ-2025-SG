@@ -119,13 +119,15 @@ class PAGE2:
         self.tkw = StringVar()
         self.lb_power_val = Label(self.lay_power,bg='white',font=('arial bold',49),textvariable=self.tkw,fg='red').place(x=190,y=65,width=165,height=48)
         self.lb_power_kw = Label(self.lay_power,bg='white',font=('arial bold',49),text='KW',fg='red').place(x=370,y=65,width=110,height=48)
+
+        self.time_string = StringVar()
+        self.lb_time=Label(self.lay_power,font=('arial', 15),bg='white',textvariable=self.time_string)
+        self.lb_time.place(x=150,y=7,width=210,height=20)
         
     def timeset(self):
-        l1=Label(self.lay_power,font=('arial', 15),bg='white')
-        l1.place(x=150,y=7,width=210,height=20)
         time_string = strftime('%H:%M:%S %p   %x') # time format 
-        l1.config(text=time_string)
-        l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+        self.time_string.set(time_string)
+        self.lb_time.after(1000,self.timeset) # time delay of 1000 milliseconds 
         
     def line(self):
         self.lb_line_dt1 = Label(self.lay_power,bg='black').place(x=0,y=0,width=1,height=180)

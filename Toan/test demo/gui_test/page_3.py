@@ -116,13 +116,15 @@ class PAGE3:
         # self.lb_month = Label(self.layout1,bg='white',font=('arial',15),text='01').place(x=814,y=0,width=23,height=38) 
         # self.lb_x2 = Label(self.layout1,bg='white',font=('arial',15),text='/').place(x=837,y=0,width=7,height=38) 
         # self.lb_year = Label(self.layout1,bg='white',font=('arial',15),text='2025').place(x=844,y=0,width=50,height=38) 
+
+        self.time_string = StringVar()
+        self.lb_time=Label(self.layout1,font=('arial', 15),bg='white',textvariable=self.time_string)
+        self.lb_time.place(x=150,y=7,width=210,height=20)
     
     def timeset(self):
-        l1=Label(self.layout1,font=('arial', 15),bg='white')
-        l1.place(x=662,y=7,width=210,height=20)
         time_string = strftime('%H:%M:%S %p   %x') # time format 
-        l1.config(text=time_string)
-        l1.after(1000,self.timeset) # time delay of 1000 milliseconds 
+        self.time_string.set(time_string)
+        self.lb_time.after(1000,self.timeset) # time delay of 1000 milliseconds 
              
     def line(self):
         self.line_1n = Label(self.board,bg='black').place(x=0,y=0,width=1024,height=1)

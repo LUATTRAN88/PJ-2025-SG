@@ -31,9 +31,14 @@ class show_info(Resource):
                      res =  self.dataAdruino()
               return jsonify(res)
        def dataAdruino(self):
-              #print(aruidno.store_data)
-              data = json.loads(aruidno.store_data)
-              return data;
+              if len(aruidno.store_data)>0:
+                     try:
+                            data = json.loads(aruidno.store_data)
+                            print("999 %s",aruidno.store_data);
+                            return data;
+                     except:
+                            print("parse json error %s",aruidno.store_data);
+                            return {};
               
 api.add_resource(show_info, '/infos/') # Route_3
 
