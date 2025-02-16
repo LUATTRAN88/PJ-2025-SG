@@ -400,9 +400,11 @@ class PAGE1:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             
-                response = clientCall.requestGET("20002").readline();
- 
-                data = json.loads(response);
+                response = clientCall.requestGET("20002");
+                if response.status != 200:
+                    continue
+                data =response.readline();
+                data = json.loads(data);
                 
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
@@ -433,4 +435,4 @@ class PAGE1:
                         self.signal_list[index].setonoff(0);
                     index+=1;
 
-                sleep(0.1)
+                sleep(3)

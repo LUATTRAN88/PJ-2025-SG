@@ -491,24 +491,23 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];
   
       break;
-    case 1001: // Read Data sensor and control
-
-      getdata_V(resq,FRQ,V12,V23,V31);
+    case 1001: // vll
+      getdata_V(resq,V12,V23,V31,FRQ);
       break;
-    case 1002: // Read Data sensor and control
+    case 1002: // v1n
       getdata_V(resq,V1N,V2N,V3N,VLN);
       break;
-    case 1003: // Read Data sensor and control
-      getdata_V(resq,V1N,V2N,V3N,VLN);
+    case 1003: // cur
+      getdata_V(resq,I1,I2,I3,AVI);
       break;
-    case 1004: // Read Data sensor and control
-      getdata_V(resq,V1N,V2N,V3N,VLN);
+    case 1004: // pf
+      getdata_V(resq,PF1,PF2,PF3,AVPF);
       break;
-    case 1005: // Read Data sensor and control
-      getdata_V(resq,V1N,V2N,V3N,VLN);
+    case 1005: // kw
+      getdata_V(resq,KW1,KW2,KW3,TKW);
       break;
-    case 1006: // Read Data sensor and control
-      getdata_V(resq,V1N,V2N,V3N,VLN);
+    case 1006: // INFO
+      getdata_V(resq,FRQ,temperature,timer1_counter_val,0.0);
       break;
     case 1007: // Read Data sensor and control
       getdata_Relays(resq);
@@ -548,7 +547,7 @@ void sendStringSerial(String buffer)
   {
     return;
   }
-  buffer=buffer+"\r\n";
+  //buffer=buffer+"\r\n";
   for(long i = 0 ; i<buffer.length();i++)
   {
     Serial.write(buffer[i]);

@@ -31,7 +31,7 @@ class show_info(Resource):
                      res =  self.dataAdruino()
               return jsonify(res)
        def dataAdruino(self):
-              print(aruidno.store_data)
+              #print(aruidno.store_data)
               data = json.loads(aruidno.store_data)
               return data;
               
