@@ -13,12 +13,12 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = '/dev/ttyUSB0';
-        
+        #self.PORT_NAME = '/dev/ttyUSB0';
+        self.PORT_NAME = 'COM5';
     def connect_port(self):
             self.serial_con = Serial(self.PORT_NAME)
             self.serial_con.baudrate = self.baudrate;
-            self.serial_con.timeout=None;
+            self.serial_con.timeout=1;
             if self.serial_con == None:
                 print("Failed to connect");
                 return False;
@@ -56,8 +56,29 @@ class Arduino:
             if self.serial_con != None:
                 if self.serial_con.is_open:
                     self.write_obj({"req":1001});
-                    sleep(1);
                     self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+
+                    self.write_obj({"req":1002});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+                    self.write_obj({"req":1003});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+                    self.write_obj({"req":1004});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+                    self.write_obj({"req":1005});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+                    
+                    self.write_obj({"req":1006});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+                    self.write_obj({"req":1007});
+                    self.store_data = self.serial_con.readline();
+                    print(self.store_data )
+
                     sleep(2);
     def readline(self):
         if self.serial_con != None:

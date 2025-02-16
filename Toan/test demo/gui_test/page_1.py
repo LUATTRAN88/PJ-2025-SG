@@ -399,7 +399,7 @@ class PAGE1:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
-            try:
+            
                 response = clientCall.requestGET("20002").readline();
  
                 data = json.loads(response);
@@ -424,16 +424,13 @@ class PAGE1:
 
                 self.txt_apf_sum.set(str(self.origin_data['avpf']))
                 self.txt_aln_sum.set(str(self.origin_data['vln']))
-                # self.rl_array = data['rls']
-                # index=0;
-                # for i in self.rl_array: 
-                #     if i==1:
-                #         self.signal_list[index].setonoff(1);
-                #     else:
-                #         self.signal_list[index].setonoff(0);
-                #     index+=1;
-                #     pass
+                self.rl_array = data['rls']
+                index=0;
+                for i in self.rl_array: 
+                    if i==1:
+                        self.signal_list[index].setonoff(1);
+                    else:
+                        self.signal_list[index].setonoff(0);
+                    index+=1;
+
                 sleep(0.1)
-            except:
-                extPrint("FORMAT DATA Wrong");
-                sleep(5)
