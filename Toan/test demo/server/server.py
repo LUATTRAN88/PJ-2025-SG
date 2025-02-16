@@ -7,6 +7,7 @@ import random
 import json
 import serialport as ard
 import extend as ext
+
 # from flask.ext.jsonpify import jsonify
 aruidno = ard.Arduino();
 aruidno.connect_port();
@@ -31,14 +32,29 @@ class show_info(Resource):
                      res =  self.dataAdruino()
               return jsonify(res)
        def dataAdruino(self):
-              if len(aruidno.store_data)>0:
-                     try:
-                            data = json.loads(aruidno.store_data)
-                            print("999 %s",aruidno.store_data);
-                            return data;
-                     except:
-                            print("parse json error %s",aruidno.store_data);
-                            return {};
+              #try:   
+                     # item = aruidno.queue.get(block=False)
+                     # data = json.loads(item)
+                     # print("999 %s",data);
+                     # aruidno.queue.task_done()
+                     # return data;
+                     #CACH 2
+                     # if aruidno.flag_get_data:
+                     #        data = json.loads(aruidno.store_data);
+                     #        print("AA99 %s",data);
+                     #        aruidno.flag_get_data=False
+                     # return data;
+              item =aruidno.getdatanewline()
+              try:
+                     data = json.loads(item);
+                     print("AA22 ---", data);
+                     return data;
+              except:
+                     pass
+              return {};
+              #except:
+                     #print("parse json error ");
+
               
 api.add_resource(show_info, '/infos/') # Route_3
 

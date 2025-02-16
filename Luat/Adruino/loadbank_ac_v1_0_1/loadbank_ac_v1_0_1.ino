@@ -93,6 +93,9 @@ volatile float PF3=0.0;
 volatile float TKW=0.0;
 volatile float temperature;
 volatile float timer1_counter_val;
+//manage Time delay;
+unsigned long time_mask_coldata = 1000;
+
 
 CheckInParams checkInParams;
 void setup() {
@@ -145,22 +148,26 @@ void init_pcf8575()
   pcf8575.pinMode(P15, OUTPUT);
   pcf8575.begin();
 
+  time_mask_coldata=millis();
 
 }
-int cnt_get_mfm=0;
+
+
+
+
 void loop() {
   if(dataComplete==false)   
   { 
     serialEvent();
     dataComplete = false;
   }
-  if(cnt_get_mfm++>100)
-  {
-    sendmfm383relaytorasp();
-    collectiondata();
-    cnt_get_mfm=0;
-  }
-                                                                                                                                                                                                                                                                                                                             
+
+   if(millis() -time_mask_coldata >500){
+      sendmfm383relaytorasp();
+      
+      time_mask_coldata=millis();
+    }
+                                                                                                                                                                                                                                                                                                                     
 
 }
 
@@ -416,27 +423,21 @@ float reqmfm383(byte *reqdata, int length)
     }
     pzemSerial.flush();
     crc.clearCrc();
-    /*for(int j =0 ;j <data_length;j++)
-    {
-      Serial.println(repdata[j],HEX);
-    }*/
-    unsigned short checksum =getCombine2Bytes(repdata[data_length-1],repdata[data_length-2]);
+     unsigned short checksum =getCombine2Bytes(repdata[data_length-1],repdata[data_length-2]);
     //Modbus
     unsigned short crcvalue  = crc.Modbus(repdata,0,7);
 
     uint16_t H_value= getCombine2Bytes(repdata[3],repdata[4]);
     uint16_t L_value= getCombine2Bytes(repdata[5],repdata[6]);
     float value=convertFloat(L_value,H_value);
-    /*Serial.println(H_value,HEX);
-    Serial.println(L_value,HEX);
-    Serial.println(value);
-    //Serial.println(value,HEX);*/
     delayMicroseconds(1000);
     if(crcvalue==checksum)
       return value;
     else
       return -1;
 }
+
+
  unsigned short getCombine2Bytes(byte hight_bytes,byte low_bytes)
 {
   //byte arr[] = { 0x80, 0x7F };  result: 0x807F
@@ -483,12 +484,13 @@ void deliverCtrl(String rawDT)
   switch(resq)
   {
     case 1000: // init param
-        checkInParams.alm_lmt_temp= (int) myObject["alm_lmt_temp"];
+        /*checkInParams.alm_lmt_temp= (int) myObject["alm_lmt_temp"];
         checkInParams.alm_lmt_vol_l_n= (int) myObject["alm_lmt_vol_l_n"];
         checkInParams.alm_lmt_pwr= (int) myObject["alm_lmt_vol_pwr"];
         checkInParams.emg_lmt_temp= (int) myObject["emg_lmt_temp"];
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
-        checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];
+        checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
+        collectiondata();
   
       break;
     case 1001: // vll

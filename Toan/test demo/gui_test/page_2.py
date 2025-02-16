@@ -375,10 +375,15 @@ class PAGE2:
  
                     index+=1;
                     pass
-                sleep(0.1)
+                sleep(3)
             except:
-                extPrint("FORMAT DATA Wrong");
-                sleep(5)
+                pass
+            response=None;
+            self.origin_data=None;
+            data=None;
+            self.rl_array=None
+            del response
+            del data
 
         
 # 12 relay
