@@ -1,4 +1,4 @@
-from serial import *
+import serial
 from threading import Thread
 from time import sleep
 import json
@@ -23,9 +23,9 @@ class Arduino:
         else:
             return {}
     def connect_port(self):
-            self.serial_con = Serial(self.PORT_NAME)
+            self.serial_con = serial.Serial(self.PORT_NAME)
             self.serial_con.baudrate = self.baudrate;
-            self.serial_con.timeout=2;
+            self.serial_con.timeout=1;
             if self.serial_con==0:
                 print("Failed to connect");
                 return False;
@@ -66,11 +66,30 @@ class Arduino:
                             self.flag_get_data=True
                             self.write_obj({"req":1000})
                             sleep(0.05)
-                            data=self.serial_con.readline()
+                            #data=self.serial_con.readline().decode("utf-8").strip()
+                            print("IN<<<< '' ");
+                            data=self.serial_con.read_until(b"\n\n").decode() 
+                            print("OUT>>> '' %s",data);
+                            self.serial_con.flush();
                             self.flag_get_data=False
                             return data; 
             return {}
-
+    def getdatanewline2(self):
+            if self.serial_con != None:
+                if self.serial_con.is_open:
+                            self.write_obj({"req":1000})
+                            sleep(1)
+                            data =""
+                            line = []
+                            print("RR ---", data);
+                            for c in self.serial_con.read():
+                                    line.append(chr(c))
+                                    if chr(c) == '\n':
+                                        print("AA33 ---", data);
+                                        data=''.join(line)
+                                        line = []
+                                        break
+                            return data; 
 
     def read_data(self):
         while self.flag_thread_read:

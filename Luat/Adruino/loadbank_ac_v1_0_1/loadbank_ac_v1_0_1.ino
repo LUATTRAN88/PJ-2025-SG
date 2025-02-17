@@ -336,7 +336,7 @@ void collectiondata()
       output +=String(list_port_inf[14]) +"," ;
       output +=String(list_port_inf[15]) +"" ;
       output +="]}";
-      sendStringSerial(output+"\r\n");
+      sendStringSerial(output+"\r\n\n\n");
 
 }
 void getdata_V(int rep, float v1,float v2,float v3, float v4)
@@ -491,6 +491,7 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
         collectiondata();
+        
   
       break;
     case 1001: // vll

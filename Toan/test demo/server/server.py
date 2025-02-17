@@ -44,14 +44,17 @@ class show_info(Resource):
                      #        print("AA99 %s",data);
                      #        aruidno.flag_get_data=False
                      # return data;
-              item =aruidno.getdatanewline()
-              try:
-                     data = json.loads(item);
-                     print("AA22 ---", data);
+                     item =aruidno.getdatanewline()   
+                     try:       
+                            
+                            if len(item)>0:    
+                                   data = json.loads(item);
+                            else:
+                                   data=""
+                     except:
+                            data=""
+                            print("parse '' ");
                      return data;
-              except:
-                     pass
-              return {};
               #except:
                      #print("parse json error ");
 
