@@ -45,12 +45,13 @@ class show_info(Resource):
                      #        aruidno.flag_get_data=False
                      # return data;
                      item =aruidno.getdatanewline()   
+                     
                      try:       
-                            
-                            if len(item)>0:    
-                                   data = json.loads(item);
-                            else:
-                                   data=""
+                            data=""
+                            # if len(item)>0:    
+                            #        data = json.loads(item);
+                            # else:
+                            #        data=""
                      except:
                             data=""
                             print("parse '' ");

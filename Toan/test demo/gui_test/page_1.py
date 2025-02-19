@@ -8,7 +8,7 @@ import json
 from extend import *
 from time import strftime
 from threading import Thread
-
+import serialport as ard
 # import http.client
 
 
@@ -52,7 +52,9 @@ class PAGE1:
         self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
 
 
-        
+        self.aruidno = ard.Arduino();
+        self.aruidno.connect_port();
+
         self.label_powtime()
         self.tab_button()
         self.label_power()
@@ -404,12 +406,14 @@ class PAGE1:
     def loadingdata(self):
         while self.flag_thread_req_rep:
                 try:
-                    response = clientCall.requestGET("20002");
-                    if response.status != 200:
-                        continue
-                    data =response.readline();
-                    data = json.loads(data);
-                
+                    #response = clientCall.requestGET("20002");
+                    #if response.status != 200:
+                    #    continue
+                    #data =response.readline();
+                    #data = json.loads(data);
+                    item =self.aruidno.getdatanewline()   
+                    #data = json.loads(item);
+                    continue;
                     self.origin_data = data['info']
                     self.kw1.set(str(self.origin_data['kw1']))
                         #extPrint(self.kw1)
@@ -440,10 +444,10 @@ class PAGE1:
                         index+=1;
                 except:
                     pass
-                response=None;
-                self.origin_data=None;
-                data=None;
-                self.rl_array=None
-                del response
-                del data
+                # response=None;
+                # self.origin_data=None;
+                # data=None;
+                # self.rl_array=None
+                # del response
+                # del data
                 sleep(3)

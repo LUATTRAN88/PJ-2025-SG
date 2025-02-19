@@ -88,7 +88,7 @@ class Arduino:
                                 data=self.serial_con.read_until(b"####").decode() 
                                 if data!=b'':
                                     datastrm= data.strip('####')
-                                    print("<<OUT>>> '' %s",datastrm);
+                                    print("OUT>>> '' %s",datastrm);
                                 self.serial_con.flush();
                                 
                                 self.flag_get_data=False

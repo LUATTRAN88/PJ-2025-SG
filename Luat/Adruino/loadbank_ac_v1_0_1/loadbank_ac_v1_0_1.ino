@@ -339,20 +339,39 @@ void collectiondata()
       sendStringSerial(output+"\r\n\n\n");
 
 }
-void getdata_V(int rep, float v1,float v2,float v3, float v4)
+void getdata_V(int rep)
 {
-      String output7;
-      output7="";
-      output7 +="{\"status\":200,";
-      output7 +="\"rep\":"+String(rep)+",";
-      output7 +="\"info\":{";
-      output7 +="\"v1\" : "+String(v1,2) +",";
-      output7 +="\"v2\" : "+String(v2,2) +",";
-      output7 +="\"v3\" : "+String(v3,2) +",";
-      output7 +="\"v4\" : "+String(v4,2) +"}";
-      
-      output7 +="}";
-      sendStringSerial(output7);
+      String output;
+      output="";
+      output +="status:200\n";
+      output +="rep:"+String(rep)+"\n";
+      output +="vln:"+String(V1N,2)+"-" +String(V2N,2) +"-"+String(V3N,2)+ "-"+String(VLN,2)+"\n";
+      output +="vpp:"+String(V12,2)+"-" +String(V23,2) +"-"+String(V31,2)+ "-"+String(VLL,2)+"\n";
+      output +="cur:"+String(I1,2)+"-" +String(I2,2) +"-"+String(I3,2)+ "-"+String(AVI,2)+"\n";
+      output +="pf:"+String(PF1,2)+"-" +String(PF2,2) +"-"+String(PF3,2)+ "-"+String(AVPF,2)+"\n";
+      output +="kw:"+String(KW1,2)+"-" +String(KW2,2) +"-"+String(KW3,2)+ "-"+String(TKW,2)+"\n";
+      output +="v2:"+String(temperature,2) +"\n";
+      output +="fq:"+String(FRQ,2) +"\n";
+      output +="rls:[";
+      output +=String(list_port_inf[0]) +"," ;
+      output +=String(list_port_inf[1]) +"," ;
+      output +=String(list_port_inf[2]) +"," ;
+      output +=String(list_port_inf[3]) +"," ;
+      output +=String(list_port_inf[4]) +"," ;
+      output +=String(list_port_inf[5]) +"," ;
+      output +=String(list_port_inf[6]) +"," ;
+      output +=String(list_port_inf[7]) +"," ;
+      output +=String(list_port_inf[8]) +"," ;
+      output +=String(list_port_inf[9]) +"," ;
+      output +=String(list_port_inf[10]) +"," ;
+      output +=String(list_port_inf[11]) +"," ;
+      output +=String(list_port_inf[12]) +"," ;
+      output +=String(list_port_inf[13]) +"," ;
+      output +=String(list_port_inf[14]) +"," ;
+      output +=String(list_port_inf[15]) +"" ;
+      output +="]";
+      output +="####";
+      sendStringSerial(output);
       
 }
 
@@ -490,30 +509,30 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_temp= (int) myObject["emg_lmt_temp"];
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
-        collectiondata();
-        
+        //collectiondata();
+        getdata_V(1000);
   
       break;
     case 1001: // vll
-      getdata_V(resq,V12,V23,V31,FRQ);
+      //getdata_V(resq,V12,V23,V31,FRQ);
       break;
     case 1002: // v1n
-      getdata_V(resq,V1N,V2N,V3N,VLN);
+     // getdata_V(resq,V1N,V2N,V3N,VLN);
       break;
     case 1003: // cur
-      getdata_V(resq,I1,I2,I3,AVI);
+      //getdata_V(resq,I1,I2,I3,AVI);
       break;
     case 1004: // pf
-      getdata_V(resq,PF1,PF2,PF3,AVPF);
+      //getdata_V(resq,PF1,PF2,PF3,AVPF);
       break;
     case 1005: // kw
-      getdata_V(resq,KW1,KW2,KW3,TKW);
+     // getdata_V(resq,KW1,KW2,KW3,TKW);
       break;
     case 1006: // INFO
-      getdata_V(resq,FRQ,temperature,timer1_counter_val,0.0);
+     // getdata_V(resq,FRQ,temperature,timer1_counter_val,0.0);
       break;
     case 1007: // Read Data sensor and control
-      getdata_Relays(resq);
+     // getdata_Relays(resq);
       break;
     case 1008: // Enable counter Timer 1
        TIMSK1 = (1 << TOIE1); 
