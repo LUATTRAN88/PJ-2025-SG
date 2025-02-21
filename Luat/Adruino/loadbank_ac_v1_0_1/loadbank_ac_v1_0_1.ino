@@ -100,7 +100,7 @@ unsigned long time_mask_coldata = 1000;
 CheckInParams checkInParams;
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(4800);
   Serial.setTimeout(1000);
   pzemSerial.begin(9600);
   pzemSerial.flush();
@@ -163,8 +163,8 @@ void loop() {
   }
 
    if(millis() -time_mask_coldata >500){
-      sendmfm383relaytorasp();
-      
+      //sendmfm383relaytorasp();
+     // getdata_V(200);
       time_mask_coldata=millis();
     }
                                                                                                                                                                                                                                                                                                                      

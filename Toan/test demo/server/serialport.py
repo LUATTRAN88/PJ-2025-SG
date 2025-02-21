@@ -8,7 +8,7 @@ class Arduino:
     def __init__(self):
         self.serial_con = None;
         self.store_data = "";
-        self.baudrate = 9600;
+        self.baudrate = 4800;
         self.threading_read = None;
         self.threading_control = None;
         self.flag_thread_read = False;
@@ -23,9 +23,9 @@ class Arduino:
         else:
             return {}
     def connect_port(self):
-            self.serial_con = serial.Serial(self.PORT_NAME)
-            self.serial_con.baudrate = self.baudrate;
+            self.serial_con = serial.Serial(self.PORT_NAME, baudrate=4800,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE)
             self.serial_con.timeout=1;
+            #self.serial_con.open();
             if self.serial_con==0:
                 print("Failed to connect");
                 return False;
@@ -88,7 +88,7 @@ class Arduino:
                                 data=self.serial_con.read_until(b"####").decode() 
                                 if data!=b'':
                                     datastrm= data.strip('####')
-                                    print("<<OUT>>> '' %s",datastrm);
+                                    print("<<!OUT>>> '' %s",datastrm);
                                 self.serial_con.flush();
                                 
                                 self.flag_get_data=False
