@@ -100,7 +100,7 @@ unsigned long time_mask_coldata = 1000;
 CheckInParams checkInParams;
 void setup() {
 
-  Serial.begin(4800);
+  Serial.begin(9600);
   Serial.setTimeout(1000);
   pzemSerial.begin(9600);
   pzemSerial.flush();
@@ -163,7 +163,7 @@ void loop() {
   }
 
    if(millis() -time_mask_coldata >500){
-      //sendmfm383relaytorasp();
+      sendmfm383relaytorasp();
      // getdata_V(200);
       time_mask_coldata=millis();
     }
@@ -509,9 +509,7 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_temp= (int) myObject["emg_lmt_temp"];
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
-        //collectiondata();
-        getdata_V(1000);
-  
+        collectiondata();
       break;
     case 1001: // vll
       //getdata_V(resq,V12,V23,V31,FRQ);

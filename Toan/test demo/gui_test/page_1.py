@@ -52,8 +52,7 @@ class PAGE1:
         self.lay_logo_switch.place(x=0,y=360,width=512,height=180)
 
 
-        self.aruidno = ard.Arduino();
-        self.aruidno.connect_port();
+
 
         self.label_powtime()
         self.tab_button()
@@ -89,6 +88,8 @@ class PAGE1:
                 signal.text_relay.set('20.2')
                 
         signal = None
+        self.aruidno = ard.Arduino();
+        self.aruidno.connect_port();
       
 
     def timeset(self):
@@ -411,9 +412,10 @@ class PAGE1:
                     #    continue
                     #data =response.readline();
                     #data = json.loads(data);
-                    item =self.aruidno.getdatanewline()   
-                    #data = json.loads(item);
-                    continue;
+                    item =self.aruidno.getdatanewline()  
+                    if len(item) == 0:
+                        continue 
+                    data = json.loads(item);
                     self.origin_data = data['info']
                     self.kw1.set(str(self.origin_data['kw1']))
                         #extPrint(self.kw1)
@@ -444,10 +446,5 @@ class PAGE1:
                         index+=1;
                 except:
                     pass
-                # response=None;
-                # self.origin_data=None;
-                # data=None;
-                # self.rl_array=None
-                # del response
-                # del data
-                sleep(3)
+                # s
+                sleep(1)
