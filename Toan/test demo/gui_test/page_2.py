@@ -337,9 +337,11 @@ class PAGE2:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = clientCall.requestGET("20002").readline();
+                item =self.adruino.getdatanewline()  
+                if len(item) == 0:
+                    continue
                 #print ("Response 222: %s", response)
-                data = json.loads(response);
+                data = json.loads(item);
                 self.origin_data = data['info']
                 self.kw1.set(str(self.origin_data['kw1']))
                     #extPrint(self.kw1)
@@ -413,7 +415,7 @@ class RELAY_POWER:
             self.btn_on.config(bg='grey')
             self.lamp_relay = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
-        clientCall.requestCtrlPort_GET(20000,self.port,ADRUINO_REQ_STATUS_PORT)
+        self.adruino.write_port(2000,self.port,ADRUINO_REQ_STATUS_PORT)
     def setonoff(self,val):
         if val:
             self.btn_on.config(bg='#00FF00')

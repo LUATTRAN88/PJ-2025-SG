@@ -339,7 +339,7 @@ class PAGE5:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = self.adruino.store_data;
+                response = "";
                 data = json.loads(response);
                 self.origin_data = data['info']
                 self.rl_array = data['rls']

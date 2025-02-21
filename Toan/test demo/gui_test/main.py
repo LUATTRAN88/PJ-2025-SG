@@ -32,7 +32,8 @@ class MAINGUI:
         self.btn_service.bind('<Button-1>', self.event_page4)
         self.btn_light_auto()
         
-
+        self.aruidno = ard.Arduino();
+        self.aruidno.connect_port();
         self.display4 = PAGE4()
         self.display4.create_layout(self.layout)
         #self.display4.createThreadAdruino();
@@ -43,14 +44,17 @@ class MAINGUI:
         self.display3.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display2 = PAGE2()
+        self.display2.adruino=self.aruidno
         self.display2.create_layout(self.layout)
         #self.display2.createThreadAdruino();
         self.display2.valuerelay_fan_phase=self.valuerelay_fan_phase;
 
         self.display1 = PAGE1()
+        self.display1.adruino=self.aruidno
         self.display1.create_layout(self.layout)
         self.display1.createThreadAdruino();
         self.display1.valuerelay_fan_phase=self.valuerelay_fan_phase;
+        
 
         self.state_ctrl = STATE_M_CONNECTION;
         self.state_margin();

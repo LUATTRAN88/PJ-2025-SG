@@ -88,8 +88,7 @@ class PAGE1:
                 signal.text_relay.set('20.2')
                 
         signal = None
-        self.aruidno = ard.Arduino();
-        self.aruidno.connect_port();
+
       
 
     def timeset(self):
@@ -412,7 +411,7 @@ class PAGE1:
                     #    continue
                     #data =response.readline();
                     #data = json.loads(data);
-                    item =self.aruidno.getdatanewline()  
+                    item =self.adruino.getdatanewline()  
                     if len(item) == 0:
                         continue 
                     data = json.loads(item);

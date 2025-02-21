@@ -274,7 +274,7 @@ class PAGE3:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = clientCall.requestGET("20002").readline();
+                response = ""
                 print ("Response 333: %s", response)
                 data = json.loads(response);
                 self.origin_data = data['info']
