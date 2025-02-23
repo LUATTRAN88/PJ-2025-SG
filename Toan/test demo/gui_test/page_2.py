@@ -229,7 +229,7 @@ class PAGE2:
     def clickfan(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
-            self.btn_on_fan.config(text='OFF',bg='White')
+            self.btn_on_fan.config(text='OFF',bg='grey')
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
@@ -253,7 +253,7 @@ class PAGE2:
     def clickphase(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_test_phase1:
-            self.btn_testmode_on.config(text='3P',bg='white')
+            self.btn_testmode_on.config(text='3P',bg='grey')
             self.is_test_phase1 = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             RELAY_SWITCHING_PHASE_STATUS=0
@@ -312,7 +312,7 @@ class PAGE2:
         b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
         
     def tab_button(self):  
-        self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
+        self.btn_apply = Button(self.lay_button_load,bd=3,bg='#969696',font=('arial bold',12),text='LOAD APPLY',fg='black',state='disabled')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
         self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white')
         self.btn_stop.place(x=182,y=6,width=150,height=48)

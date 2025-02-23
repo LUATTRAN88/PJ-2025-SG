@@ -92,7 +92,6 @@ class PAGE1:
       
 
     def timeset(self):
-
         time_string = strftime('%H:%M:%S %p   %x') # time format 
         self.time_string.set(time_string)
         self.lb_time.after(1000,self.timeset) # time delay of 1000 milliseconds 
@@ -218,7 +217,7 @@ class PAGE1:
     def clickfan(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
-            self.btn_on_fan.config(text='OFF',bg='White')
+            self.btn_on_fan.config(text='OFF',bg='grey')
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
@@ -264,7 +263,7 @@ class PAGE1:
     def clickphase(self):  
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF   
         if self.is_test_phase1:
-            self.btn_testmode_on.config(text='3P',bg='white')
+            self.btn_testmode_on.config(text='3P',bg='grey')
             self.is_test_phase1= False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
@@ -302,11 +301,20 @@ class PAGE1:
         self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=150,y=69,width=100,height=45)
 
       
-      
-      
+        self.lb_timer_counter = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='Timer Counter').place(x=8,y=145,width=150,height=20)
+        self.lb_timer_counter_val1 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0').place(x=235,y=145,width=65,height=20)
+        self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0').place(x=308,y=145,width=48,height=20)
       
     
-      
+    def pop_up(self):
+        window = Tk()
+        window.title('popup')
+        window.geometry("572x220")
+        # window.overrideredirect(1)
+        T = Text(window, height = 10, width = 70).pack()
+        b1 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
+        b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
+          
       
     def tab_button(self):
         # self.up = Image.open(get_path_img()+'up.png').resize((36,34))
@@ -339,7 +347,7 @@ class PAGE1:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white')
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white')
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
     def on_press_powerup(self, event):
         self.hold_powerup = True
@@ -381,11 +389,12 @@ class PAGE1:
         if self.time_value <= 300:
             self.time_value +=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)        
-            
+            self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text=self.time_value).place(x=308,y=145,width=48,height=20)
     def reduce_timer_set(self):
         if self.time_value > 0:
             self.time_value -=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
+            self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text=self.time_value).place(x=308,y=145,width=48,height=20)
             
     def createThreadAdruino(self):
         print ("Create Thread1")

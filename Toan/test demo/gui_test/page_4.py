@@ -108,7 +108,7 @@ class PAGE4:
     def clickfan(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_fan_on:
-            self.btn_on_fan.config(text='OFF',bg='White')
+            self.btn_on_fan.config(text='OFF',bg='grey')
             self.is_fan_on = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
             self.valuerelay_fan_phase.RELAY_SWITCHING_FAN_STATUS=0;
@@ -140,7 +140,7 @@ class PAGE4:
     def clickphase(self):
         ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
         if self.is_test_phase1:
-            self.btn_testmode_on.config(text='3P',bg='white')
+            self.btn_testmode_on.config(text='3P',bg='grey')
             self.is_test_phase1 = False 
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_ON;
         else :
