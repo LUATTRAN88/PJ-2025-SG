@@ -406,12 +406,7 @@ class PAGE1:
     def loadingdata(self):
         while self.flag_thread_req_rep:
                 try:
-                    #response = clientCall.requestGET("20002");
-                    #if response.status != 200:
-                    #    continue
-                    #data =response.readline();
-                    #data = json.loads(data);
-                    item =self.adruino.getdatanewline()  
+                    item =self.adruino.getdatanewline3()  
                     if len(item) == 0:
                         continue 
                     data = json.loads(item);

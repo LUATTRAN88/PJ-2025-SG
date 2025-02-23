@@ -70,10 +70,12 @@ class Arduino:
                                 #data=self.serial_con.readline().decode("utf-8").strip()
                                 print("IN<<<< '' ");
                                 data=self.serial_con.read_until(b"####").decode() 
-                                print("OUT>>> '' %s",data);
+                                if data!=b'':
+                                    datastrm= data.strip('####')
+                                    print("!!!OUT>>> '' %s",datastrm);
                                 self.serial_con.flush();
                                 self.flag_get_data=False
-                                return data; 
+                                return datastrm; 
                 return {}
     def getdatanewline3(self):
             while True:

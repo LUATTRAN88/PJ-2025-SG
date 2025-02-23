@@ -336,76 +336,9 @@ void collectiondata()
       output +=String(list_port_inf[14]) +"," ;
       output +=String(list_port_inf[15]) +"" ;
       output +="]}";
-      sendStringSerial(output+"\r\n\n\n");
+      sendStringSerial(output+"\r####");
 
 }
-void getdata_V(int rep)
-{
-      String output;
-      output="";
-      output +="status:200\n";
-      output +="rep:"+String(rep)+"\n";
-      output +="vln:"+String(V1N,2)+"-" +String(V2N,2) +"-"+String(V3N,2)+ "-"+String(VLN,2)+"\n";
-      output +="vpp:"+String(V12,2)+"-" +String(V23,2) +"-"+String(V31,2)+ "-"+String(VLL,2)+"\n";
-      output +="cur:"+String(I1,2)+"-" +String(I2,2) +"-"+String(I3,2)+ "-"+String(AVI,2)+"\n";
-      output +="pf:"+String(PF1,2)+"-" +String(PF2,2) +"-"+String(PF3,2)+ "-"+String(AVPF,2)+"\n";
-      output +="kw:"+String(KW1,2)+"-" +String(KW2,2) +"-"+String(KW3,2)+ "-"+String(TKW,2)+"\n";
-      output +="v2:"+String(temperature,2) +"\n";
-      output +="fq:"+String(FRQ,2) +"\n";
-      output +="rls:[";
-      output +=String(list_port_inf[0]) +"," ;
-      output +=String(list_port_inf[1]) +"," ;
-      output +=String(list_port_inf[2]) +"," ;
-      output +=String(list_port_inf[3]) +"," ;
-      output +=String(list_port_inf[4]) +"," ;
-      output +=String(list_port_inf[5]) +"," ;
-      output +=String(list_port_inf[6]) +"," ;
-      output +=String(list_port_inf[7]) +"," ;
-      output +=String(list_port_inf[8]) +"," ;
-      output +=String(list_port_inf[9]) +"," ;
-      output +=String(list_port_inf[10]) +"," ;
-      output +=String(list_port_inf[11]) +"," ;
-      output +=String(list_port_inf[12]) +"," ;
-      output +=String(list_port_inf[13]) +"," ;
-      output +=String(list_port_inf[14]) +"," ;
-      output +=String(list_port_inf[15]) +"" ;
-      output +="]";
-      output +="####";
-      sendStringSerial(output);
-      
-}
-
-
-void getdata_Relays(int rep)
-{
-      
-     readPortPCF8575();
-     String output;
-      output="";
-      output +="{\"rep\":"+String(rep)+",";
-      output +="\"status\":200,";
-      output +="\"rls\":[";
-      output +=String(list_port_inf[0]) +"," ;
-      output +=String(list_port_inf[1]) +"," ;
-      output +=String(list_port_inf[2]) +"," ;
-      output +=String(list_port_inf[3]) +"," ;
-      output +=String(list_port_inf[4]) +"," ;
-      output +=String(list_port_inf[5]) +"," ;
-      output +=String(list_port_inf[6]) +"," ;
-      output +=String(list_port_inf[7]) +"," ;
-      output +=String(list_port_inf[8]) +"," ;
-      output +=String(list_port_inf[9]) +"," ;
-      output +=String(list_port_inf[10]) +"," ;
-      output +=String(list_port_inf[11]) +"," ;
-      output +=String(list_port_inf[12]) +"," ;
-      output +=String(list_port_inf[13]) +"," ;
-      output +=String(list_port_inf[14]) +"," ;
-      output +=String(list_port_inf[15]) +"" ;
-      output +="]}";
-      sendStringSerial(output);
-
-}
-
 
 byte* sendmfm383(int row)
 {
@@ -556,6 +489,7 @@ void deliverCtrl(String rawDT)
         }
          
       }
+      //collectiondata();
       //getdata_Relays(2000);
       break;
   }
@@ -597,8 +531,6 @@ void ctrlRelayLoad(int len, int *data)
      onoffCtrlRelay(data[i], ON_RELAY_LOAD);
   }
 }
-
-
 void checkLimitParams(float temp_c, float lmt_pw, float vol_ln, float lmt_cur)
 {
   if(checkInParams.flag_emg_stop==false)
