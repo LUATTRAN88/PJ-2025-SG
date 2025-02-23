@@ -10,6 +10,7 @@
 //STATUS RESPONSE
 #define STS_SEND_NRM 200
 #define STS_SEND_ERR 201
+#define STS_SEND_BUSY 202
 //ERROR CODE
 #define ERR_1  1
 
@@ -489,8 +490,6 @@ void deliverCtrl(String rawDT)
         }
          
       }
-      //collectiondata();
-      //getdata_Relays(2000);
       break;
   }
   
