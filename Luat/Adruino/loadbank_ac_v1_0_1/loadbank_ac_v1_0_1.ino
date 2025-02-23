@@ -6,6 +6,7 @@
 
 #define ID_DEVICE  250101
 
+#define BUZZ_ALARM_ON_ARUINO_PORT 13
 #define ALARM_RELAY_PORT 14
 //STATUS RESPONSE
 #define STS_SEND_NRM 200
@@ -94,6 +95,7 @@ volatile float PF3=0.0;
 volatile float TKW=0.0;
 volatile float temperature;
 volatile float timer1_counter_val;
+volatile float timer1_counter_set;
 //manage Time delay;
 unsigned long time_mask_coldata = 1000;
 
@@ -101,15 +103,20 @@ unsigned long time_mask_coldata = 1000;
 CheckInParams checkInParams;
 void setup() {
 
+
   Serial.begin(9600);
   Serial.setTimeout(1000);
   pzemSerial.begin(9600);
   pzemSerial.flush();
   //pzemSerial.setTimeout(10);
   init_pcf8575();
-  SPI.begin();
+  //SPI.begin();
+  //SPI.Stop();
   thermoCouple.begin();
   thermoCouple.setSPIspeed(4000000);
+  // PIN MODE
+  pinMode(13, OUTPUT);
+ 
   //Scheduler.startLoop(sendmfm383relaytorasp);
    
   cli();                                  // tắt ngắt toàn cục   
@@ -119,13 +126,13 @@ void setup() {
   TCCR1B |= (1 << CS12) | (1 << CS10);    // prescale = 1024
   TCNT1 = 49911;
   TIMSK1 = (1 << TOIE1);                  // Overflow interrupt enable 
-  sei();                              // cho phép ngắt toàn cục
+  sei();                        // cho phép ngắt toàn cục
 }
 
 ISR (TIMER1_OVF_vect) 
 {
     TCNT1 = 49911;
-  
+
 }
 void init_pcf8575()
 {
@@ -157,6 +164,7 @@ void init_pcf8575()
 
 
 void loop() {
+
   if(dataComplete==false)   
   { 
     serialEvent();
@@ -167,8 +175,7 @@ void loop() {
       sendmfm383relaytorasp();
      // getdata_V(200);
       time_mask_coldata=millis();
-    }
-                                                                                                                                                                                                                                                                                                                     
+    }                                                                                                                                                                                                                                                                                                 
 
 }
 
@@ -302,6 +309,7 @@ void collectiondata()
       output="";
       output.reserve(100);
       output +="\"tim1_cnt\" : "+String(timer1_counter_val) +",";
+      output +="\"tim1_set\" : "+String(timer1_counter_set) +",";
       output +="\"tempc\" : "+String(temperature) +"";
       output +="},";
       sendStringSerial(output);
@@ -434,6 +442,7 @@ void deliverCtrl(String rawDT)
   JsonDocument myObject;
   deserializeJson(myObject, rawDT);
   int resq= (int) myObject["req"];
+
   switch(resq)
   {
     case 1000: // init param
@@ -446,51 +455,49 @@ void deliverCtrl(String rawDT)
         collectiondata();
       break;
     case 1001: // vll
-      //getdata_V(resq,V12,V23,V31,FRQ);
-      break;
-    case 1002: // v1n
-     // getdata_V(resq,V1N,V2N,V3N,VLN);
-      break;
-    case 1003: // cur
-      //getdata_V(resq,I1,I2,I3,AVI);
-      break;
-    case 1004: // pf
-      //getdata_V(resq,PF1,PF2,PF3,AVPF);
-      break;
-    case 1005: // kw
-     // getdata_V(resq,KW1,KW2,KW3,TKW);
-      break;
-    case 1006: // INFO
-     // getdata_V(resq,FRQ,temperature,timer1_counter_val,0.0);
-      break;
-    case 1007: // Read Data sensor and control
-     // getdata_Relays(resq);
+        alarmRunning(4,150);
+        JsonArray actions = myObject["port"];
+        for (JsonVariant value : actions) {
+            Serial.println(value.as<int>());
+        }
+        Serial.println(rawDT);
       break;
     case 1008: // Enable counter Timer 1
        TIMSK1 = (1 << TOIE1); 
       break;
     case 1009: //Stop All Load
       TIMSK1 = (0 << TOIE1);   // Stop timer
+      alarmRunning(4,50);
       stopAllLoad();
       //sendmfm383relaytorasp(resq,STS_SEND_NRM);
       break;
 
     case 2000: //control single Relay
-      int port= (int) myObject["port"];
-      int status= (int) myObject["status"];
-      if(port>=0 && port<=16)
-      {
-        if(status==1)
+        Serial.println(rawDT);
+        alarmRunning(4,150);
+        int port= (int) myObject["port"];
+        int status= (int) myObject["status"];
+        if(port>=0 && port<=16)
         {
-          onoffCtrlRelay(port,ON_RELAY_LOAD);
+          if(status==1)
+          {
+            onoffCtrlRelay(port,ON_RELAY_LOAD);
+          }
+          else if(status==0)
+          {
+            onoffCtrlRelay(port,OFF_RELAY_LOAD);
+          }
+          
         }
-        else if(status==0)
-        {
-          onoffCtrlRelay(port,OFF_RELAY_LOAD);
-        }
-         
-      }
-      break;
+        break;
+      case 2001: //control single Relay
+        alarmRunning(4,150);
+        /*JsonArray actions = myObject["port"];
+        for (JsonVariant value : actions) {
+            Serial.println(value.as<int>());
+        }*/
+        Serial.println(rawDT);
+        break;
   }
   
 }
@@ -552,4 +559,46 @@ void checkLimitParams(float temp_c, float lmt_pw, float vol_ln, float lmt_cur)
     }
   }
 
+}
+void alarmRunning(int mode, int delay_time)
+{
+   if(mode == 1) // tick 1
+   {
+      PINB = bit (5); // toggle D13
+      delay (delay_time); 
+      PINB = bit (5); // toggle D13 
+   }
+   else if(mode == 2) // tick tick
+   {
+      PINB = bit (5); // toggle D13
+      delay (delay_time); 
+      PINB = bit (5); // toggle D13 
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+   }
+   else if(mode == 3) // tick tick tick
+   {
+      PINB = bit (5); // toggle D13
+      delay (delay_time); 
+      PINB = bit (5); // toggle D13 
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+   }
+  else if(mode == 4) // tick --- .....
+   {
+      PINB = bit (5); // toggle D13
+      delay (delay_time); 
+      delay (delay_time);
+      delay (delay_time);
+      PINB = bit (5); // toggle D13
+
+   }
 }
