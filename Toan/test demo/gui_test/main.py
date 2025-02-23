@@ -80,10 +80,11 @@ class MAINGUI:
     def event_page1(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display1.createThreadAdruino();
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
             self.display1.setvalue_fan_phase();
-            self.display1.createThreadAdruino();
+            
           
         except:
             pass
@@ -91,28 +92,31 @@ class MAINGUI:
     def event_page2(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display2.createThreadAdruino();
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
             self.display2.setvalue_fan_phase();
-            self.display2.createThreadAdruino();
+          
         except:
             pass
     def event_page3(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display3.createThreadAdruino();
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
             self.display3.setvalue_fan_phase();
-            self.display3.createThreadAdruino();
+            
          
         except:
             pass
     def event_page4(self,event):
         try:
             self.stopAllThreadAdruino()
+            self.display4.createThreadAdruino();
             self.display4.layout.tkraise()
             self.display4.setvalue_fan_phase();
-            self.display4.createThreadAdruino();
+           
         except:
             pass       
         

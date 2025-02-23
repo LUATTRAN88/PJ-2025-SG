@@ -9,6 +9,7 @@ from extend import *
 from time import strftime
 from threading import Thread
 import serialport as ard
+import tkinter.messagebox 
 # import http.client
 
 
@@ -25,6 +26,7 @@ class PAGE1:
         self.hold_timeup=FALSE;
         self.valuerelay_fan_phase=None;
         self.threading_rep = None;
+        self.pop_log=None
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -302,18 +304,17 @@ class PAGE1:
 
       
         self.lb_timer_counter = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='Timer Counter').place(x=8,y=145,width=150,height=20)
-        self.lb_timer_counter_val1 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0').place(x=235,y=145,width=65,height=20)
+        self.txt_timer_count_down = StringVar()
+        self.lb_timer_counter_val1 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0',textvariable=self.txt_timer_count_down).place(x=235,y=145,width=65,height=20)
         self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0').place(x=308,y=145,width=48,height=20)
       
     
     def pop_up(self):
-        window = Tk()
-        window.title('popup')
-        window.geometry("572x220")
-        # window.overrideredirect(1)
-        T = Text(window, height = 10, width = 70).pack()
-        b1 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
-        b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
+        self.pop_log=None;
+        self.pop_log=POP_LOG();
+        self.pop_log.create_layout();
+
+
           
       
     def tab_button(self):
@@ -341,14 +342,33 @@ class PAGE1:
         self.btn_time_down = Button(self.lay_timer_set,bd=3,fg='orange',bg='#191970',text='Down',font=('arial bold',16),command=lambda:self.reduce_timer_set()).place(x=412,y=108,width=84,height=55)
 
         
-        self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white')
+        self.btn_apply = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD APPLY',fg='white',command=lambda:self.event_loadapply_set())
         self.btn_apply.place(x=21,y=6,width=150,height=48)
-        self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white')
+        self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white',command=lambda:self.event_loadstop_set())
         self.btn_stop.place(x=182,y=6,width=150,height=48)
-        self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white')
+        self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
+    def event_loadapply_set(self):
+        result,num_tt_kw =number_of_objects(self.power_value)
+        extPrint(result)
+        portlist=[]
+        for data in result:
+            portlist.append(data["port"])
+        if self.time_value==0:
+            tkinter.messagebox.showinfo('Warning',"Timer Set must greater Than 0") 
+            return;    
+        dt_laply={
+            "req":ADRUINO_REQ_CTRL_LOAD_APPLY,
+            "port":portlist,
+            "tm_s":self.time_value*60
+        }
+        self.adruino.write_obj(dt_laply);
+    def event_loadstop_set(self):
+        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+    def event_loaddrop_set(self):
+        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
     def on_press_powerup(self, event):
         self.hold_powerup = True
         extPrint("test")
@@ -361,14 +381,12 @@ class PAGE1:
         if self.power_value < 100:
             self.power_value += 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
-            result=number_of_objects(self.power_value)
-            extPrint(result)
+
     def reduce_power_set(self):
         if self.power_value > 0:
             self.power_value -= 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)        
-            result=number_of_objects(self.power_value)
-            extPrint(result)
+
             
     def on_press_timesetup(self, event):
         self.hold_timeup = True
@@ -414,19 +432,29 @@ class PAGE1:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
+                #try:
+                    
+                item =self.adruino.getdatanewline()  
                 try:
-                    item =self.adruino.getdatanewline3()  
-                    if len(item) == 0:
-                        continue 
-                    data = json.loads(item);
-                    self.origin_data = data['info']
-                    self.kw1.set(str(self.origin_data['kw1']))
-                        #extPrint(self.kw1)
-                    self.kw2.set(str(self.origin_data['kw2']))
-                    self.kw3.set(str(self.origin_data['kw3']))
+                    data = json.loads(item); 
+                except json.JSONDecodeError as err:
+                    print(err.msg)
+                    if err.msg == 'Extra data':
+                        head = json.loads(item[0:err.pos])
+                        print(head)
+                        print("head")
+                        continue
+
+                                                         
+                try:       
+                    self.origin_data = data['info']  
                     self.vln1.set(str(self.origin_data['vln1']))
                     self.vln2.set(str(self.origin_data['vln2']))
-                    self.vln3.set(str(self.origin_data['vln3']))
+                    self.vln3.set(str(self.origin_data['vln3']))  
+                    self.kw1.set(str(self.origin_data['kw1']))  
+                    self.kw2.set(str(self.origin_data['kw2']))
+                    self.kw3.set(str(self.origin_data['kw3']))
+                        
                     self.cur1.set(str(self.origin_data['cur1']))
                     self.cur2.set(str(self.origin_data['cur2']))
                     self.cur3.set(str(self.origin_data['cur3']))
@@ -439,7 +467,10 @@ class PAGE1:
 
                     self.txt_apf_sum.set(str(self.origin_data['avpf']))
                     self.txt_aln_sum.set(str(self.origin_data['vln']))
+                    self.txt_timer_count_down.set(str(self.origin_data['tim1cnt']))
                     self.rl_array = data['rls']
+                 
+                    
                     index=0;
                     for i in self.rl_array: 
                         if i==1:
@@ -447,7 +478,10 @@ class PAGE1:
                         else:
                             self.signal_list[index].setonoff(0);
                         index+=1;
+                    if self.pop_log is not None:
+                        self.pop_log.insertText(item);
                 except:
                     pass
-                # s
+
+
                 sleep(1)

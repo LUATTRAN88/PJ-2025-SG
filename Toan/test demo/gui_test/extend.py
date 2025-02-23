@@ -9,9 +9,12 @@ STATE_M_CONNECTION =100
 STATE_M_CONNECTED =101
 STATE_M_CONNECT_FAILED=102
 
-ADRUINO_REQ_FULL_DATA = 1001
+ADRUINO_REQ_FULL_DATA = 1000
 ADRUINO_REQ_STOP_ALL_LOAD = 1003
-ADRUINO_REQ_CTRL_SINGLE_RELAY = 2000
+ADRUINO_REQ_CTRL_SINGLE_RELAY = 1010
+ADRUINO_REQ_CTRL_LOAD_APPLY = 1001
+ADRUINO_REQ_CTRL_LOAD_DROP = 1007
+ADRUINO_REQ_CTRL_LOAD_STOP = 1009
 
 ADRUINO_PORT_CTRL_RL1 = 0
 ADRUINO_PORT_CTRL_RL2 = 1
@@ -39,6 +42,22 @@ class VALUERELAY_FAN_PHASE:
     def __init__(self):
         RELAY_SWITCHING_FAN_STATUS=1;
         RELAY_SWITCHING_PHASE_STATUS=1
+
+class POP_LOG:
+    def __init__(self):
+        self.adruino=None
+    def create_layout(self):
+        self.window = Tk()
+        self.window.title('popup')
+        self.window.geometry("572x220")
+        self.text_log = Text(self.window, height = 10, width = 70)
+        self.text_log.pack()
+        btn_save = Button(self.window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
+        btn_exit = Button(self.window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=self.window.destroy).place(x=286, y=165,width=286,height=55)
+    def insertText(self,txt):
+        self.text_log.insert(END, txt,"\n");
+    def ClearText(self,txt):
+        self.text_log.delete('1.0', END);
 
 
 

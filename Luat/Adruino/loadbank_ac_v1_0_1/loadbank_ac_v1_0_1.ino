@@ -94,8 +94,10 @@ volatile float PF2=0.0;
 volatile float PF3=0.0;
 volatile float TKW=0.0;
 volatile float temperature;
-volatile float timer1_counter_val;
-volatile float timer1_counter_set;
+volatile long timer1_counter_val=-1;
+volatile long timer1_counter_set=-1;
+volatile byte flag_timer_cnt_target = -1;
+
 //manage Time delay;
 unsigned long time_mask_coldata = 1000;
 
@@ -124,7 +126,7 @@ void setup() {
   TCCR1B = 0;
   TIMSK1 = 0;
   TCCR1B |= (1 << CS12) | (1 << CS10);    // prescale = 1024
-  TCNT1 = 49911;
+  TCNT1 = 49911; // 1s interrupt
   TIMSK1 = (1 << TOIE1);                  // Overflow interrupt enable 
   sei();                        // cho phép ngắt toàn cục
 }
@@ -132,6 +134,19 @@ void setup() {
 ISR (TIMER1_OVF_vect) 
 {
     TCNT1 = 49911;
+
+    if(timer1_counter_val>0){
+      
+      timer1_counter_val--;
+      flag_timer_cnt_target=1;
+    }
+    if(timer1_counter_val== 0)
+    {
+        flag_timer_cnt_target=0;
+        timer1_counter_val=-1;
+        
+    }
+
 
 }
 void init_pcf8575()
@@ -164,19 +179,24 @@ void init_pcf8575()
 
 
 void loop() {
-
+  if(millis() -time_mask_coldata >100){
+      sendmfm383relaytorasp();
+     // getdata_V(200);
+      time_mask_coldata=millis();
+  } 
   if(dataComplete==false)   
   { 
     serialEvent();
     dataComplete = false;
   }
 
-   if(millis() -time_mask_coldata >500){
-      sendmfm383relaytorasp();
-     // getdata_V(200);
-      time_mask_coldata=millis();
-    }                                                                                                                                                                                                                                                                                                 
-
+                                                                                                                                                                                                                                                                                                 
+  // timer control
+    if( flag_timer_cnt_target== 0)
+    {
+      stopAllLoad();
+      flag_timer_cnt_target=-1;
+    }
 }
 
 
@@ -308,8 +328,8 @@ void collectiondata()
       sendStringSerial(output);
       output="";
       output.reserve(100);
-      output +="\"tim1_cnt\" : "+String(timer1_counter_val) +",";
-      output +="\"tim1_set\" : "+String(timer1_counter_set) +",";
+      output +="\"tim1cnt\" : "+String(timer1_counter_val) +",";
+      output +="\"tim1set\" : "+String(timer1_counter_set) +",";
       output +="\"tempc\" : "+String(temperature) +"";
       output +="},";
       sendStringSerial(output);
@@ -345,7 +365,7 @@ void collectiondata()
       output +=String(list_port_inf[14]) +"," ;
       output +=String(list_port_inf[15]) +"" ;
       output +="]}";
-      sendStringSerial(output+"\r####");
+      sendStringSerial(output+"#");
 
 }
 
@@ -442,10 +462,10 @@ void deliverCtrl(String rawDT)
   JsonDocument myObject;
   deserializeJson(myObject, rawDT);
   int resq= (int) myObject["req"];
-
   switch(resq)
   {
     case 1000: // init param
+    {
         /*checkInParams.alm_lmt_temp= (int) myObject["alm_lmt_temp"];
         checkInParams.alm_lmt_vol_l_n= (int) myObject["alm_lmt_vol_l_n"];
         checkInParams.alm_lmt_pwr= (int) myObject["alm_lmt_vol_pwr"];
@@ -454,26 +474,53 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
         collectiondata();
       break;
+    }
     case 1001: // vll
+    {
         alarmRunning(4,150);
+        timer1_counter_val = myObject["tm_s"];
+       
+        timer1_counter_set = timer1_counter_val;
+        TIMSK1 = (1 << TOIE1); 
         JsonArray actions = myObject["port"];
+
+        byte portlist[16];
+        int index=0;
         for (JsonVariant value : actions) {
-            Serial.println(value.as<int>());
+           portlist[index++]=value.as<byte>();
         }
-        Serial.println(rawDT);
+        ctrlRelayLoad(index,portlist,ON_RELAY_LOAD);
+        alarmRunning(3,150);
       break;
+    }
+    case 1007: // Enable counter Timer 1
+    {
+      alarmRunning(4,50);
+      TIMSK1 = (0 << TOIE1);   // Stop timer
+      timer1_counter_val=-1;
+      flag_timer_cnt_target=-1;
+      dropAllLoad();
+     
+      break;
+    }
     case 1008: // Enable counter Timer 1
+    {
        TIMSK1 = (1 << TOIE1); 
       break;
+    }
     case 1009: //Stop All Load
-      TIMSK1 = (0 << TOIE1);   // Stop timer
+    {
       alarmRunning(4,50);
+      TIMSK1 = (0 << TOIE1);   // Stop timer
+      timer1_counter_val=-1;
+      flag_timer_cnt_target=-1;
       stopAllLoad();
       //sendmfm383relaytorasp(resq,STS_SEND_NRM);
       break;
-
-    case 2000: //control single Relay
-        Serial.println(rawDT);
+    }
+    case 1010: //control single Relay
+    {
+       
         alarmRunning(4,150);
         int port= (int) myObject["port"];
         int status= (int) myObject["status"];
@@ -490,14 +537,8 @@ void deliverCtrl(String rawDT)
           
         }
         break;
-      case 2001: //control single Relay
-        alarmRunning(4,150);
-        /*JsonArray actions = myObject["port"];
-        for (JsonVariant value : actions) {
-            Serial.println(value.as<int>());
-        }*/
-        Serial.println(rawDT);
-        break;
+    }
+
   }
   
 }
@@ -514,13 +555,22 @@ void sendStringSerial(String buffer)
   }
   
 }
+void dropAllLoad()
+{
+  for(int port_index = 0 ; port_index<16; port_index++)
+  {
+      pcf8575.digitalWrite(port_index, OFF_RELAY_LOAD);
+      delay(1000);
+      
+  }
+  alarmRunning(3,50);
+}
 
 void stopAllLoad()
 {
   for(int port_index = 0 ; port_index<16; port_index++)
   {
       pcf8575.digitalWrite(port_index, OFF_RELAY_LOAD);
-   
   }
 }
 void onoffCtrlRelay(int port,int onoff)
@@ -530,11 +580,33 @@ void onoffCtrlRelay(int port,int onoff)
   pcf8575.digitalWrite(port, onoff);
 }
 
-void ctrlRelayLoad(int len, int *data)
+void ctrlRelayLoad(int len, byte *_portls,int onoff) 
 {
-  for(int i = 0 ; i<len; i++)
+  for(int pix = 0 ; pix<NUM_RELAY; pix++)
   {
-     onoffCtrlRelay(data[i], ON_RELAY_LOAD);
+    int no_exit_lyn=true;
+    for(int ix = 0 ; ix<len; ix++)
+    {
+        if(_portls[ix] ==pix)
+        {
+          no_exit_lyn=false;
+          break; 
+        }
+    }
+    if(no_exit_lyn==true)
+    {
+      onoffCtrlRelay(pix, OFF_RELAY_LOAD);
+    }
+  }
+
+  for(int ix = 0 ; ix<len; ix++)
+  {
+    uint8_t p_val=pcf8575.digitalRead(_portls[ix],true);
+    if(p_val==OFF_RELAY_LOAD)
+    {
+      onoffCtrlRelay(_portls[ix], ON_RELAY_LOAD);
+      delay(1000);
+    }
   }
 }
 void checkLimitParams(float temp_c, float lmt_pw, float vol_ln, float lmt_cur)

@@ -4,6 +4,7 @@ from time import sleep
 import json
 import queue 
 import yaml
+from extend import *
 class Arduino:
     def __init__(self):
         self.serial_con = None;
@@ -31,8 +32,8 @@ class Arduino:
                 return False;
             else:
                 print("Connect successfully!");
-                self.threading_read = Thread(target=self.getdatanewline3, args=());          
-                self.flag_thread_read = True;
+                #self.threading_read = Thread(target=self.getdatanewline3, args=());          
+                #self.flag_thread_read = True;
                 #self.threading_read.start();
               
             return True;
@@ -46,10 +47,9 @@ class Arduino:
         if self.serial_con != None:
             if self.serial_con.is_open:
                 
-                obj= {"req":2000 , "port": port, "status":status};
+                obj= {"req":ADRUINO_REQ_CTRL_SINGLE_RELAY , "port": port, "status":status};
                 data = json.dumps(obj)
                 data +='\r\n'
-                print(data)
                 self.serial_con.write(bytes(data, 'utf-8'));
     
     def write_obj(self, obj):
@@ -65,90 +65,13 @@ class Arduino:
                     if self.serial_con.is_open:
                         if self.flag_get_data ==False :
                                 self.flag_get_data=True
-                                self.write_obj({"req":1000})
-                                sleep(1)
-                                #data=self.serial_con.readline().decode("utf-8").strip()
-                                print("IN<<<< '' ");
-                                data=self.serial_con.read_until(b"####").decode() 
-                                if data!=b'':
-                                    datastrm= data.strip('####')
-                                    print("!!!OUT>>> '' %s",datastrm);
+                                self.write_obj({"req":ADRUINO_REQ_FULL_DATA})
+                                sleep(0.05)
+                                data=self.serial_con.read_until(b"#").decode("utf-8")
+                                datastrm= data.replace('#',"\n")
+                                dataj= ''.join(datastrm)
                                 self.serial_con.flush();
                                 self.flag_get_data=False
+
                                 return datastrm; 
-                return {}
-    def getdatanewline3(self):
-            while True:
-                if self.serial_con != None:
-                    if self.serial_con.is_open:
-                        if self.flag_get_data ==False :
-                                self.flag_get_data=True
-                                self.write_obj({"req":1000})
-                                sleep(1)
-                                #data=self.serial_con.readline().decode("utf-8").strip()
-                                print("IN<<<< '' ");
-                                data=self.serial_con.read_until(b"####").decode() 
-                                if data!=b'':
-                                    datastrm= data.strip('####')
-                                    print("<<!OUT>>> '' %s",datastrm);
-                                self.serial_con.flush();
-                                
-                                self.flag_get_data=False
-     
-    def getdatanewline2(self):
-            if self.serial_con != None:
-                if self.serial_con.is_open:
-                            self.write_obj({"req":1000})
-                            sleep(1)
-                            data =""
-                            line = []
-                            print("RR ---", data);
-                            for c in self.serial_con.read():
-                                    line.append(chr(c))
-                                    if chr(c) == '\n':
-                                        print("AA33 ---", data);
-                                        data=''.join(line)
-                                        line = []
-                                        break
-                            return data; 
-
-    def read_data(self):
-        while self.flag_thread_read:
-            if self.serial_con != None:
-                if self.serial_con.is_open:
-                    data ="";
-                    data = self.serial_con.readline();
-                    print( "111 ")
-                    if len(data)>0 :
-                        print( "--- 666 ---")
-                        self.store_data =data
-                    else:
-                        print( "--- 777 ---")
-                    self.serial_con.reset_input_buffer()
-                    sleep(2);
-    def readline(self,q):
-        line = []
-        print( "--- 888 ---")
-        while True:
-            for c in self.serial_con.read():
-                line.append(chr(c))
-                if chr(c) == '\n':
-                    data=''.join(line)
-                    try:
-                        #q.put(data, block=True)
-                        print(f"Produced: {data}")
-                        print( "--- 333 --- %s", data)
-                        if not self.flag_get_data:
-                            self.store_data = data;
-                            self.flag_get_data=True;
-                            print( "--- 22 --- %s", data)
-                    except:
-                        #q.get(block=False)
-                        #q.task_done()
-                        print("Queue full, waiting...")
-                    print( "--- 444 --- %s", data)
-                    line = []
-                    break
-        
-
-       
+   

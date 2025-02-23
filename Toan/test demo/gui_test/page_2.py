@@ -307,19 +307,25 @@ class PAGE2:
         window.title('popup')
         window.geometry("572x220")
         # window.overrideredirect(1)
-        T = Text(window, height = 10, width = 70).pack()
-        b1 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save").place(x=0, y=165,width=286,height=55)
-        b2 = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
+        self.str_txt_log =StringVar()
+        txt_log = Text(window, height = 10, width = 70).pack()
+        btn_save = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save",textvariable=self.str_txt_log).place(x=0, y=165,width=286,height=55)
+        btn_exit = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
         
     def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#969696',font=('arial bold',12),text='LOAD APPLY',fg='black',state='disabled')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
-        self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white')
+        self.btn_stop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD STOP',fg='white', command=lambda:self.event_loadstop_set())
         self.btn_stop.place(x=182,y=6,width=150,height=48)
-        self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white')
+        self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
+
         self.btn_logging.place(x=21,y=66,width=150,height=48)
+    def event_loadstop_set(self):
+        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+    def event_loaddrop_set(self):
+        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         #self.threading_req = Thread(target=self.requestdata, args=()); 
@@ -336,56 +342,57 @@ class PAGE2:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
-            try:
+            
                 item =self.adruino.getdatanewline()  
-                if len(item) == 0:
-                    continue
-                #print ("Response 222: %s", response)
-                data = json.loads(item);
-                self.origin_data = data['info']
-                self.kw1.set(str(self.origin_data['kw1']))
-                    #extPrint(self.kw1)
-                self.kw2.set(str(self.origin_data['kw2']))
-                self.kw3.set(str(self.origin_data['kw3']))
-                self.vln1.set(str(self.origin_data['vln1']))
-                self.vln2.set(str(self.origin_data['vln2']))
-                self.vln3.set(str(self.origin_data['vln3']))
-                self.cur1.set(str(self.origin_data['cur1']))
-                self.cur2.set(str(self.origin_data['cur2']))
-                self.cur3.set(str(self.origin_data['cur3']))
-                self.v12.set(str(self.origin_data['v12']))
-                self.v23.set(str(self.origin_data['v23']))
-                self.v31.set(str(self.origin_data['v31']))
-                self.freqq.set(str(self.origin_data['freq']))
-                self.tempcc.set(str(self.origin_data['tempc']))
-                self.tkw.set(str(self.origin_data['tkw']))
+                try:
+                    data = json.loads(item); 
+                except json.JSONDecodeError as err:
+                    print(err.msg)
+                    if err.msg == 'Extra data':
+                        head = json.loads(item[0:err.pos])
+                        print(head)
+                        print("head")
+                        continue
+                try:
+                    self.origin_data = data['info']
+                    self.kw1.set(str(self.origin_data['kw1']))
+                        #extPrint(self.kw1)
+                    self.kw2.set(str(self.origin_data['kw2']))
+                    self.kw3.set(str(self.origin_data['kw3']))
+                    self.vln1.set(str(self.origin_data['vln1']))
+                    self.vln2.set(str(self.origin_data['vln2']))
+                    self.vln3.set(str(self.origin_data['vln3']))
+                    self.cur1.set(str(self.origin_data['cur1']))
+                    self.cur2.set(str(self.origin_data['cur2']))
+                    self.cur3.set(str(self.origin_data['cur3']))
+                    self.v12.set(str(self.origin_data['v12']))
+                    self.v23.set(str(self.origin_data['v23']))
+                    self.v31.set(str(self.origin_data['v31']))
+                    self.freqq.set(str(self.origin_data['freq']))
+                    self.tempcc.set(str(self.origin_data['tempc']))
+                    self.tkw.set(str(self.origin_data['tkw']))
 
-                self.txt_apf_sum.set(str(self.origin_data['avpf']))
-                self.txt_aln_sum.set(str(self.origin_data['vln']))
-                rl_array = data['rls']
-                index=0;
-                for i in rl_array:        
-                    if i==1:
-                        self.signal_list[index].setonoff(1);
-                        if index<12:
-                            self.relay_object[index].setonoff(1);
+                    self.txt_apf_sum.set(str(self.origin_data['avpf']))
+                    self.txt_aln_sum.set(str(self.origin_data['vln']))
+                    rl_array = data['rls']
+                    index=0;
+                    for i in rl_array:        
+                        if i==1:
+                            self.signal_list[index].setonoff(1);
+                            if index<12:
+                                self.relay_object[index].setonoff(1);
 
-                    else:
-                        self.signal_list[index].setonoff(0);
-                        if index<12:
-                            self.relay_object[index].setonoff(0);
- 
-                    index+=1;
+                        else:
+                            self.signal_list[index].setonoff(0);
+                            if index<12:
+                                self.relay_object[index].setonoff(0);
+    
+                        index+=1;
+                        pass
+                    sleep(1)
+                except:
                     pass
-                sleep(3)
-            except:
-                pass
-            response=None;
-            self.origin_data=None;
-            data=None;
-            self.rl_array=None
-            del response
-            del data
+
 
         
 # 12 relay
@@ -415,7 +422,7 @@ class RELAY_POWER:
             self.btn_on.config(bg='grey')
             self.lamp_relay = True
             ADRUINO_REQ_STATUS_PORT=ADRUINO_STATUS_PORT_OFF;
-        self.adruino.write_port(2000,self.port,ADRUINO_REQ_STATUS_PORT)
+        self.adruino.write_port(self.port,ADRUINO_REQ_STATUS_PORT)
     def setonoff(self,val):
         if val:
             self.btn_on.config(bg='#00FF00')
