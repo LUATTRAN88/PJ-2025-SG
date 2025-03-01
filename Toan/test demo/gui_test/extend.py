@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from pathlib import Path
 import tkinter as tk
 from tkinter import *

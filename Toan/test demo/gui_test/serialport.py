@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import serial
 from threading import Thread
 from time import sleep
@@ -14,27 +16,30 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        #self.PORT_NAME = '/dev/ttyUSB0';
+        self.PORT_NAME = '/dev/ttyUSB0';
         self.queue = queue.Queue(maxsize=10); 
         self.flag_get_data =False;
-        self.PORT_NAME = 'COM5';
+        #self.PORT_NAME = 'COM5';
     def getdata(self):
         if self.flag_get_data:
             return self.store_data
         else:
             return {}
     def connect_port(self):
-            self.serial_con = serial.Serial(self.PORT_NAME, baudrate=9600,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE)
-            self.serial_con.timeout=1;
-            #self.serial_con.open();
-            if self.serial_con==0:
-                print("Failed to connect");
-                return False;
-            else:
-                print("Connect successfully!");
-                #self.threading_read = Thread(target=self.getdatanewline3, args=());          
-                #self.flag_thread_read = True;
-                #self.threading_read.start();
+            try:
+                self.serial_con = serial.Serial(self.PORT_NAME, baudrate=9600,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE)
+                self.serial_con.timeout=1;
+                #self.serial_con.open();
+                if self.serial_con==0:
+                    print("Failed to connect");
+                    return False;
+                else:
+                    print("Connect successfully!");
+                    #self.threading_read = Thread(target=self.getdatanewline3, args=());          
+                    #self.flag_thread_read = True;
+                    #self.threading_read.start();
+            except:
+                 print("Failed to connect");
               
             return True;
     

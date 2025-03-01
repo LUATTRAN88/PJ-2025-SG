@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from tkinter import *
 # from tkinter import font as tkFont
 from PIL import ImageTk, Image

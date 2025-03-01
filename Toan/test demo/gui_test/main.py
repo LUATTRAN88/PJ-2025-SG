@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from tkinter import *
 from page_1 import *
 from page_2 import *
