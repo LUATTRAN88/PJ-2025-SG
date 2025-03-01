@@ -103,18 +103,18 @@ class SIGNAL:
         else:
             self.lb_lamp.configure(bg='grey')
 
-array_load_bank = [{'id':1, 'kw': 1, 'port':0x01},
-       {'id': 2, 'kw': 2, 'port':0x02},
-       {'id': 3, 'kw': 3, 'port': 0x03},
-       {'id': 4, 'kw': 5, 'port': 0x04},
-       {'id': 5, 'kw': 5, 'port': 0x05},
-       {'id': 6, 'kw': 5, 'port': 0x06},
-       {'id': 7, 'kw': 10, 'port': 0x07},
-       {'id': 8, 'kw': 10, 'port': 0x08},
-       {'id': 9, 'kw': 10, 'port': 0x09},
-       {'id': 10, 'kw': 20, 'port': 0x0A},
-       {'id': 11, 'kw': 20, 'port': 0x0B},
-       {'id': 12, 'kw': 20, 'port': 0x0C},]
+array_load_bank = [{'id':0, 'kw': 1, 'port':0},
+       {'id': 1, 'kw': 2, 'port':1},
+       {'id': 2, 'kw': 2, 'port': 2},
+       {'id': 3, 'kw': 5, 'port': 3},
+       {'id': 4, 'kw': 5, 'port': 4},
+       {'id': 5, 'kw': 5, 'port': 5},
+       {'id': 6, 'kw': 10, 'port': 6},
+       {'id': 7, 'kw': 10, 'port': 7},
+       {'id': 8, 'kw': 10, 'port': 8},
+       {'id': 9, 'kw': 20, 'port': 9},
+       {'id': 10, 'kw': 20, 'port': 10},
+       {'id': 11, 'kw': 20, 'port': 11},]
 
 # print(array_load_bank[11]['port'])
 # print(type(array_load_bank[0]['port']))
