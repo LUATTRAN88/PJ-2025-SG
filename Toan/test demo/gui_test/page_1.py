@@ -13,6 +13,8 @@ from threading import Thread
 import serialport as ard
 import tkinter.messagebox 
 # import http.client
+# import filedialog module
+from tkinter import filedialog
 
 
 class PAGE1:
@@ -29,6 +31,7 @@ class PAGE1:
         self.valuerelay_fan_phase=None;
         self.threading_rep = None;
         self.pop_log=None
+        
     def create_layout(self,lay1):
         self.root= lay1;
         self.layout1 = Frame(lay1,bg='white')                   
@@ -67,6 +70,7 @@ class PAGE1:
         self.logo()
         self.line()
         self.timeset()
+        self.checkbox_save()
         
         self.signal_list = []
         for i in range(16):
@@ -352,6 +356,32 @@ class PAGE1:
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
+       
+        
+    def browseFiles(self):
+        
+        
+        
+        if self.checkbox_value.get() == True:
+            filename = filedialog.askdirectory()
+            
+            
+        
+    def checkbox_save(self):
+        # agreement = tk.StringVar()
+        # cb=tk.messagebox.showinfo(title='Result', message=agreement.get())
+        self.checkbox_value = IntVar()
+        self.chk_save_log=tk.Checkbutton(self.lay_button_load,
+                text='Save File',
+                command=self.browseFiles,
+                # variable=self.agreement,
+                # onvalue='agree to save',
+                # offvalue='disagree to save',
+                bg='white', font=("Arial bold", 16), variable=self.checkbox_value)
+        self.chk_save_log.place(x=343, y=66,width=150,height=48)
+        
+         
+        
     def event_loadapply_set(self):
         result,num_tt_kw =number_of_objects(self.power_value)
         extPrint(result)
