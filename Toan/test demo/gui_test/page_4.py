@@ -25,6 +25,7 @@ class PAGE4:
         self.time_value = 0
         self.code = '5959'
         self.valuerelay_fan_phase=None;
+        self.display5=None
         
     def create_layout(self,lay4):
         self.layout = Frame(lay4,bg='orange')
@@ -82,7 +83,10 @@ class PAGE4:
     def event_page5(self): 
         # self.layout.place_forget()      # ẩn Frame PAGE4
         self.display5 = PAGE5()
+        self.display5.adruino=self.adruino;
         self.display5.create_layout(self.layout)
+
+        #self.display1.createThreadAdruino();
         
     def notification(self):
         tkinter.messagebox.showinfo('Warning',"Enter password again please!")     
@@ -195,9 +199,16 @@ class PAGE4:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = "";
-                print ("Response 444: %s", response)
-                data = json.loads(response);
+                try:
+                    item =self.adruino.getdatanewline()  
+                    data = json.loads(item); 
+                except json.JSONDecodeError as err:
+                    print(err.msg)
+                    if err.msg == 'Extra data':
+                        head = json.loads(item[0:err.pos])
+                        print(head)
+                        print("head")
+                        continue
                 self.origin_data = data['info']
                 self.rl_array = data['rls']
                 index=0;

@@ -341,8 +341,16 @@ class PAGE5:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = "";
-                data = json.loads(response);
+                try:
+                    item =self.adruino.getdatanewline()  
+                    data = json.loads(item); 
+                except json.JSONDecodeError as err:
+                    print(err.msg)
+                    if err.msg == 'Extra data':
+                        head = json.loads(item[0:err.pos])
+                        print(head)
+                        print("head")
+                        continue
                 self.origin_data = data['info']
                 self.rl_array = data['rls']
                 index=0;

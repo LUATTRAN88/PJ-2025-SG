@@ -274,9 +274,16 @@ class PAGE3:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             try:
-                response = ""
-                print ("Response 333: %s", response)
-                data = json.loads(response);
+                item =self.adruino.getdatanewline()  
+                try:
+                    data = json.loads(item); 
+                except json.JSONDecodeError as err:
+                    print(err.msg)
+                    if err.msg == 'Extra data':
+                        head = json.loads(item[0:err.pos])
+                        print(head)
+                        print("head")
+                        continue
                 self.origin_data = data['info']
                 # self.kw1.set(str(self.origin_data['kw1']))
                 #     #extPrint(self.kw1)

@@ -345,8 +345,9 @@ class PAGE2:
     def loadingdata(self):
         while self.flag_thread_req_rep:
             
-                item =self.adruino.getdatanewline()  
+                
                 try:
+                    item =self.adruino.getdatanewline()  
                     data = json.loads(item); 
                 except json.JSONDecodeError as err:
                     print(err.msg)

@@ -37,10 +37,12 @@ class MAINGUI:
         self.aruidno = ard.Arduino();
         self.aruidno.connect_port();
         self.display4 = PAGE4()
+        self.display4.adruino=self.aruidno
         self.display4.create_layout(self.layout)
         #self.display4.createThreadAdruino();
 
         self.display3 = PAGE3()
+        self.display3.adruino=self.aruidno
         self.display3.create_layout(self.layout)
         #self.display3.createThreadAdruino();
         self.display3.valuerelay_fan_phase=self.valuerelay_fan_phase;
@@ -116,6 +118,10 @@ class MAINGUI:
         try:
             self.stopAllThreadAdruino()
             self.display4.createThreadAdruino();
+            if self.display4.display5 is not None :
+                self.display4.display5.layout1.destroy();
+                self.display4.display5.layout2.destroy();
+                self.display4.display5=None;
             self.display4.layout.tkraise()
             self.display4.setvalue_fan_phase();
            
