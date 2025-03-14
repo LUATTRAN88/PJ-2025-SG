@@ -390,7 +390,6 @@ float reqmfm383(byte *reqdata, int length)
     int cnt_data=0;
     int data_length=9;
     byte repdata[9]={};
-    delayMicroseconds(1000);
     while(cnt_data<100)
     { 
       if(pzemSerial.available()>8)

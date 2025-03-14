@@ -260,6 +260,7 @@ class PAGE3:
         self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)  
 
     def createThreadAdruino(self):
+        self.threading_rep=None;
         if self.threading_rep == None:
             self.threading_rep = Thread(target=self.loadingdata, args=());    
             self.flag_thread_req_rep = True;
@@ -268,7 +269,7 @@ class PAGE3:
     def stopThreadAdruino(self):
         try: 
             self.flag_thread_req_rep=False;
-            self.threading_rep=None;
+            #self.threading_rep=None;
         except:
             pass
     def loadingdata(self):

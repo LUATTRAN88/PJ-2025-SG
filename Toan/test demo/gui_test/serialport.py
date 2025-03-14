@@ -77,6 +77,6 @@ class Arduino:
                                 dataj= ''.join(datastrm)
                                 self.serial_con.flush();
                                 self.flag_get_data=False
-
+                                print(dataj)
                                 return datastrm; 
    

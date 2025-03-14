@@ -12,6 +12,7 @@ class MAINGUI:
     def __init__(self):
         pass
         # self.current_page = None
+        self.current_page=1;
     def create_layout(self):
         self.layout = Tk()
         self.layout.title('test demo')
@@ -83,11 +84,15 @@ class MAINGUI:
         pass
     def event_page1(self,event):
         try:
+            if self.current_page ==1:
+                return;
+            self.current_page=1;
             self.stopAllThreadAdruino()
             self.display1.createThreadAdruino();
             self.display1.layout1.tkraise()
             self.display1.layout2.tkraise() 
             self.display1.setvalue_fan_phase();
+            
             
           
         except:
@@ -95,27 +100,37 @@ class MAINGUI:
 
     def event_page2(self,event):
         try:
+            if self.current_page ==2:
+                return;
             self.stopAllThreadAdruino()
+            self.current_page =2
             self.display2.createThreadAdruino();
             self.display2.layout1.tkraise()
             self.display2.layout2.tkraise() 
             self.display2.setvalue_fan_phase();
+        
           
         except:
             pass
     def event_page3(self,event):
         try:
+            if self.current_page ==3:
+                return;
             self.stopAllThreadAdruino()
+            self.current_page =3
             self.display3.createThreadAdruino();
             self.display3.layout1.tkraise()
             self.display3.layout2.tkraise() 
             self.display3.setvalue_fan_phase();
-            
+           
          
         except:
             pass
     def event_page4(self,event):
         try:
+            if self.current_page ==4:
+                return;
+            self.current_page =4
             self.stopAllThreadAdruino()
             self.display4.createThreadAdruino();
             if self.display4.display5 is not None :
@@ -125,6 +140,7 @@ class MAINGUI:
                 self.display4.display5=None;
             self.display4.layout.tkraise()
             self.display4.setvalue_fan_phase();
+           
            
         except:
             pass       

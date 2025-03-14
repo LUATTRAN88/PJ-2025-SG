@@ -185,6 +185,7 @@ class PAGE4:
         self.lb_temp = Label(self.layout1,bg='white',font=('arial',13),textvariable=self.tempcc).place(x=930,y=34,width=46,height=20)  
         self.lb_temp_c = Label(self.layout1,bg='white',font=('arial',13),text='ºC').place(x=980,y=34,width=23,height=20) 
     def createThreadAdruino(self):
+        self.threading_rep=None;
         if self.threading_rep == None:
             self.threading_rep = Thread(target=self.loadingdata, args=());    
             self.flag_thread_req_rep = True;
@@ -192,7 +193,7 @@ class PAGE4:
     def stopThreadAdruino(self):
         try: 
             self.flag_thread_req_rep=False;
-            self.threading_rep=None;
+            #self.threading_rep=None;
         except:
             pass
     def loadingdata(self):

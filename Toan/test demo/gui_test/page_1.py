@@ -449,6 +449,7 @@ class PAGE1:
     def createThreadAdruino(self):
         print ("Create Thread1")
         #self.threading_req = Thread(target=self.requestdata, args=()); 
+        self.threading_rep=None
         if self.threading_rep == None:
             self.threading_rep = Thread(target=self.loadingdata, args=());    
             self.flag_thread_req_rep = True;
@@ -459,7 +460,7 @@ class PAGE1:
         print ("Stop Thread1")     
         try: 
             self.flag_thread_req_rep=False;
-            self.threading_rep=None;
+            #self.threading_rep=None;
         except:
             pass
     def loadingdata(self):
