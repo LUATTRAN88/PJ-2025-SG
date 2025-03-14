@@ -85,8 +85,7 @@ class PAGE4:
         self.display5 = PAGE5()
         self.display5.adruino=self.adruino;
         self.display5.create_layout(self.layout)
-
-        #self.display1.createThreadAdruino();
+        self.display5.createThreadAdruino();
         
     def notification(self):
         tkinter.messagebox.showinfo('Warning',"Enter password again please!")     
@@ -210,6 +209,7 @@ class PAGE4:
                         print("head")
                         continue
                 self.origin_data = data['info']
+                self.tempcc.set(str(self.origin_data['tempc']))
                 self.rl_array = data['rls']
                 index=0;
                 for i in self.rl_array:

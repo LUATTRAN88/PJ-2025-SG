@@ -352,6 +352,7 @@ class PAGE5:
                         print("head")
                         continue
                 self.origin_data = data['info']
+                self.tempcc.set(str(self.origin_data['tempc']))
                 self.rl_array = data['rls']
                 index=0;
                 for i in self.rl_array:

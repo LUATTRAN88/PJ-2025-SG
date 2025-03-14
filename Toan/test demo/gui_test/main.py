@@ -119,6 +119,7 @@ class MAINGUI:
             self.stopAllThreadAdruino()
             self.display4.createThreadAdruino();
             if self.display4.display5 is not None :
+                self.display4.display5.stopThreadAdruino();
                 self.display4.display5.layout1.destroy();
                 self.display4.display5.layout2.destroy();
                 self.display4.display5=None;

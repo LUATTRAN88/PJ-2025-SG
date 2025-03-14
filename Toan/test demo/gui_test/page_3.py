@@ -285,6 +285,7 @@ class PAGE3:
                         print("head")
                         continue
                 self.origin_data = data['info']
+                self.tempcc.set(str(self.origin_data['tempc']))
                 # self.kw1.set(str(self.origin_data['kw1']))
                 #     #extPrint(self.kw1)
                 # self.kw2.set(str(self.origin_data['kw2']))
