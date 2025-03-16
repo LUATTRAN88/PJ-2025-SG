@@ -152,14 +152,14 @@ byte* sendmfm383(int row)
   return datacmd;
 
 }
-byte repdata[125]={}; // 30 * 4 + 5 byte
+
 float reqmfm383(byte *reqdata, int length)
 {
     pzemSerial.write(reqdata,length);
     int cnt_data=0;
     int data_length=29;
 
-
+    byte repdata[125]={}; // 30 * 4 + 5 byte
     while(cnt_data<data_length)
     { 
       repdata[cnt_data++]=(byte)pzemSerial.read();
@@ -177,14 +177,12 @@ float reqmfm383(byte *reqdata, int length)
      unsigned short checksum =getCombine2Bytes(repdata[data_length-1],repdata[data_length-2]);
     //Modbus
     unsigned short crcvalue  = crc.Modbus(repdata,0,data_length-2);// 125 -2 
-
- 
-    float value=convertFloat(repdata[19],repdata[20],repdata[21],repdata[22]);
+    V1N=convertFloat(repdata[19],repdata[20],repdata[21],repdata[22]);
     delayMicroseconds(1000);
     if(crcvalue==checksum)
     {
-      Serial.println(value);
-      return value;
+      Serial.println(V1N);
+      return V1N;
     }
     else
       return -1;

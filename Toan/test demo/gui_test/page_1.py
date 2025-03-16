@@ -517,4 +517,4 @@ class PAGE1:
                     pass
 
 
-                sleep(1)
+                sleep(0.5)
