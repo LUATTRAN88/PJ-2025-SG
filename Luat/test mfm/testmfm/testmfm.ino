@@ -128,7 +128,6 @@ void setup() {
 
 void loop() {
     reqmfm383(sendmfm383(2),8);
-    delay(3000);
     Serial.println("--");
 }
 
@@ -179,10 +178,8 @@ float reqmfm383(byte *reqdata, int length)
     //Modbus
     unsigned short crcvalue  = crc.Modbus(repdata,0,data_length-2);// 125 -2 
 
-    uint16_t H_value= getCombine2Bytes(repdata[3],repdata[4]);
-    uint16_t L_value= getCombine2Bytes(repdata[5],repdata[6]);
-
-    float value=convertFloat(L_value,H_value);
+ 
+    float value=convertFloat(repdata[19],repdata[20],repdata[21],repdata[22]);
     delayMicroseconds(1000);
     if(crcvalue==checksum)
     {
@@ -206,9 +203,10 @@ uint16_t getCombine4Bytes(uint16_t h1,uint16_t h2,uint16_t h3,uint16_t h4)
   uint16_t result = ((uint16_t)h1 << 24) | ((uint16_t)h2 << 16 ) | ((uint16_t)h3 << 8) | (uint16_t)h4;
   return result;
 }
-float convertFloat(unsigned short reg_low, unsigned short reg_high) {
-
-  unsigned short data[2] = {reg_low, reg_high};
+float convertFloat( byte b1, byte b2,byte b3,byte b4) {
+  uint16_t H_value= getCombine2Bytes(b1,b2);
+  uint16_t L_value= getCombine2Bytes(b3,b4);
+  unsigned short data[2] = {L_value, H_value};
   float value;
   memcpy(&value, data, 4);
   return value;
