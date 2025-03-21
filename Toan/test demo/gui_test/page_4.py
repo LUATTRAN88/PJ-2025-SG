@@ -200,15 +200,10 @@ class PAGE4:
         while self.flag_thread_req_rep:
             try:
                 try:
-                    item =self.adruino.getdatanewline()  
+                    item =self.adruino.getdatanewline(4)  
                     data = json.loads(item); 
-                except json.JSONDecodeError as err:
-                    print(err.msg)
-                    if err.msg == 'Extra data':
-                        head = json.loads(item[0:err.pos])
-                        print(head)
-                        print("head")
-                        continue
+                except:
+                    continue
                 self.origin_data = data['info']
                 self.tempcc.set(str(self.origin_data['tempc']))
                 self.rl_array = data['rls']

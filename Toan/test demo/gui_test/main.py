@@ -81,6 +81,8 @@ class MAINGUI:
         self.display2.stopThreadAdruino()
         self.display3.stopThreadAdruino()
         self.display4.stopThreadAdruino()
+        if self.display4.display5 is not None:
+            self.display4.display5.stopThreadAdruino()
         pass
     def event_page1(self,event):
         try:

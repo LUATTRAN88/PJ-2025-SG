@@ -359,9 +359,6 @@ class PAGE1:
        
         
     def browseFiles(self):
-        
-        
-        
         if self.checkbox_value.get() == True:
             filename = filedialog.askdirectory()
             
@@ -449,11 +446,10 @@ class PAGE1:
     def createThreadAdruino(self):
         print ("Create Thread1")
         #self.threading_req = Thread(target=self.requestdata, args=()); 
-        self.threading_rep=None
-        if self.threading_rep == None:
-            self.threading_rep = Thread(target=self.loadingdata, args=());    
-            self.flag_thread_req_rep = True;
-            self.threading_rep.start();  
+
+        threading_rep = Thread(target=self.loadingdata, args=());    
+        self.flag_thread_req_rep = True;
+        threading_rep.start();  
     
 
     def stopThreadAdruino(self):
@@ -465,20 +461,12 @@ class PAGE1:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
-                #try:
-                    
-                item =self.adruino.getdatanewline()  
                 try:
+                    item =self.adruino.getdatanewline(1) 
                     data = json.loads(item); 
-                except json.JSONDecodeError as err:
-                    print(err.msg)
-                    if err.msg == 'Extra data':
-                        head = json.loads(item[0:err.pos])
-                        print(head)
-                        print("head")
-                        continue
-
-                                                         
+                except :
+                    continue
+                                
                 try:       
                     self.origin_data = data['info']  
                     self.vln1.set(str(self.origin_data['vln1']))

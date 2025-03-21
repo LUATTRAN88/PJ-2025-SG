@@ -64,13 +64,13 @@ class Arduino:
                 data +='\r\n'
                 self.serial_con.write(bytes(data, 'utf-8'));
                 del data 
-    def getdatanewline(self):
+    def getdatanewline(self, page):
 
                 if self.serial_con != None:
                     if self.serial_con.is_open:
                         if self.flag_get_data ==False :
                                 self.flag_get_data=True
-                                self.write_obj({"req":ADRUINO_REQ_FULL_DATA})
+                                self.write_obj({"req":ADRUINO_REQ_FULL_DATA,"page":page})
                                 sleep(0.05)
                                 data=self.serial_con.read_until(b"#").decode("utf-8")
                                 datastrm= data.replace('#',"\n")

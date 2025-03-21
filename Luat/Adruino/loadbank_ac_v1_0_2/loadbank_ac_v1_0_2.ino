@@ -181,13 +181,13 @@ void loop() {
     dataComplete = false;
   }
   delay(1000);
-                                                                                                                                                                                                                                                                                                 
+   */                                                                                                                                                                                                                                                                                              
   // timer control
     if( flag_timer_cnt_target== 0)
     {
       stopAllLoad();
       flag_timer_cnt_target=-1;
-    }*/
+    }
 }
 
 
@@ -211,6 +211,7 @@ void sendmfm383relaytorasp()
 {
 
 reqmfm383(sendmfm383(0),8,1);
+reqmfm383(sendmfm383(0),8,2);
 reqmfm383(sendmfm383(2),8,3);
 
 
@@ -218,14 +219,16 @@ int thermo_status = thermoCouple.read();
 temperature = thermoCouple.getTemperature();
 }
 
-void collectiondata()
+void collectiondata(int req, int page)
 {
     
      readPortPCF8575();
       String output;
       output.reserve(100);
-      output +="{\"req\":200,";
-      output +="\"status\":200,";
+      output +="{";
+      output +="\"req\":"+String(req) +",";
+      output +="\"status\":"+String(200) +",";
+      output +="\"page\":"+String(page) +",";
       output +="\"info\":{";
       sendStringSerial(output);
       String output2;
@@ -343,10 +346,11 @@ byte* sendmfm383(int row)
   return datacmd;
 
 }
-byte repdata[70]={}; // 30 * 4 + 5 byte
+
 int data_length=0;
 float reqmfm383(byte *reqdata, int length, int intv)
 {
+  byte repdata[70]={}; // 30 * 4 + 5 byte
    memset(repdata, 0, 70);
 
     pzemSerial.write(reqdata,length);
@@ -492,7 +496,8 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_temp= (int) myObject["emg_lmt_temp"];
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
-        collectiondata();
+        int page= (int) myObject["page"];
+        collectiondata(resq,page);
       break;
     }
     case 1001: // vll
