@@ -302,7 +302,7 @@ def exitapp(adruino,page):
                 
                 #os.system("shutdown now -h")
                 os.system("shutdown /s /t 1") 
-                os._exit(os.EX_OK)
+                os._exit(os.EX_OK);
                 return
         os.system("shutdown /s /t 1") 
         os._exit(os.EX_OK)
