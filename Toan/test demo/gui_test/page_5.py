@@ -233,9 +233,11 @@ class PAGE5:
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white',command=self.write_file)
         self.btn_apply.place(x=21,y=48,width=150,height=48)
         
-        #self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
-        #self.btn_apply.place(x=182,y=48,width=150,height=48)
-        
+        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='EXIT',fg='white',command=self.exitapp)
+        self.btn_apply.place(x=182,y=48,width=150,height=48)
+    def exitapp(self):
+        closeapp(self.adruino,5);  
+    
     def button_fan(self):
         # img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
         # self.fan_on = ImageTk.PhotoImage(img_fan_on)
