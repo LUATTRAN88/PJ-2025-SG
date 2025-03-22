@@ -325,7 +325,9 @@ class PAGE1:
         #self.pop_log.create_layout();
         exitapp(self.adruino,1);
     def rebootapp(self):
-        rebootapp(self.adruino,1); 
+        if self.adruino is not None:
+            self.adruino.disconnect_port();
+        self.adruino.connect_port();
 
 
           
@@ -517,13 +519,17 @@ class PAGE1:
             pass
     def loadingdata(self):
         while self.flag_thread_req_rep:
-                try:
-                    item =self.adruino.getdatanewline(1) 
-                    data = json.loads(item); 
-                except :
-                    continue
+                #try:
+                
+               # except :
+                 #   continue
                                 
                 try:       
+                    item =self.adruino.getdatanewline(1) 
+                    try:
+                        data = json.loads(item); 
+                    except:
+                        continue
                     self.origin_data = data['info'] 
                     vln1 = str(self.origin_data['vln1']);
                     self.vln1.set(vln1);
@@ -539,7 +545,7 @@ class PAGE1:
                     self.kw3.set(kw3)
                     cur1= str(self.origin_data['cur1'])
                     self.cur1.set(cur1)
-                    cur2=self.origin_data['cur2']
+                    cur2=str(self.origin_data['cur2'])
                     self.cur2.set(cur2)
                     cur3=str(self.origin_data['cur3'])
                     self.cur3.set(cur3)
@@ -563,6 +569,7 @@ class PAGE1:
                     self.txt_timer_count_down.set(tim1cnt)
                     self.rl_array = data['rls']
                     strdatarestore='1'+','+vln1 +','+vln2 +','+vln3 +','+vln+','+kw1 +','+kw3 +','+cur1 +','+cur2 +','+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
+                      #+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
                     if self.checkbox_value.get() == True:
                         self.store_file(file_name_path,strdatarestore)
                     
@@ -587,7 +594,7 @@ class PAGE1:
                         self.pop_log.insertText(item);
                     sleep(1)
                 except:
-                    pass
+                   pass
 
 
 

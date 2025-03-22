@@ -3,7 +3,7 @@
 #include <Crc16.h>
 #include <ArduinoJson.h>
 #include "MAX6675.h"
-
+#include <avr/wdt.h>
 #define ID_DEVICE  250101
 
 #define BUZZ_ALARM_ON_ARUINO_PORT 13
@@ -108,7 +108,7 @@ void setup() {
   thermoCouple.setSPIspeed(4000000);
   // PIN MODE
   pinMode(13, OUTPUT);
- 
+  //wdt_enable(WDTO_15MS);
   //Scheduler.startLoop(sendmfm383relaytorasp);
    
   cli();                                  // tắt ngắt toàn cục   
@@ -169,12 +169,12 @@ void init_pcf8575()
 
 
 void loop() {
-  if(millis() -time_mask_coldata >200){
+ /* if(millis() -time_mask_coldata >500){
       sendmfm383relaytorasp();
 
      // getdata_V(200);
      time_mask_coldata=millis();
- } 
+ } */
   if(dataComplete==false)   
   { 
     serialEvent();
@@ -186,6 +186,8 @@ void loop() {
       stopAllLoad();
       flag_timer_cnt_target=-1;
   }
+  	
+  //wdt_reset();
 }
 
 
@@ -365,17 +367,19 @@ float reqmfm383(byte *reqdata, int length, int intv)
     }
  
 
-
+    long cnt_timeout=0;
     while(cnt_data<data_length)
     { 
       if(pzemSerial.available() > 0)
       {
         repdata[cnt_data++]=(byte)pzemSerial.read();
       }
-
-
+      if(cnt_timeout>100)
+        break;
+      //Serial.println("b");
+      cnt_timeout++;
     }
-
+   
     pzemSerial.flush();
     crc.clearCrc();
      unsigned short checksum =getCombine2Bytes(repdata[data_length-1],repdata[data_length-2]);
@@ -496,6 +500,7 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
         int page= (int) myObject["page"];
+        sendmfm383relaytorasp();
         collectiondata(resq,page);
       break;
     }

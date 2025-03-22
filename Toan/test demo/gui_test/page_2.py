@@ -310,7 +310,9 @@ class PAGE2:
     def shutdownapp(self):
         exitapp(self.adruino,2);       
     def rebootapp(self):
-        rebootapp(self.adruino,2);    
+        if self.adruino is not None:
+            self.adruino.disconnect_port();
+        self.adruino.connect_port();
     def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#969696',font=('arial bold',12),text='LOAD APPLY',fg='black',state='disabled')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
@@ -362,12 +364,13 @@ class PAGE2:
         while self.flag_thread_req_rep:
             
                 
+               
                 try:
-                    item =self.adruino.getdatanewline(2)  
-                    data = json.loads(item); 
-                except:
-                    continue
-                try:
+                    try:
+                        item =self.adruino.getdatanewline(2)  
+                        data = json.loads(item);
+                    except:
+                        continue
                     self.origin_data = data['info']
                     rl_array = data['rls']
                     vln1 = str(self.origin_data['vln1']);
@@ -384,7 +387,7 @@ class PAGE2:
                     self.kw3.set(kw3)
                     cur1= str(self.origin_data['cur1'])
                     self.cur1.set(cur1)
-                    cur2=self.origin_data['cur2']
+                    cur2=str(self.origin_data['cur2'])
                     self.cur2.set(cur2)
                     cur3=str(self.origin_data['cur3'])
                     self.cur3.set(cur3)
@@ -405,9 +408,9 @@ class PAGE2:
                     vln=str(self.origin_data['vln'])
                     self.txt_aln_sum.set(vln)
                     tim1cnt=str(self.origin_data['tim1cnt'])
-                    strdatarestore='1'+','+vln1 +','+vln2 +','+vln3 +','+vln+','+kw1 +','+kw3 +','+cur1 +','+cur2 +','+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
-                    if self.checkbox_value.get() == True:
-                        store_file(file_name_path,strdatarestore)
+                    #strdatarestore='1'+','+vln1 +','+vln2 +','+vln3 +','+vln+','+kw1 +','+kw3 +','+cur1 +','+cur2 +','+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
+                    #if self.checkbox_value.get() == True:
+                        #store_file(file_name_path,strdatarestore)
 
                     index=0;
                     for i in rl_array:        
