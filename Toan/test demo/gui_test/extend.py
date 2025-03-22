@@ -304,6 +304,7 @@ def exitapp(adruino,page):
                 os.system("shutdown /s /t 1") 
                 os._exit(os.E)
                 return
+        os.system("shutdown /s /t 1") 
         os._exit(os.EX_OK)
     else :
         mb.showinfo('Return', 'Returning to main application')

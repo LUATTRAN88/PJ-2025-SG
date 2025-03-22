@@ -18,7 +18,7 @@ class MAINGUI:
         self.layout.title('test demo')
         self.layout.geometry('1024x600')
         self.layout.config(bg='white')
-        #self.layout.overrideredirect(1)
+        self.layout.overrideredirect(1)
 
         self.layout_btn = Frame(self.layout, bg='yellow')
         self.layout_btn.place(x=0,y=0,width=1024,height=60)
