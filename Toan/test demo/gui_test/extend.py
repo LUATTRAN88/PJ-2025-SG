@@ -299,7 +299,10 @@ def exitapp(adruino,page):
                 adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP,"page":page})
                 sleep(3);
                 data=adruino.serial_con.read_until(b"#").decode("utf-8")
-                os._exit(os.EX_OK)
+                
+                #os.system("shutdown now -h")
+                os.system("shutdown /s /t 1") 
+                os._exit(os.E)
                 return
         os._exit(os.EX_OK)
     else :
