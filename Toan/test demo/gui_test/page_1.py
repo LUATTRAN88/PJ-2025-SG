@@ -222,7 +222,7 @@ class PAGE1:
         # img_fan_off = Image.open(get_path_img()+'sw_auto.png').resize((139,65))
         # self.fan_off = ImageTk.PhotoImage(img_fan_off)
 
-        self.btn_on_fan = Button(self.lay_logo_switch,text='ON',bg='#00FF00',font=('arial bold',22) ,bd=3,command=lambda:self.clickfan())
+        self.btn_on_fan = Button(self.lay_logo_switch,text='ON',bg='#00FF00',font=('arial bold',22) ,bd=3,command=lambda:self.clickfan(),state=DISABLED)
         self.btn_on_fan.place(x=15,y=46,width=139,height=70)
         self.is_fan_on = True
        
