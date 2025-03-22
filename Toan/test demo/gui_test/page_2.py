@@ -306,8 +306,10 @@ class PAGE2:
  
  
  
-    def pop_up(self):
-        exitapp(self.adruino,2);        
+    def shutdownapp(self):
+        exitapp(self.adruino,2);       
+    def rebootapp(self):
+        rebootapp(self.adruino,2);    
     def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#969696',font=('arial bold',12),text='LOAD APPLY',fg='black',state='disabled')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
@@ -315,7 +317,10 @@ class PAGE2:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='Exit',fg='white',command=self.pop_up)
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='SHUTDOWN',fg='white',command=self.shutdownapp)
+        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='RESTART',fg='white',command=self.rebootapp)
+        self.btn_restart.place(x=182,y=66,width=150,height=48)
+        
 
         self.btn_logging.place(x=21,y=66,width=150,height=48)
     def event_loadstop_set(self):
@@ -404,7 +409,7 @@ class PAGE2:
                         else: 
                             break;
                         index+=1;
-                    sleep(1)
+                    sleep(0.5)
                 except:
                     pass
 

@@ -1,0 +1,7 @@
+
+[Desktop Entry]
+Type=Application
+Name=loadbank
+Exec=/home/loadbank/Desktop/loadbank_script.sh
+Terminal=true
+

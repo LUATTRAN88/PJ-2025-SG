@@ -308,3 +308,20 @@ def exitapp(adruino,page):
         os._exit(os.EX_OK)
     else :
         mb.showinfo('Return', 'Returning to main application')
+def rebootapp(adruino,page):
+    res=mb.askquestion('Reboot Application', 'Do you really want to reboot')
+    if res == 'yes' :
+        if adruino.serial_con is not None:
+            if adruino.serial_con.is_open ==True:
+                adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP,"page":page})
+                sleep(3);
+                data=adruino.serial_con.read_until(b"#").decode("utf-8")
+                
+                #os.system("shutdown now -h")
+                os.system('sudo systemctl reboot') 
+                os._exit(os.EX_OK);
+                return
+        os.system('sudo systemctl reboot') 
+        os._exit(os.EX_OK)
+    else :
+        mb.showinfo('Return', 'Returning to main application')

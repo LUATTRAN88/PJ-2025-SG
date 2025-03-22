@@ -317,11 +317,13 @@ class PAGE1:
         self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text='0').place(x=308,y=145,width=48,height=20)
       
     
-    def pop_up(self):
+    def shutdownapp(self):
         #self.pop_log=None;
         #self.pop_log=POP_LOG();
         #self.pop_log.create_layout();
         exitapp(self.adruino,1);
+    def rebootapp(self):
+        rebootapp(self.adruino,1); 
 
 
           
@@ -357,8 +359,11 @@ class PAGE1:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='EXIT',fg='white',command=self.pop_up)
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='SHUTDOWN',fg='white',command=self.shutdownapp)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
+        
+        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='RESTART',fg='white',command=self.rebootapp)
+        self.btn_restart.place(x=182,y=66,width=150,height=48)
        
         
     def browseFiles(self):
