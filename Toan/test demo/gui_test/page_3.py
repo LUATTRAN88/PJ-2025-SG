@@ -9,6 +9,7 @@ import client as clientCall
 from extend import *
 from time import strftime
 from config.config_setting import *
+from config.config_service import *
 import json
 from extend import *
 from time import strftime
@@ -30,6 +31,8 @@ class PAGE3:
        
         
         self.config_setting = ConfigSetting()
+        self.config_service = ConfigService()
+        self.valueResArr=[]
         # self.power_input = self.read_file()[0]
         # self.voltage_input = self.read_file()[1]
         # self.temp_input = self.read_file()[2]
@@ -173,8 +176,8 @@ class PAGE3:
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white',command=self.write_file)
         self.btn_apply.place(x=21,y=48,width=150,height=48)
         
-        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
-        self.btn_apply.place(x=182,y=48,width=150,height=48)
+        #self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
+        #self.btn_apply.place(x=182,y=48,width=150,height=48)
         
     def button_fan(self):
         # img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
@@ -260,11 +263,10 @@ class PAGE3:
         self.config_setting.write_file(power=power, voltage=voltage, temperature=temp)  
 
     def createThreadAdruino(self):
-        self.threading_rep=None;
-        if self.threading_rep == None:
-            self.threading_rep = Thread(target=self.loadingdata, args=());    
-            self.flag_thread_req_rep = True;
-            self.threading_rep.start();  
+        self.valueResArr = self.config_service.read_file2();
+        threading_rep = Thread(target=self.loadingdata, args=());    
+        self.flag_thread_req_rep = True;
+        threading_rep.start();  
  
     def stopThreadAdruino(self):
         try: 
@@ -311,7 +313,17 @@ class PAGE3:
                         self.signal_list[index].setonoff(0);
                     index+=1;
                     pass
-                sleep(1)
+                index=0;
+                for r in self.valueResArr:
+                    if index<12:
+                        vln_val=self.origin_data['vln'];
+                        kwr=(vln_val*vln_val )/r;
+                        kwr=round(kwr, 2);
+                        self.signal_list[index].set_relay_value(str(kwr));
+                    else: 
+                            break;
+                    index+=1;
+                sleep(0.5)
             except :
                 extPrint("Connect Server Abnormal Page 3")
-                sleep(1)    
+                sleep(0.5)    

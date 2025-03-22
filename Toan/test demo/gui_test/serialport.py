@@ -29,6 +29,7 @@ class Arduino:
             try:
                 self.serial_con = serial.Serial(self.PORT_NAME, baudrate=9600,bytesize=serial.EIGHTBITS,parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE)
                 self.serial_con.timeout=1;
+               
                 #self.serial_con.open();
                 if self.serial_con==0:
                     print("Failed to connect");

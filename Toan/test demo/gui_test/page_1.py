@@ -15,7 +15,7 @@ import tkinter.messagebox
 # import http.client
 # import filedialog module
 from tkinter import filedialog
-
+from config.config_service import *
 
 class PAGE1:
     def __init__(self):
@@ -31,6 +31,8 @@ class PAGE1:
         self.valuerelay_fan_phase=None;
         self.threading_rep = None;
         self.pop_log=None
+        self.config_service = ConfigService()
+        self.valueResArr=[]
         
     def create_layout(self,lay1):
         self.root= lay1;
@@ -316,9 +318,10 @@ class PAGE1:
       
     
     def pop_up(self):
-        self.pop_log=None;
-        self.pop_log=POP_LOG();
-        self.pop_log.create_layout();
+        #self.pop_log=None;
+        #self.pop_log=POP_LOG();
+        #self.pop_log.create_layout();
+        exitapp(self.adruino,1);
 
 
           
@@ -354,7 +357,7 @@ class PAGE1:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='EXIT',fg='white',command=self.pop_up)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
        
         
@@ -395,9 +398,21 @@ class PAGE1:
         }
         self.adruino.write_obj(dt_laply);
     def event_loadstop_set(self):
-        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+        res=mb.askquestion('Emergency Stop', 'Do you really want to stop')
+        if res == 'yes' :
+            if self.adruino.serial_con is not None:
+                if self.adruino.serial_con.is_open ==True:
+                    self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+        else :
+            mb.showinfo('Return', 'Check Connection');
     def event_loaddrop_set(self):
-        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
+        res=mb.askquestion('Drop Load', 'Do you really want to drop')
+        if res == 'yes' :
+            if self.adruino.serial_con is not None:
+                if self.adruino.serial_con.is_open ==True:
+                    self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
+        else :
+            mb.showinfo('Return', 'Check Connection');
     def on_press_powerup(self, event):
         self.hold_powerup = True
         extPrint("test")
@@ -445,8 +460,9 @@ class PAGE1:
             
     def createThreadAdruino(self):
         print ("Create Thread1")
-        #self.threading_req = Thread(target=self.requestdata, args=()); 
-
+        #self.threading_req = Thread(target=self.requestdata, args=());
+        self.valueResArr = self.config_service.read_file2();
+        
         threading_rep = Thread(target=self.loadingdata, args=());    
         self.flag_thread_req_rep = True;
         threading_rep.start();  
@@ -499,10 +515,22 @@ class PAGE1:
                         else:
                             self.signal_list[index].setonoff(0);
                         index+=1;
+                    index=0;
+                    for r in self.valueResArr:
+                        if index<12:
+                            vln_val=self.origin_data['vln'];
+                            kwr=(vln_val*vln_val )/r;
+                            kwr=round(kwr, 2);
+                            self.signal_list[index].set_relay_value(str(kwr));
+                        else: 
+                            break;
+                        index+=1;
                     if self.pop_log is not None:
                         self.pop_log.insertText(item);
                 except:
                     pass
+
+
 
 
                 sleep(0.5)

@@ -12,7 +12,7 @@ from extend import *
 from time import strftime
 from threading import Thread
 from time import sleep
-
+from config.config_service import *
 class PAGE2:
     def __init__(self):
         self.adruino=None
@@ -24,6 +24,8 @@ class PAGE2:
         self.time_value = 0
         self.valuerelay_fan_phase=None;
         self.threading_rep = None;
+        self.config_service = ConfigService()
+        self.valueResArr=[]
     def create_layout(self,lay2):
         self.layout1 = Frame(lay2,bg='white')                   
         self.layout1.place(x=0,y=60,width=512,height=540)
@@ -305,15 +307,7 @@ class PAGE2:
  
  
     def pop_up(self):
-        window = Tk()
-        window.title('popup')
-        window.geometry("572x220")
-        # window.overrideredirect(1)
-        self.str_txt_log =StringVar()
-        txt_log = Text(window, height = 10, width = 70).pack()
-        btn_save = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Save",textvariable=self.str_txt_log).place(x=0, y=165,width=286,height=55)
-        btn_exit = Button(window,bg='#191970',bd=3,fg='orange', font=('arial bold',16), text = "Exit",command=window.destroy).place(x=286, y=165,width=286,height=55)
-        
+        exitapp(self.adruino,2);        
     def tab_button(self):  
         self.btn_apply = Button(self.lay_button_load,bd=3,bg='#969696',font=('arial bold',12),text='LOAD APPLY',fg='black',state='disabled')
         self.btn_apply.place(x=21,y=6,width=150,height=48)
@@ -321,16 +315,30 @@ class PAGE2:
         self.btn_stop.place(x=182,y=6,width=150,height=48)
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
-        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD LOGGING',fg='white',command=self.pop_up)
+        self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='Exit',fg='white',command=self.pop_up)
 
         self.btn_logging.place(x=21,y=66,width=150,height=48)
     def event_loadstop_set(self):
-        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+        res=mb.askquestion('Emergency Stop', 'Do you really want to stop')
+        if res == 'yes' :
+            if self.adruino.serial_con is not None:
+                if self.adruino.serial_con.is_open ==True:
+                    self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_STOP});
+        else :
+            mb.showinfo('Return', 'Check Connection');
     def event_loaddrop_set(self):
-        self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
+        res=mb.askquestion('Drop Load', 'Do you really want to drop')
+        if res == 'yes' :
+            if self.adruino.serial_con is not None:
+                if self.adruino.serial_con.is_open ==True:
+                    self.adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP});
+        else :
+            mb.showinfo('Return', 'Check Connection');
+
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         #self.threading_req = Thread(target=self.requestdata, args=()); 
+        self.valueResArr = self.config_service.read_file2();
         threading_rep = Thread(target=self.loadingdata, args=());    
         self.flag_thread_req_rep = True;
         threading_rep.start();  
@@ -386,6 +394,16 @@ class PAGE2:
     
                         index+=1;
                         pass
+                    index=0;
+                    for r in self.valueResArr:
+                        if index<12:
+                            vln_val=self.origin_data['vln'];
+                            kwr=(vln_val*vln_val )/r;
+                            kwr=round(kwr, 2);
+                            self.signal_list[index].set_relay_value(str(kwr));
+                        else: 
+                            break;
+                        index+=1;
                     sleep(1)
                 except:
                     pass

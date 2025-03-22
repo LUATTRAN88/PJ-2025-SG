@@ -20,6 +20,22 @@ class ConfigService:
             data['emergency_settings']['current_limit'], data['emergency_settings']['voltage_LN_limit'],
             data['emergency_settings']['temperature_limit']
         )
+    def read_file2(self):
+        with open('./config/config_service.yml', 'r') as file:
+            data = yaml.safe_load(file)
+        # print('Power limit ',prime_service['power_limit'])
+        # print('Voltage limit ', prime_service['voltage_LN_limit'])
+        # print('Temperature limit ', prime_service['temperature_limit'])
+        return [
+            data['resistor_settings']['r1'], data['resistor_settings']['r2'], data['resistor_settings']['r3'], 
+            data['resistor_settings']['r4'], data['resistor_settings']['r5'], data['resistor_settings']['r6'],
+            data['resistor_settings']['r7'], data['resistor_settings']['r8'], data['resistor_settings']['r9'],
+            data['resistor_settings']['r10'], data['resistor_settings']['r11'], data['resistor_settings']['r12'],
+            data['resistor_threshold_allow']['min'], data['resistor_threshold_allow']['max'],
+            data['emergency_settings']['current_limit'], data['emergency_settings']['voltage_LN_limit'],
+            data['emergency_settings']['temperature_limit']
+        ]
+        
 
     
     def write_file(self, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, min, max, current, voltage, temperature):

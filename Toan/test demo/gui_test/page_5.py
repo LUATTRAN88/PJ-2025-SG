@@ -26,6 +26,7 @@ class PAGE5:
         self.power_value = 0
         self.time_value = 0
         self.config_service = ConfigService()
+        self.valueResArr=[]
         
     def create_layout(self,lay5):
         self.layout1 = Frame(lay5,bg='red')                   
@@ -232,8 +233,8 @@ class PAGE5:
         self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='SAVE',fg='white',command=self.write_file)
         self.btn_apply.place(x=21,y=48,width=150,height=48)
         
-        self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
-        self.btn_apply.place(x=182,y=48,width=150,height=48)
+        #self.btn_apply = Button(self.lay_button_relay,bd=3,bg='#191970',font=('arial bold',12),text='CANCEL',fg='white')
+        #self.btn_apply.place(x=182,y=48,width=150,height=48)
         
     def button_fan(self):
         # img_fan_on = Image.open(get_path_img()+'sw_on.png').resize((139,65))
@@ -330,8 +331,10 @@ class PAGE5:
         self.config_service.write_file(r1, r2, r3, r4, r5, r6,
                                        r7, r8, r9, r10, r11, r12, 
                                        mn, mx, current, voltage, temperature)
+        self.valueResArr = self.config_service.read_file2();
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 
+        self.valueResArr = self.config_service.read_file2();
         threading_rep = Thread(target=self.loadingdata, args=());          
         self.flag_thread_req_rep = True;
         #self.threading_req.start();
@@ -359,8 +362,17 @@ class PAGE5:
                         self.signal_list[index].setonoff(0);
 
                     index+=1;
-                    pass
-                sleep(1)
+                index=0;
+                for r in self.valueResArr:
+                    if index<12:
+                        vln_val=self.origin_data['vln'];
+                        kwr=(vln_val*vln_val )/r;
+                        kwr=round(kwr, 2);
+                        self.signal_list[index].set_relay_value(str(kwr));
+                    else: 
+                            break;
+                    index+=1;
+                sleep(0.5)
             except :
                 print("Connect Server Abnormal Page 5")
                 sleep(1)   

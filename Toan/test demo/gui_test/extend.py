@@ -6,7 +6,9 @@ from tkinter import *
 from PIL import ImageTk, Image
 import time 
 import pandas as pd
-
+import os
+from tkinter import messagebox as mb
+from time import sleep
 STATE_M_CONNECTION =100
 STATE_M_CONNECTED =101
 STATE_M_CONNECT_FAILED=102
@@ -95,7 +97,7 @@ class SIGNAL:
         self.lb_relay_val = Label(self.layout,bg='white',pady=0,font=('arial bold',8),fg='black',textvariable=self.text_relay).place(x=0,y=32,width=28,height=17)  
         pass
     def set_relay_value(self,text):
-        self.relay_text_value.set(text)
+        self.text_relay.set(text)
         
     def setonoff(self,val):
         if val == 1:
@@ -288,3 +290,17 @@ def control_relay(req,id,status):
 def extPrint(data):
     if FLAG_EXT_PRINT:
         print("%s-%s",time.time(),data)
+        
+def exitapp(adruino,page):
+    res=mb.askquestion('Exit Application', 'Do you really want to exit')
+    if res == 'yes' :
+        if adruino.serial_con is not None:
+            if adruino.serial_con.is_open ==True:
+                adruino.write_obj({"req":ADRUINO_REQ_CTRL_LOAD_DROP,"page":page})
+                sleep(3);
+                data=adruino.serial_con.read_until(b"#").decode("utf-8")
+                os._exit(os.EX_OK)
+                return
+        os._exit(os.EX_OK)
+    else :
+        mb.showinfo('Return', 'Returning to main application')

@@ -302,7 +302,7 @@ void collectiondata(int req, int page)
       output +=String(list_port_inf[4]) +"," ;
       output +=String(list_port_inf[5]) +"," ;
       sendStringSerial(output);
-      output="";
+      output=""; 
       output.reserve(100);
       output +=String(list_port_inf[6]) +"," ;
       output +=String(list_port_inf[7]) +"," ;
@@ -584,10 +584,20 @@ void dropAllLoad()
 {
   for(int port_index = 0 ; port_index<16; port_index++)
   {
-      pcf8575.digitalWrite(port_index, OFF_RELAY_LOAD);
-      delay(1000);
+      uint8_t portval=pcf8575.digitalRead(port_index,true);
+      if (portval==0) // ON
+      {
+          pcf8575.digitalWrite(port_index, OFF_RELAY_LOAD);
+          delay(1000);
+          alarmRunning(1,50);
+      }
       
   }
+  String output;
+  output.reserve(100);
+  output +="{";
+  output +="\"req\":"+String(200) +"}";
+  sendStringSerial(output+"#");
   alarmRunning(3,50);
 }
 
