@@ -409,7 +409,7 @@ class PAGE2:
                         else: 
                             break;
                         index+=1;
-                    sleep(0.5)
+                    sleep(1)
                 except:
                     pass
 

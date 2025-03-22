@@ -175,19 +175,17 @@ void loop() {
      // getdata_V(200);
      time_mask_coldata=millis();
  } 
-  /*if(dataComplete==false)   
+  if(dataComplete==false)   
   { 
     serialEvent();
     dataComplete = false;
-  }
-  delay(1000);
-   */                                                                                                                                                                                                                                                                                              
+  }                                                                                                                                                                                                                                                                                             
   // timer control
-    if( flag_timer_cnt_target== 0)
-    {
+  if( flag_timer_cnt_target== 0)
+  {
       stopAllLoad();
       flag_timer_cnt_target=-1;
-    }
+  }
 }
 
 

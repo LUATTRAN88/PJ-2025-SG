@@ -532,10 +532,11 @@ class PAGE1:
                         index+=1;
                     if self.pop_log is not None:
                         self.pop_log.insertText(item);
+                    sleep(1)
                 except:
                     pass
 
 
 
 
-                sleep(0.5)
+             
