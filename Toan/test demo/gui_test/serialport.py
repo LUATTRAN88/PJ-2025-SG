@@ -16,10 +16,10 @@ class Arduino:
         self.threading_control = None;
         self.flag_thread_read = False;
         self.flag_thread_control = True;
-        self.PORT_NAME = '/dev/ttyUSB0';
+        #self.PORT_NAME = '/dev/ttyUSB0';
         self.queue = queue.Queue(maxsize=10); 
         self.flag_get_data =False;
-        #self.PORT_NAME = 'COM5';
+        self.PORT_NAME = 'COM5';
     def getdata(self):
         if self.flag_get_data:
             return self.store_data
@@ -55,7 +55,7 @@ class Arduino:
                 
                 obj= {"req":ADRUINO_REQ_CTRL_SINGLE_RELAY , "port": port, "status":status};
                 data = json.dumps(obj)
-                data +='\r\n'
+                data +='\r\n\n'
                 print(data)
                 self.serial_con.write(bytes(data, 'utf-8'));
     
@@ -64,7 +64,7 @@ class Arduino:
             if self.serial_con.is_open:
               
                 data = json.dumps(obj)
-                data +='\r\n'
+                data +='\r\n\n'
                 print(data)
                 self.serial_con.write(bytes(data, 'utf-8'));
                 del data 

@@ -169,7 +169,7 @@ void init_pcf8575()
 
 
 void loop() {
-  if(millis() -time_mask_coldata >100){
+  if(millis() -time_mask_coldata >200){
       sendmfm383relaytorasp();
 
      // getdata_V(200);
@@ -191,7 +191,7 @@ void loop() {
 
 // Read Serial Command
 void serialEvent() {
-  while (Serial.available()) {
+  while (Serial.available()>0) {
     // get the new byte:
     char inChar = (char)Serial.read();
     // add it to the inputString:
@@ -202,6 +202,7 @@ void serialEvent() {
       dataComplete = true;
       deliverCtrl(dataInputCtrl);
       dataInputCtrl="";
+      Serial.flush();
     }
   }
 }// Read PORT Relay
