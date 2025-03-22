@@ -190,9 +190,11 @@ class PAGE4:
         self.lb_temp_c = Label(self.layout1,bg='white',font=('arial',13),text='ºC').place(x=980,y=34,width=23,height=20) 
     def createThreadAdruino(self):
         self.valueResArr = self.config_service.read_file2();
-        threading_rep = Thread(target=self.loadingdata, args=());    
-        self.flag_thread_req_rep = True;
-        threading_rep.start();   
+        if self.adruino.serial_con is not None:
+            if self.adruino.serial_con.is_open ==True:
+                threading_rep = Thread(target=self.loadingdata, args=());    
+                self.flag_thread_req_rep = True;
+                threading_rep.start();   
     def stopThreadAdruino(self):
         try: 
             self.flag_thread_req_rep=False;

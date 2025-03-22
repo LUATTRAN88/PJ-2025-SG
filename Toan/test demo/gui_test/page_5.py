@@ -337,10 +337,12 @@ class PAGE5:
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         self.valueResArr = self.config_service.read_file2();
-        threading_rep = Thread(target=self.loadingdata, args=());          
-        self.flag_thread_req_rep = True;
-        #self.threading_req.start();
-        threading_rep.start();  
+        if self.adruino.serial_con is not None:
+            if self.adruino.serial_con.is_open ==True:
+                threading_rep = Thread(target=self.loadingdata, args=());          
+                self.flag_thread_req_rep = True;
+                #self.threading_req.start();
+                threading_rep.start();  
     def stopThreadAdruino(self):
         self.flag_thread_req_rep=False;
     def loadingdata(self):

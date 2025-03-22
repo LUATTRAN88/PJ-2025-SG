@@ -42,6 +42,13 @@ ADRUINO_STATUS_PORT_OFF =0;
 
 FLAG_EXT_PRINT =TRUE
 
+flag_restore_file_page_on=-1;
+flag_restore_file_yn=False;
+file_name_path=''
+
+
+
+
 class VALUERELAY_FAN_PHASE:
     def __init__(self):
         RELAY_SWITCHING_FAN_STATUS=1;
@@ -233,11 +240,13 @@ data_auto_test = {
 }
 
 def store_file(filepath, data):
-    file = open(filepath, 'w')
-    file.write(str(data))    
-    file.write('\n')
-    file.close()
+    FILE_OBJ = open(filepath, 'a')
+    FILE_OBJ.write(str(data))    
+    FILE_OBJ.write('\n')
+    FILE_OBJ.close()
     print('Data is written into the file.')
+
+
 
 # store_file('data.txt', res)
 def read_file(filepath):

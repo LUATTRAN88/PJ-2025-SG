@@ -264,9 +264,11 @@ class PAGE3:
 
     def createThreadAdruino(self):
         self.valueResArr = self.config_service.read_file2();
-        threading_rep = Thread(target=self.loadingdata, args=());    
-        self.flag_thread_req_rep = True;
-        threading_rep.start();  
+        if self.adruino.serial_con is not None:
+            if self.adruino.serial_con.is_open ==True:
+                threading_rep = Thread(target=self.loadingdata, args=());    
+                self.flag_thread_req_rep = True;
+                threading_rep.start();  
  
     def stopThreadAdruino(self):
         try: 

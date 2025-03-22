@@ -26,6 +26,7 @@ class PAGE2:
         self.threading_rep = None;
         self.config_service = ConfigService()
         self.valueResArr=[]
+        self.name_page_id=2;
     def create_layout(self,lay2):
         self.layout1 = Frame(lay2,bg='white')                   
         self.layout1.place(x=0,y=60,width=512,height=540)
@@ -344,9 +345,12 @@ class PAGE2:
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         self.valueResArr = self.config_service.read_file2();
-        threading_rep = Thread(target=self.loadingdata, args=());    
-        self.flag_thread_req_rep = True;
-        threading_rep.start();  
+        
+        if self.adruino.serial_con is not None:
+            if self.adruino.serial_con.is_open ==True:
+                threading_rep = Thread(target=self.loadingdata, args=());    
+                self.flag_thread_req_rep = True;
+                threading_rep.start();  
         
     def stopThreadAdruino(self):
         try: 
@@ -365,26 +369,46 @@ class PAGE2:
                     continue
                 try:
                     self.origin_data = data['info']
-                    self.kw1.set(str(self.origin_data['kw1']))
-                        #extPrint(self.kw1)
-                    self.kw2.set(str(self.origin_data['kw2']))
-                    self.kw3.set(str(self.origin_data['kw3']))
-                    self.vln1.set(str(self.origin_data['vln1']))
-                    self.vln2.set(str(self.origin_data['vln2']))
-                    self.vln3.set(str(self.origin_data['vln3']))
-                    self.cur1.set(str(self.origin_data['cur1']))
-                    self.cur2.set(str(self.origin_data['cur2']))
-                    self.cur3.set(str(self.origin_data['cur3']))
-                    self.v12.set(str(self.origin_data['v12']))
-                    self.v23.set(str(self.origin_data['v23']))
-                    self.v31.set(str(self.origin_data['v31']))
-                    self.freqq.set(str(self.origin_data['freq']))
-                    self.tempcc.set(str(self.origin_data['tempc']))
-                    self.tkw.set(str(self.origin_data['tkw']))
-
-                    self.txt_apf_sum.set(str(self.origin_data['avpf']))
-                    self.txt_aln_sum.set(str(self.origin_data['vln']))
                     rl_array = data['rls']
+                    vln1 = str(self.origin_data['vln1']);
+                    self.vln1.set(vln1);
+                    vln2=str(self.origin_data['vln2']);
+                    self.vln2.set(vln2)
+                    vln3=str(self.origin_data['vln3'])
+                    self.vln3.set(vln3)  
+                    kw1=str(self.origin_data['kw1']);
+                    self.kw1.set(kw1)  
+                    kw2=str(self.origin_data['kw2'])
+                    self.kw2.set(kw2)
+                    kw3=str(self.origin_data['kw3'])
+                    self.kw3.set(kw3)
+                    cur1= str(self.origin_data['cur1'])
+                    self.cur1.set(cur1)
+                    cur2=self.origin_data['cur2']
+                    self.cur2.set(cur2)
+                    cur3=str(self.origin_data['cur3'])
+                    self.cur3.set(cur3)
+                    v12=str(self.origin_data['v12'])
+                    self.v12.set(v12)
+                    v23=str(self.origin_data['v23'])
+                    self.v23.set(v23)
+                    v31=str(self.origin_data['v31'])
+                    self.v31.set(v31)
+                    freq=str(self.origin_data['freq'])
+                    self.freqq.set(freq)
+                    tempc=str(self.origin_data['tempc'])
+                    self.tempcc.set(tempc)
+                    tkw=str(self.origin_data['tkw'])
+                    self.tkw.set(tkw)
+                    avpf=str(self.origin_data['avpf'])
+                    self.txt_apf_sum.set(avpf)
+                    vln=str(self.origin_data['vln'])
+                    self.txt_aln_sum.set(vln)
+                    tim1cnt=str(self.origin_data['tim1cnt'])
+                    strdatarestore='1'+','+vln1 +','+vln2 +','+vln3 +','+vln+','+kw1 +','+kw3 +','+cur1 +','+cur2 +','+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
+                    if self.checkbox_value.get() == True:
+                        store_file(file_name_path,strdatarestore)
+
                     index=0;
                     for i in rl_array:        
                         if i==1:

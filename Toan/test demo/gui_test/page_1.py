@@ -16,7 +16,7 @@ import tkinter.messagebox
 # import filedialog module
 from tkinter import filedialog
 from config.config_service import *
-
+from datetime import datetime
 class PAGE1:
     def __init__(self):
         self.adruino=None
@@ -33,6 +33,8 @@ class PAGE1:
         self.pop_log=None
         self.config_service = ConfigService()
         self.valueResArr=[]
+        self.name_page_id=1;
+        self.file_obj=None
         
     def create_layout(self,lay1):
         self.root= lay1;
@@ -368,7 +370,21 @@ class PAGE1:
         
     def browseFiles(self):
         if self.checkbox_value.get() == True:
-            filename = filedialog.askdirectory()
+                filename = filedialog.askdirectory()
+                if filename != '':
+                    self.close_file();
+                    now = datetime.now()
+                    dt_string = now.strftime("%d%m%Y_%H%M%S") 
+                    self.file_name_path=filename+"/page1_"+dt_string+".txt";
+                    print(self.file_name_path)
+                    tk.messagebox.showinfo('PATH RESTORED:',self.file_name_path)
+                else:
+                    self.checkbox_value.set(False);
+        else:
+            self.close_file();
+
+                     
+            
             
             
         
@@ -462,15 +478,34 @@ class PAGE1:
             self.time_value -=1
             self.lb_timer_val = Label(self.lay_timer_set,bg='white',font=('arial bold',45),text=str(self.time_value),fg='orange').place(x=150,y=69,width=100,height=45)    
             self.lb_timer_counter_val2 = Label(self.lay_timer_set,bg='white',font=('arial bold',15),text=self.time_value).place(x=308,y=145,width=48,height=20)
-            
+    def store_file(self,filepath, data):
+        print(filepath)
+        if self.file_obj is None:
+            if filepath != '':
+                self.file_obj = open(filepath, 'a')
+            else:
+                print('File Path Null')
+                return
+        print(str(data))
+        self.file_obj.write(str(data))    
+        self.file_obj.write('\n')
+        print('Data is written into the file.')
+    def close_file(self):
+        try:
+            self.file_obj.close()
+            self.file_obj=None;
+            print('closed file')
+        except:
+            pass        
     def createThreadAdruino(self):
         print ("Create Thread1")
-        #self.threading_req = Thread(target=self.requestdata, args=());
+            #self.threading_req = Thread(target=self.requestdata, args=());
         self.valueResArr = self.config_service.read_file2();
-        
-        threading_rep = Thread(target=self.loadingdata, args=());    
-        self.flag_thread_req_rep = True;
-        threading_rep.start();  
+        if self.adruino.serial_con is not None:
+            if self.adruino.serial_con.is_open ==True:
+                threading_rep = Thread(target=self.loadingdata, args=());    
+                self.flag_thread_req_rep = True;
+                threading_rep.start();  
     
 
     def stopThreadAdruino(self):
@@ -489,29 +524,47 @@ class PAGE1:
                     continue
                                 
                 try:       
-                    self.origin_data = data['info']  
-                    self.vln1.set(str(self.origin_data['vln1']))
-                    self.vln2.set(str(self.origin_data['vln2']))
-                    self.vln3.set(str(self.origin_data['vln3']))  
-                    self.kw1.set(str(self.origin_data['kw1']))  
-                    self.kw2.set(str(self.origin_data['kw2']))
-                    self.kw3.set(str(self.origin_data['kw3']))
-                        
-                    self.cur1.set(str(self.origin_data['cur1']))
-                    self.cur2.set(str(self.origin_data['cur2']))
-                    self.cur3.set(str(self.origin_data['cur3']))
-                    self.v12.set(str(self.origin_data['v12']))
-                    self.v23.set(str(self.origin_data['v23']))
-                    self.v31.set(str(self.origin_data['v31']))
-                    self.freqq.set(str(self.origin_data['freq']))
-                    self.tempcc.set(str(self.origin_data['tempc']))
-                    self.tkw.set(str(self.origin_data['tkw']))
-
-                    self.txt_apf_sum.set(str(self.origin_data['avpf']))
-                    self.txt_aln_sum.set(str(self.origin_data['vln']))
-                    self.txt_timer_count_down.set(str(self.origin_data['tim1cnt']))
+                    self.origin_data = data['info'] 
+                    vln1 = str(self.origin_data['vln1']);
+                    self.vln1.set(vln1);
+                    vln2=str(self.origin_data['vln2']);
+                    self.vln2.set(vln2)
+                    vln3=str(self.origin_data['vln3'])
+                    self.vln3.set(vln3)  
+                    kw1=str(self.origin_data['kw1']);
+                    self.kw1.set(kw1)  
+                    kw2=str(self.origin_data['kw2'])
+                    self.kw2.set(kw2)
+                    kw3=str(self.origin_data['kw3'])
+                    self.kw3.set(kw3)
+                    cur1= str(self.origin_data['cur1'])
+                    self.cur1.set(cur1)
+                    cur2=self.origin_data['cur2']
+                    self.cur2.set(cur2)
+                    cur3=str(self.origin_data['cur3'])
+                    self.cur3.set(cur3)
+                    v12=str(self.origin_data['v12'])
+                    self.v12.set(v12)
+                    v23=str(self.origin_data['v23'])
+                    self.v23.set(v23)
+                    v31=str(self.origin_data['v31'])
+                    self.v31.set(v31)
+                    freq=str(self.origin_data['freq'])
+                    self.freqq.set(freq)
+                    tempc=str(self.origin_data['tempc'])
+                    self.tempcc.set(tempc)
+                    tkw=str(self.origin_data['tkw'])
+                    self.tkw.set(tkw)
+                    avpf=str(self.origin_data['avpf'])
+                    self.txt_apf_sum.set(avpf)
+                    vln=str(self.origin_data['vln'])
+                    self.txt_aln_sum.set(vln)
+                    tim1cnt=str(self.origin_data['tim1cnt'])
+                    self.txt_timer_count_down.set(tim1cnt)
                     self.rl_array = data['rls']
-                 
+                    strdatarestore='1'+','+vln1 +','+vln2 +','+vln3 +','+vln+','+kw1 +','+kw3 +','+cur1 +','+cur2 +','+cur3+','+v12+','+','+v23 +','+v31 +','+freq+','+v12+','+tempc+','+tkw+','+tim1cnt;
+                    if self.checkbox_value.get() == True:
+                        self.store_file(file_name_path,strdatarestore)
                     
                     index=0;
                     for i in self.rl_array: 
