@@ -86,6 +86,7 @@ class PAGE2:
                 signal.text_relay.set('20.2')
                 
         self.relay_object = []
+        
         for i in range(12):
             row= i // 6             # chia làm 2 hàng
             col= i % 6              # mỗi hàng có 6 (cột) đối tượng
@@ -321,7 +322,7 @@ class PAGE2:
         self.btn_drop = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='LOAD DROP',fg='white',command=lambda:self.event_loaddrop_set())
         self.btn_drop.place(x=343,y=6,width=150,height=48)
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='SHUTDOWN',fg='white',command=self.shutdownapp)
-        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='RESTART',fg='white',command=self.rebootapp)
+        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='RESERVE',fg='white',command=self.rebootapp,state=DISABLED)
         self.btn_restart.place(x=182,y=66,width=150,height=48)
         
 
@@ -346,8 +347,14 @@ class PAGE2:
     def createThreadAdruino(self):
         #self.threading_req = Thread(target=self.requestdata, args=()); 
         #self.threading_req = Thread(target=self.requestdata, args=()); 
-        self.valueResArr = self.config_service.read_file2();
-        
+        self.valueResArr = self.config_service.read_file2();  
+        idxx=0; 
+        for ir in  self.valueResArr:
+            print(ir) 
+            if idxx<12:
+                self.relay_object[idxx].setValue(ir)
+                idxx=idxx+1;
+            
         if self.adruino.serial_con is not None:
             if self.adruino.serial_con.is_open ==True:
                 threading_rep = Thread(target=self.loadingdata, args=());    
@@ -451,10 +458,10 @@ class RELAY_POWER:
     def create_layout(self,lay_timer_set, x,y,text):
         self.layout = Frame(lay_timer_set,bg='white')
         self.layout.place(x=x+48,y=y+8,width=51,height=66)          # width=48
-
-        self.lb_relay1 = Label(self.layout,bg='white',font=('arial',12),text=text).place(x=0,y=0,width=55,height=14)
+        self.res_val=StringVar()
+        self.lb_relay1 = Label(self.layout,bg='white',font=('arial',12),textvariable=self.res_val).place(x=0,y=0,width=55,height=14)
         
-        self.lamp_signal_relay()
+        self.lamp_signal_relay(text)
     def set_port(self,port):
         self.port = port
     
@@ -478,8 +485,9 @@ class RELAY_POWER:
             self.btn_on.config(bg='grey')
             self.lamp_relay = True
 
-    
-    def lamp_signal_relay(self):
+    def setValue(self,ir):
+        self.res_val.set(ir)
+    def lamp_signal_relay(self,_text):
         # img_relay_waiting = Image.open(get_path_img()+'waiting.png').resize((48,47))
         # self.waiting_r = ImageTk.PhotoImage(img_relay_waiting)
         # img_relay_on = Image.open(get_path_img()+'relay_s.png').resize((48,47))
@@ -487,7 +495,7 @@ class RELAY_POWER:
         # img_relay_off = Image.open(get_path_img()+'relay_off1.png').resize((48,47))
         # self.offr = ImageTk.PhotoImage(img_relay_off)
         
-        self.btn_on = Button(self.layout,bg='grey',font=('arial',13),text='19.2',fg='black',anchor='center',bd=0,command=lambda:self.clickRelay())
+        self.btn_on = Button(self.layout,bg='grey',font=('arial',13),text=_text,fg='black',anchor='center',bd=0,command=lambda:self.clickRelay())
         self.btn_on.place(x=2,y=18,width=48,height=45)
         self.btn_on.config(bg='grey')
         self.lamp_relay = False 
