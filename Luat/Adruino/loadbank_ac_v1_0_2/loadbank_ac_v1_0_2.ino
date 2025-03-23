@@ -175,6 +175,8 @@ void loop() {
      // getdata_V(200);
      time_mask_coldata=millis();
  } */
+  int thermo_status = thermoCouple.read();
+  temperature = thermoCouple.getTemperature();
   if(dataComplete==false)   
   { 
     serialEvent();
@@ -185,6 +187,17 @@ void loop() {
   {
       stopAllLoad();
       flag_timer_cnt_target=-1;
+  }
+
+  if(temperature>=70) //ALARM TEMPERATURE
+  {
+     onoffCtrlRelay(13, ON_RELAY_LOAD);
+     delay(10000);
+     dropAllLoad();
+  }
+  else
+  {
+    onoffCtrlRelay(13, OFF_RELAY_LOAD);
   }
   	
   //wdt_reset();
@@ -216,8 +229,7 @@ reqmfm383(sendmfm383(0),8,2);
 reqmfm383(sendmfm383(2),8,3);
 
 
-int thermo_status = thermoCouple.read();
-temperature = thermoCouple.getTemperature();
+
 }
 
 void collectiondata(int req, int page)
