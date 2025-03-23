@@ -98,8 +98,9 @@ void setup() {
 
   Serial.begin(9600);
   Serial.setTimeout(1000);
-  pzemSerial.begin(9600);
-  pzemSerial.flush();
+  
+  //pzemSerial.begin(9600);
+  //spzemSerial.flush();
   //pzemSerial.setTimeout(10);
   init_pcf8575();
   //SPI.begin();
@@ -175,13 +176,16 @@ void loop() {
      // getdata_V(200);
      time_mask_coldata=millis();
  } */
+
   int thermo_status = thermoCouple.read();
   temperature = thermoCouple.getTemperature();
   if(dataComplete==false)   
   { 
     serialEvent();
     dataComplete = false;
-  }                                                                                                                                                                                                                                                                                             
+  }  
+  dataInputCtrl="";   
+  dataComplete = false;                                                                                                                                                                                                                                                                                        
   // timer control
   if( flag_timer_cnt_target== 0)
   {
@@ -189,7 +193,7 @@ void loop() {
       flag_timer_cnt_target=-1;
   }
 
-  if(temperature>=70) //ALARM TEMPERATURE
+  if(temperature>=100) //ALARM TEMPERATURE
   {
      onoffCtrlRelay(13, ON_RELAY_LOAD);
      delay(10000);
@@ -202,9 +206,16 @@ void loop() {
 
   // check total power
   if(TKW>=20)
+  {
      onoffCtrlRelay(13, ON_RELAY_LOAD);
      delay(10000);
      dropAllLoad();
+  }
+  else
+  {
+    onoffCtrlRelay(13, OFF_RELAY_LOAD);
+  }
+
 
   	
   //wdt_reset();
@@ -213,27 +224,39 @@ void loop() {
 
 // Read Serial Command
 void serialEvent() {
-  while (Serial.available()>0) {
+  long time_cnt=0;
+  while (time_cnt<200) {
     // get the new byte:
-    char inChar = (char)Serial.read();
-    // add it to the inputString:
-    dataInputCtrl += inChar;
-    // if the incoming character is a newline, set a flag so the main loop can
-    // do something about it:
-    if (inChar == '\n') {
-      dataComplete = true;
-      deliverCtrl(dataInputCtrl);
-      dataInputCtrl="";
-      Serial.flush();
+    if(Serial.available()>0)
+    {
+      char inChar = (char)Serial.read();
+      // add it to the inputString:
+      dataInputCtrl += inChar;
+      // if the incoming character is a newline, set a flag so the main loop can
+      // do something about it:
+      if (inChar == '\n') {
+        dataComplete = true;
+        deliverCtrl(dataInputCtrl);
+        dataInputCtrl="";
+        Serial.flush();
+        break;
+      }
+      continue;
     }
+    time_cnt++;
     delay(1);
+
+
   }
+  
 }// Read PORT Relay
 void sendmfm383relaytorasp()
 {
 
 reqmfm383(sendmfm383(0),8,1);
+delay(100);
 reqmfm383(sendmfm383(0),8,2);
+delay(100);
 reqmfm383(sendmfm383(2),8,3);
 
 
@@ -388,15 +411,17 @@ float reqmfm383(byte *reqdata, int length, int intv)
  
 
     long cnt_timeout=0;
+    long timeout_cnt=0;
     while(cnt_data<data_length)
     { 
-      if(pzemSerial.available() > 0)
+      int len =pzemSerial.available();
+      if(len > 0)
       {
         repdata[cnt_data++]=(byte)pzemSerial.read();
       }
 
     }
-   
+   //Serial.println(data_length);
     pzemSerial.flush();
     crc.clearCrc();
      unsigned short checksum =getCombine2Bytes(repdata[data_length-1],repdata[data_length-2]);
@@ -516,9 +541,11 @@ void deliverCtrl(String rawDT)
         checkInParams.emg_lmt_temp= (int) myObject["emg_lmt_temp"];
         checkInParams.emg_lmt_cur= (int) myObject["emg_lmt_cur"];
         checkInParams.emg_lmt_vol_ln= (int) myObject["emg_lmt_vol_ln"];*/
+        pzemSerial.begin(9600);
         int page= (int) myObject["page"];
         sendmfm383relaytorasp();
         collectiondata(resq,page);
+        pzemSerial.end();
       break;
     }
     case 1001: // vll

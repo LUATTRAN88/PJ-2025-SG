@@ -274,7 +274,7 @@ class PAGE5:
         # test_phase3 = Image.open(get_path_img()+'sw_3p.png').resize((139,65))
         # self.img_test_phase3 = ImageTk.PhotoImage(test_phase3)
 
-        self.btn_testmode_on = Button(self.lay_logo_switch,text='1P',bg='#00FF00',font=('arial bold',22), bd=3,command=lambda:self.clickphase())
+        self.btn_testmode_on = Button(self.lay_logo_switch,text='3P',bg='#00FF00',font=('arial bold',22), bd=3,command=lambda:self.clickphase(),state=DISABLED)
         self.btn_testmode_on.place(x=170,y=28,width=139,height=70)
         self.is_test_phase1 = True
 
@@ -370,7 +370,7 @@ class PAGE5:
                 for r in self.valueResArr:
                     if index<12:
                         vln_val=self.origin_data['vln'];
-                        kwr=3*(vln_val*vln_val )/r;
+                        kwr=3*(vln_val*vln_val )/(1000*r);
                         kwr=round(kwr, 2);
                         self.signal_list[index].set_relay_value(str(kwr));
                     else: 

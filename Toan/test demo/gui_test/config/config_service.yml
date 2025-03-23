@@ -3,7 +3,7 @@ emergency_settings:
   temperature_limit: 989
   voltage_LN_limit: 863
 resistor_settings:
-  r1: 13.2
+  r1: 132
   r10: 8.4
   r11: 8.2
   r12: 8.4

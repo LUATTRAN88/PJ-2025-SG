@@ -330,7 +330,7 @@ def rebootapp(adruino,page):
                 os.system('sudo shutdown -r now')
                 os._exit(os.EX_OK);
                 return
-        os.system('sudo shutdown -r now')
+        os.system('sudo shutdown -r now |')
         os._exit(os.EX_OK)
     else :
         mb.showinfo('Return', 'Returning to main application')
