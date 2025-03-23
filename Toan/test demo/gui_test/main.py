@@ -15,7 +15,7 @@ class MAINGUI:
         self.current_page=1;
     def create_layout(self):
         self.layout = Tk()
-        self.layout.title('test demo')
+        self.layout.title('Load Bank Monitoring')
         self.layout.geometry('1024x650')
         self.layout.config(bg='white')
         #self.layout.overrideredirect(1)
