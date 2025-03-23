@@ -19,7 +19,7 @@ class Arduino:
         self.PORT_NAME = '/dev/ttyUSB0';
         self.queue = queue.Queue(maxsize=10); 
         self.flag_get_data =False;
-        self.PORT_NAME = 'COM5';
+        #self.PORT_NAME = 'COM5';
         self.flag_busy=False;
     def getdata(self):
         if self.flag_get_data:

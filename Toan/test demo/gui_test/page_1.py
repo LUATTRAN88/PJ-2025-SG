@@ -17,6 +17,7 @@ import tkinter.messagebox
 from tkinter import filedialog
 from config.config_service import *
 from datetime import datetime
+from config.config_setting import *
 class PAGE1:
     def __init__(self):
         self.adruino=None
@@ -32,9 +33,13 @@ class PAGE1:
         self.threading_rep = None;
         self.pop_log=None
         self.config_service = ConfigService()
+        self.config_setting = ConfigSetting()
         self.valueResArr=[]
         self.name_page_id=1;
         self.file_obj=None
+        self.power_lmt_setting=32
+        self.voltage_lmt_setting=220
+        self.temp_lmt_setting=75
         
     def create_layout(self,lay1):
         self.root= lay1;
@@ -445,7 +450,7 @@ class PAGE1:
         self.hold_powerup = False   
             
     def increase_power_set(self):
-        if self.power_value < 100:
+        if self.power_value < self.power_lmt_setting:
             self.power_value += 1
             self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text=str(self.power_value),fg='orange').place(x=175,y=69,width=105,height=45)
 
@@ -502,6 +507,7 @@ class PAGE1:
     def createThreadAdruino(self):
         print ("Create Thread1")
             #self.threading_req = Thread(target=self.requestdata, args=());
+        self.power_lmt_setting, self.voltage_lmt_setting, self.temp_lmt_setting=self.config_setting.read_file();
         self.valueResArr = self.config_service.read_file2();
         if self.adruino.serial_con is not None:
             if self.adruino.serial_con.is_open ==True:
