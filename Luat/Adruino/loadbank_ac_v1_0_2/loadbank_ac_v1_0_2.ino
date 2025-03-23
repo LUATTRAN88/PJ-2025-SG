@@ -199,6 +199,13 @@ void loop() {
   {
     onoffCtrlRelay(13, OFF_RELAY_LOAD);
   }
+
+  // check total power
+  if(TKW>=20)
+     onoffCtrlRelay(13, ON_RELAY_LOAD);
+     delay(10000);
+     dropAllLoad();
+
   	
   //wdt_reset();
 }
