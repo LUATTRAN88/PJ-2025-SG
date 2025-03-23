@@ -350,7 +350,6 @@ class PAGE2:
         self.valueResArr = self.config_service.read_file2();  
         idxx=0; 
         for ir in  self.valueResArr:
-            print(ir) 
             if idxx<12:
                 self.relay_object[idxx].setValue(ir)
                 idxx=idxx+1;
