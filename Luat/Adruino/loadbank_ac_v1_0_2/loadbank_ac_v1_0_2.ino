@@ -387,10 +387,7 @@ float reqmfm383(byte *reqdata, int length, int intv)
       {
         repdata[cnt_data++]=(byte)pzemSerial.read();
       }
-      if(cnt_timeout>10)
-        break;
-      //Serial.println("b");
-      cnt_timeout++;
+
     }
    
     pzemSerial.flush();

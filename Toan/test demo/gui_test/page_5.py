@@ -370,7 +370,7 @@ class PAGE5:
                 for r in self.valueResArr:
                     if index<12:
                         vln_val=self.origin_data['vln'];
-                        kwr=(vln_val*vln_val )/r;
+                        kwr=3*(vln_val*vln_val )/r;
                         kwr=round(kwr, 2);
                         self.signal_list[index].set_relay_value(str(kwr));
                     else: 
