@@ -303,8 +303,9 @@ class PAGE2:
         self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=230,y=69,width=105,height=45)
 
         self.lb_available = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='AVAILABLE POWER').place(x=85,y=145,width=197,height=20)
-        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='99.8').place(x=305,y=145,width=65,height=20)
-        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=375,y=145,width=45,height=20)
+        self.text_available_val =StringVar()
+        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),textvariable=self.text_available_val).place(x=305,y=145,width=65,height=20)
+        self.lb_available_kw = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=375,y=145,width=45,height=20)
  
  
  
@@ -435,21 +436,26 @@ class PAGE2:
                     index=0;
                     for r in self.valueResArr:
                         if index<12:
-                            vln_val=self.origin_data['vln'];
-                            kwr=3*(vln_val*vln_val )/(1000*r);
-                            kwr=round(kwr, 2);
-                            self.signal_list[index].set_relay_value(str(kwr));
+                            cal_vln_val=self.origin_data['vln'];
+                            cal_vln_val=3*(cal_vln_val*cal_vln_val )/(1000*r);
+                            cal_vln_val=round(cal_vln_val, 2);
+                            self.signal_list[index].set_relay_value(str(cal_vln_val));
                         else: 
                             break;
                         index+=1;
                     idxx=0;
+                    sum_vln=0.0;
                     for ir in  self.valueResArr:
                         if idxx<12:
                             val_r=float(ir)
+                            vln_val=self.origin_data['vln'];
                             txt_valr=3*(vln_val*vln_val )/(1000*val_r);
                             txt_valr=round(txt_valr, 2);
+                            sum_vln+=txt_valr
+                            sum_vln=round(sum_vln, 2);
                             self.relay_object[idxx].setValue(str(txt_valr))
                             idxx=idxx+1;
+                    self.text_available_val.set(str(sum_vln))        
                     sleep(1)
                 except:
                     pass

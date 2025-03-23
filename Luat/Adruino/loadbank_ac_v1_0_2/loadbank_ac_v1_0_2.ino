@@ -255,7 +255,7 @@ void sendmfm383relaytorasp()
 
 reqmfm383(sendmfm383(0),8,1);
 delay(100);
-reqmfm383(sendmfm383(0),8,2);
+reqmfm383(sendmfm383(1),8,2);
 delay(100);
 reqmfm383(sendmfm383(2),8,3);
 

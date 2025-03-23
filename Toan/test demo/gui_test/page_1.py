@@ -309,8 +309,9 @@ class PAGE1:
         self.lb_powset_val = Label(self.lay_power_set,bg='white',font=('arial bold',45),text='0',fg='orange').place(x=175,y=69,width=105,height=45)
 
         self.lb_available = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='AVAILABLE POWER').place(x=15,y=145,width=197,height=20)
-        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='99.8').place(x=235,y=145,width=65,height=20)
-        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=305,y=145,width=45,height=20)
+        self.text_available_val =StringVar()
+        self.lb_available_val = Label(self.lay_power_set,bg='white',font=('arial bold',15),textvariable=self.text_available_val).place(x=235,y=145,width=65,height=20)
+        self.lb_available_kw = Label(self.lay_power_set,bg='white',font=('arial bold',15),text='KW').place(x=305,y=145,width=45,height=20)
 
 
         self.lb_timer = Label(self.lay_timer_set,bg='white',font=('arial bold',30),text='TIMER\n SET',fg='orange').place(x=15,y=48,width=120,height=76)
@@ -587,15 +588,21 @@ class PAGE1:
                             self.signal_list[index].setonoff(0);
                         index+=1;
                     index=0;
+                    sum_vln=0.0;
                     for r in self.valueResArr:
                         if index<12:
                             vln_val=self.origin_data['vln'];
-                            kwr=3*(vln_val*vln_val )/(1000*r);
-                            kwr=round(kwr, 2);
-                            self.signal_list[index].set_relay_value(str(kwr));
+                            vln_val=3*(vln_val*vln_val )/(1000*r);
+                            vln_val=round(vln_val, 2);
+                            sum_vln+=vln_val;
+                            sum_vln=round(sum_vln, 2);
+                            
+                            self.signal_list[index].set_relay_value(str(vln_val));
                         else: 
                             break;
                         index+=1;
+                    self.text_available_val.set(sum_vln);
+                    
                     if self.pop_log is not None:
                         self.pop_log.insertText(item);
                     sleep(1)
