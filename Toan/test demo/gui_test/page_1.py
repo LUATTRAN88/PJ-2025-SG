@@ -331,9 +331,7 @@ class PAGE1:
         #self.pop_log.create_layout();
         exitapp(self.adruino,1);
     def rebootapp(self):
-        if self.adruino is not None:
-            self.adruino.disconnect_port();
-        self.adruino.connect_port();
+        rebootapp(self.adruino,1);
 
 
           
@@ -372,7 +370,7 @@ class PAGE1:
         self.btn_logging = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='SHUTDOWN',fg='white',command=self.shutdownapp)
         self.btn_logging.place(x=21,y=66,width=150,height=48)
         
-        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='RESERVE',fg='white',command=self.rebootapp,state=DISABLED)
+        self.btn_restart = Button(self.lay_button_load,bd=3,bg='#191970',font=('arial bold',12),text='EXIT',fg='white',command=self.rebootapp)
         self.btn_restart.place(x=182,y=66,width=150,height=48)
        
         
