@@ -327,10 +327,10 @@ def rebootapp(adruino,page):
                 data=adruino.serial_con.read_until(b"#").decode("utf-8")
                 
                 #os.system("shutdown now -h")
-                os.system('echo "123456" | sudo reboot') 
+                os.system('sudo shutdown -r now')
                 os._exit(os.EX_OK);
                 return
-        os.system('echo "123456" | sudo reboot') 
+        os.system('sudo shutdown -r now')
         os._exit(os.EX_OK)
     else :
         mb.showinfo('Return', 'Returning to main application')
