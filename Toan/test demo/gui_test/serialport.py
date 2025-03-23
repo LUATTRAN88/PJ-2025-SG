@@ -19,7 +19,8 @@ class Arduino:
         self.PORT_NAME = '/dev/ttyUSB0';
         self.queue = queue.Queue(maxsize=10); 
         self.flag_get_data =False;
-        #self.PORT_NAME = 'COM5';
+        self.PORT_NAME = 'COM5';
+        self.flag_busy=False;
     def getdata(self):
         if self.flag_get_data:
             return self.store_data
@@ -57,7 +58,11 @@ class Arduino:
                 data = json.dumps(obj)
                 data +='\r\n\n'
                 print(data)
-                self.serial_con.write(bytes(data, 'utf-8'));
+                if self.flag_busy==False:
+                    self.flag_busy=True
+                    self.serial_con.write(bytes(data, 'utf-8'));
+                    sleep(0.2);
+                    self.flag_busy=False
     
     def write_obj(self, obj):
         if self.serial_con != None:
@@ -65,22 +70,25 @@ class Arduino:
               
                 data = json.dumps(obj)
                 data +='\r\n\n'
-                print(data)
-                self.serial_con.write(bytes(data, 'utf-8'));
+                if self.flag_busy==False:
+                    self.flag_busy=True
+                    self.serial_con.write(bytes(data, 'utf-8'));
+                    self.flag_busy=False;
+                    sleep(0.2);
                 del data 
     def getdatanewline(self, page):
 
                 if self.serial_con != None:
                     if self.serial_con.is_open:
-                        if self.flag_get_data ==False :
-                                self.flag_get_data=True
-                                self.write_obj({"req":ADRUINO_REQ_FULL_DATA,"page":page})
-                                sleep(0.05)
-                                data=self.serial_con.read_until(b"#").decode("utf-8")
-                                datastrm= data.replace('#',"\n")
-                                dataj= ''.join(datastrm)
-                                self.serial_con.flush();
-                                self.flag_get_data=False
-                                print(dataj)
-                                return datastrm; 
+                                    self.flag_get_data=True
+                                    self.write_obj({"req":ADRUINO_REQ_FULL_DATA,"page":page})
+                                    sleep(0.05)
+                                    data=self.serial_con.read_until(b"#").decode("utf-8")
+                                    datastrm= data.replace('#',"\n")
+                                    dataj= ''.join(datastrm)
+                                    self.serial_con.flush();
+                                    self.flag_get_data=False
+                                    print(dataj)
+                                    return datastrm; 
+                return "";
    

@@ -219,6 +219,7 @@ void serialEvent() {
       dataInputCtrl="";
       Serial.flush();
     }
+    delay(1);
   }
 }// Read PORT Relay
 void sendmfm383relaytorasp()
@@ -522,7 +523,7 @@ void deliverCtrl(String rawDT)
         timer1_counter_val = myObject["tm_s"];
        
         timer1_counter_set = timer1_counter_val;
-        TIMSK1 = (1 << TOIE1); 
+        //TIMSK1 = (1 << TOIE1); 
         JsonArray actions = myObject["port"];
 
         byte portlist[16];
@@ -537,7 +538,7 @@ void deliverCtrl(String rawDT)
     case 1007: // Enable counter Timer 1
     {
       alarmRunning(4,50);
-      TIMSK1 = (0 << TOIE1);   // Stop timer
+      //TIMSK1 = (0 << TOIE1);   // Stop timer
       timer1_counter_val=-1;
       flag_timer_cnt_target=-1;
       dropAllLoad();
@@ -546,13 +547,13 @@ void deliverCtrl(String rawDT)
     }
     case 1008: // Enable counter Timer 1
     {
-       TIMSK1 = (1 << TOIE1); 
+       //TIMSK1 = (1 << TOIE1); 
       break;
     }
     case 1009: //Stop All Load
     {
       alarmRunning(4,50);
-      TIMSK1 = (0 << TOIE1);   // Stop timer
+     // TIMSK1 = (0 << TOIE1);   // Stop timer
       timer1_counter_val=-1;
       flag_timer_cnt_target=-1;
       stopAllLoad();
